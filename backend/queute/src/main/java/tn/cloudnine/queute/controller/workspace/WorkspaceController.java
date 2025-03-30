@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.WorkspaceRequest;
+import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.service.workspace.IWrokspaceService;
 
@@ -21,5 +22,38 @@ public class WorkspaceController {
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
         return ResponseEntity.ok().body(service.createWorkspace(request, image));
+    }
+
+    @PatchMapping(value = "update-workspace/{workspace_id}", consumes = "multipart/form-data")
+    public ResponseEntity<Workspace> updateWorkspace(
+            @PathVariable("workspace_id") Long workspace_id,
+            @RequestPart("request") WorkspaceRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return ResponseEntity.ok().body(service.updateWorkspace(workspace_id, request, image));
+    }
+
+    @DeleteMapping(value = "delete-workspace/{workspace_id}")
+    public void deleteWorkspace(@PathVariable("workspace_id") Long workspace_id) {
+        service.deleteWorkspace(workspace_id);
+    }
+
+    @GetMapping(value = "get-workspace/{workspace_id}")
+    public ResponseEntity<Workspace> getWorkspace(
+            @PathVariable("workspace_id") Long workspace_id
+    ) {
+        return ResponseEntity.ok().body(service.getWorkspace(workspace_id));
+    }
+
+    /**
+     * Add Project to an existent workspace
+     */
+    @PostMapping(value = "add-project-workspace/{workspace_id}", consumes = "multipart/form-data")
+    public ResponseEntity<Workspace> addProjectToWorkspace(
+            @PathVariable("workspace_id") Long workspace_id,
+            @RequestPart("project") Project project,
+            @RequestPart(value = "image", required = false) MultipartFile image
+            ) {
+        return ResponseEntity.ok().body(service.addProjectToWorkspace(workspace_id, project, image));
     }
 }

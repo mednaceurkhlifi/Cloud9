@@ -12,6 +12,7 @@ import tn.cloudnine.queute.model.organization.Organization;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "workspaces")
@@ -34,6 +35,9 @@ public class Workspace implements Serializable {
     @OneToOne
     @JsonBackReference
     private Organization organization;
+
+    @OneToMany
+    private Set<Project> projects;
 
     private boolean is_locked;
     private boolean is_deleted;
