@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.workspace;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -18,23 +19,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE projects p SET p.is_deleted = true WHERE p.project_id=? AND p.is_deleted = false ")
+@SQLDelete(sql = "UPDATE projects p SET p.isDeleted = true WHERE p.projectId=? AND p.isDeleted = false ")
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long project_id;
+    private Long projectId;
     private String name;
     private String description;
     private String image;
     private Integer priority;
-    private LocalDateTime begin_date;
+    private LocalDateTime beginDate;
     private LocalDateTime deadline;
+    @ManyToOne
+    @JsonIgnore
+    private Workspace workspace;
 
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
-
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

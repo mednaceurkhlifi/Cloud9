@@ -1,13 +1,20 @@
 package tn.cloudnine.queute.serviceImpl.workspace;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.WorkspaceRequest;
+import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
+import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
+import tn.cloudnine.queute.dto.workspace.views.ProjectProjection;
+import tn.cloudnine.queute.dto.workspace.views.WorkspaceProjection;
 import tn.cloudnine.queute.model.organization.Organization;
-import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.repository.organization.OrganizationRepository;
+import tn.cloudnine.queute.repository.workspace.ProjectRepository;
 import tn.cloudnine.queute.repository.workspace.WorkspaceRepository;
 import tn.cloudnine.queute.service.workspace.IWrokspaceService;
 import tn.cloudnine.queute.utils.IFileUploader;
@@ -18,19 +25,17 @@ public class WorkspaceService implements IWrokspaceService {
 
     private final WorkspaceRepository repository;
     private final OrganizationRepository organizationRepository;
+    private final ProjectRepository projectRepository;
     private final IFileUploader fileUploader;
     private final String DEFAULT_IMAGE = "default_workspace.jpg";
     private final String DEFAULT_IMAGE_PROJECT = "default_project.jpg";
 
     @Override
-    public Workspace createWorkspace(WorkspaceRequest request, MultipartFile image) {
-        Organization organization = organizationRepository.findById(request.getOrganization())
-                .orElseThrow(() -> new IllegalArgumentException("Organization not found with ID: " + request.getOrganization()));
+    public Workspace createWorkspace(Workspace workspace, MultipartFile image) {
+        Organization organization = organizationRepository.findById(workspace.getOrganization().getOrganization_id())
+                .orElseThrow(() -> new IllegalArgumentException("Organization not found with ID: " + workspace.getOrganization().getOrganization_id()));
 
-        Workspace workspace = Workspace.builder().name(request.getName())
-                .description(request.getDescription())
-                .organization(organization)
-                .build();
+        workspace.setOrganization(organization);
 
         if (image != null && !image.isEmpty()) {
             workspace.setImage(fileUploader.saveImage(image));
@@ -69,28 +74,23 @@ public class WorkspaceService implements IWrokspaceService {
     }
 
     @Override
-    public Workspace getWorkspace(Long workspaceId) {
-        return repository.findById(workspaceId).orElseThrow(
-                () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
-        );
-    }
-    /**
-     * Add Project to an existent workspace
-     */
-    @Override
-    public Workspace addProjectToWorkspace(Long workspaceId, Project project, MultipartFile image) {
-        Workspace workspace = repository.findById(workspaceId).orElseThrow(
+    public WorkspaceResponse getWorkspace(Long workspaceId, Integer size, Integer page_no) {
+        WorkspaceProjection projection = repository.findByWorkspaceIdAndIsDeletedIsFalse(workspaceId).orElseThrow(
                 () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
         );
 
-        if (image != null && !image.isEmpty()) {
-            project.setImage(fileUploader.saveImage(image));
-        } else {
-            project.setImage(DEFAULT_IMAGE_PROJECT);
-        }
+        Pageable pageable = PageRequest.of(page_no, size);
+        Page<ProjectProjection> projects = projectRepository.findByWorkspaceWorkspaceId(workspaceId, pageable);
 
-        workspace.getProjects().add(project);
+        ProjectResponse projectResponse = new ProjectResponse(
+                projects.toList(), projects.getNumber(),
+                projects.getSize(), projects.getTotalElements(),
+                projects.getTotalPages(), projects.isLast()
+        );
 
-        return repository.save(workspace);
+        return new WorkspaceResponse(
+                projection, projectResponse
+        );
     }
+
 }

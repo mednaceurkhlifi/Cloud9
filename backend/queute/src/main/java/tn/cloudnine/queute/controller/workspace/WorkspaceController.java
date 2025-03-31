@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.WorkspaceRequest;
+import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.service.workspace.IWrokspaceService;
@@ -18,10 +19,10 @@ public class WorkspaceController {
 
     @PostMapping(value = "add-workspace", consumes = "multipart/form-data")
     public ResponseEntity<Workspace> createWorkspace(
-            @RequestPart("request") WorkspaceRequest request,
+            @RequestPart("workspace") Workspace workspace,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
-        return ResponseEntity.ok().body(service.createWorkspace(request, image));
+        return ResponseEntity.ok().body(service.createWorkspace(workspace, image));
     }
 
     @PatchMapping(value = "update-workspace/{workspace_id}", consumes = "multipart/form-data")
@@ -38,22 +39,13 @@ public class WorkspaceController {
         service.deleteWorkspace(workspace_id);
     }
 
-    @GetMapping(value = "get-workspace/{workspace_id}")
-    public ResponseEntity<Workspace> getWorkspace(
-            @PathVariable("workspace_id") Long workspace_id
+    @GetMapping(value = "get-workspace/{workspace_id}/{size}/{page_no}")
+    public ResponseEntity<WorkspaceResponse> getWorkspace(
+            @PathVariable("workspace_id") Long workspace_id,
+            @PathVariable("size") Integer size,
+            @PathVariable("page_no") Integer page_no
     ) {
-        return ResponseEntity.ok().body(service.getWorkspace(workspace_id));
+        return ResponseEntity.ok().body(service.getWorkspace(workspace_id, size, page_no));
     }
 
-    /**
-     * Add Project to an existent workspace
-     */
-    @PostMapping(value = "add-project-workspace/{workspace_id}", consumes = "multipart/form-data")
-    public ResponseEntity<Workspace> addProjectToWorkspace(
-            @PathVariable("workspace_id") Long workspace_id,
-            @RequestPart("project") Project project,
-            @RequestPart(value = "image", required = false) MultipartFile image
-            ) {
-        return ResponseEntity.ok().body(service.addProjectToWorkspace(workspace_id, project, image));
-    }
 }

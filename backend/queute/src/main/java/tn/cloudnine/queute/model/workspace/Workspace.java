@@ -22,12 +22,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE workspaces w SET w.is_deleted = true WHERE w.workspace_id=? AND w.is_deleted = false ")
+@SQLDelete(sql = "UPDATE workspaces w SET w.isDeleted = true WHERE w.workspaceId=? AND w.isDeleted = false ")
 public class Workspace implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long workspace_id;
+    private Long workspaceId;
     private String name;
     private String description;
     private String image;
@@ -36,16 +36,16 @@ public class Workspace implements Serializable {
     @JsonBackReference
     private Organization organization;
 
-    @OneToMany
+    @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private Set<Project> projects;
 
-    private boolean is_locked;
-    private boolean is_deleted;
+    private boolean isLocked;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }
