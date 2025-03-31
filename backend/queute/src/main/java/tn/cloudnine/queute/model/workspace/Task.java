@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.workspace;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -36,6 +37,14 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne
+    @JsonIgnore
+    private Project project;
+
+    @ManyToOne
+    @JsonIgnore
+    private ProjectModule module;
 
     private boolean isDeleted;
 

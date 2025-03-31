@@ -1,11 +1,18 @@
 package tn.cloudnine.queute.serviceImpl.workspace;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
+import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
+import tn.cloudnine.queute.model.workspace.ProjectModule;
 import tn.cloudnine.queute.model.workspace.Task;
+import tn.cloudnine.queute.repository.workspace.ModuleRepository;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;
 import tn.cloudnine.queute.repository.workspace.TaskRepository;
 import tn.cloudnine.queute.service.workspace.ITaskService;
@@ -13,8 +20,6 @@ import tn.cloudnine.queute.utils.IFileUploader;
 
 import java.util.List;
 
-import static tn.cloudnine.queute.enums.DocumentType.IMAGE;
-import static tn.cloudnine.queute.enums.DocumentType.OTHER;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class TaskService implements ITaskService {
 
     private final TaskRepository repository;
     private final ProjectRepository projectRepository;
+    private final ModuleRepository moduleRepository;
     private final IFileUploader fileUploader;
 
     @Override
@@ -29,11 +35,19 @@ public class TaskService implements ITaskService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("Project not found with ID : " + projectId)
         );
+        task.setProject(project);
         saveDocuments(task, documents);
-        task = repository.save(task);
-        project.getTasks().add(repository.save(task));
-        projectRepository.save(project);
-        return task;
+        return repository.save(task);
+    }
+
+    @Override
+    public Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents) {
+        ProjectModule module = moduleRepository.findById(moduleId).orElseThrow(
+                () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
+        );
+        task.setModule(module);
+        saveDocuments(task, documents);
+        return repository.save(task);
     }
 
     @Override
@@ -69,6 +83,18 @@ public class TaskService implements ITaskService {
     public Task getTaskById(Long taskId) {
         return repository.findById(taskId).orElseThrow(
                 () -> new IllegalArgumentException("Task not found with ID : " + taskId)
+        );
+    }
+
+    @Override
+    public TaskResponse getTaskByModule(Long moduleId, Integer size, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        Page<TaskProjection> tasks = repository.findAllByModuleModule_idAndDeletedFalse(moduleId, pageable);
+
+        return new TaskResponse(
+                tasks.toList(), tasks.getNumber(),
+                tasks.getSize(), tasks.getTotalElements(),
+                tasks.getTotalPages(), tasks.isLast()
         );
     }
 

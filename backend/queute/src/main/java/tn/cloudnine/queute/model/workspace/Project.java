@@ -38,6 +38,9 @@ public class Project {
     private Workspace workspace;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<ProjectModule> modules;
+
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Task> tasks;
 
     @Enumerated(EnumType.STRING)

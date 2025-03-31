@@ -1,4 +1,4 @@
-package tn.cloudnine.queute.dto.workspace.views;
+package tn.cloudnine.queute.dto.workspace.projections;
 
 import tn.cloudnine.queute.enums.workspace.ProjectStatus;
 

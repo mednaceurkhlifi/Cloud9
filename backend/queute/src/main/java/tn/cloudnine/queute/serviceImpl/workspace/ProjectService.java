@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
-import tn.cloudnine.queute.dto.workspace.views.ProjectProjection;
+import tn.cloudnine.queute.dto.workspace.projections.ProjectProjection;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;

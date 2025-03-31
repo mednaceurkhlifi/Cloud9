@@ -30,6 +30,9 @@ public class ProjectModule {
     private LocalDateTime begin_date;
     private LocalDateTime deadline;
 
+    @OneToMany(mappedBy = "module", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<Task> tasks;
+
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
 
