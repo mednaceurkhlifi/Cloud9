@@ -46,7 +46,7 @@ public class ProjectController {
            @PathVariable("project_id") Long project_id
     ) {
         service.deleteProject(project_id);
-        return ResponseEntity.ok().body(Map.of("status", "success", "Project ID", project_id.toString()));
+        return ResponseEntity.ok().body(Map.of("status", "success", "message", "Project with ID" + project_id.toString() + " deleted successfully."));
     }
 
     @GetMapping("get-project/{project_id}")

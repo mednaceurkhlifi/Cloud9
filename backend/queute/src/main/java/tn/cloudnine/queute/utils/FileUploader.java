@@ -24,6 +24,11 @@ public class FileUploader implements IFileUploader{
         return uploadFile(sourceFile, fileUploadSubPath);
     }
 
+    public String saveDocument(@Nonnull MultipartFile sourceFile) {
+        final String fileUploadSubPath = "documents" + separator;
+        return uploadFile(sourceFile, fileUploadSubPath);
+    }
+
     private String uploadFile(@Nonnull MultipartFile sourceFile, @Nonnull String fileUploadSubPath) {
         final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath;
         File targetFolder = new File(finalUploadPath);

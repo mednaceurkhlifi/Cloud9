@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import tn.cloudnine.queute.enums.workspace.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
@@ -18,27 +19,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE tasks t SET t.is_deleted = true WHERE t.task_id=? AND t.is_deleted = false ")
+@SQLDelete(sql = "UPDATE tasks t SET t.isDeleted = true WHERE t.taskId=? AND t.isDeleted = false ")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long task_id;
+    private Long taskId;
     private String title;
     private String description;
     private Integer priority;
-    private LocalDateTime begin_date;
+    private LocalDateTime beginDate;
     private LocalDateTime deadline;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<ProjectDocument> documents;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }

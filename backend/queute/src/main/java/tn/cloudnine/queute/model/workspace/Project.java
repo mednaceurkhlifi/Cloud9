@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import tn.cloudnine.queute.enums.workspace.ProjectStatus;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "projects")
@@ -31,9 +32,13 @@ public class Project {
     private Integer priority;
     private LocalDateTime beginDate;
     private LocalDateTime deadline;
+
     @ManyToOne
     @JsonIgnore
     private Workspace workspace;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<Task> tasks;
 
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;

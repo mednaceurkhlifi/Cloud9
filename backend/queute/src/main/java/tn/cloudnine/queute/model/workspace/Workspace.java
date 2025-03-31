@@ -36,7 +36,7 @@ public class Workspace implements Serializable {
     @JsonBackReference
     private Organization organization;
 
-    @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Project> projects;
 
     private boolean isLocked;
