@@ -37,6 +37,7 @@ public class Workspace implements Serializable {
     private Organization organization;
 
     @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "workspace_id")
     private Set<Project> projects;
 
     private boolean isLocked;

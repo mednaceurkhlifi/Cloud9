@@ -80,14 +80,14 @@ public class ProjectService implements IProjectService {
         Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(
                 () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
         );
-        project.setWorkspace(workspace);
         if (image != null && !image.isEmpty()) {
             project.setImage(fileUploader.saveImage(image));
         } else {
             project.setImage(DEFAULT_IMAGE);
         }
-
-        return repository.save(project);
+        workspace.getProjects().add(project);
+        workspaceRepository.save(workspace);
+        return project;
     }
     /**
      * Get projects related to an existent workspace
@@ -95,7 +95,7 @@ public class ProjectService implements IProjectService {
     @Override
     public ProjectResponse getProjectsByWorkspace(Long workspaceId, Integer size, Integer page_no) {
         Pageable pageable = PageRequest.of(page_no, size);
-        Page<ProjectProjection> projects = repository.findByWorkspaceWorkspaceId(workspaceId, pageable);
+        Page<ProjectProjection> projects = repository.findByWorkspaceId(workspaceId, pageable);
 
         return  new ProjectResponse(
                 projects.toList(), projects.getNumber(),

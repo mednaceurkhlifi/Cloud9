@@ -9,5 +9,5 @@ import tn.cloudnine.queute.model.workspace.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    Page<ProjectProjection> findByWorkspaceWorkspaceId(Long workspaceId, Pageable pageable);
+    Page<ProjectProjection> findByWorkspaceId(Long workspaceId, Pageable pageable);
 }

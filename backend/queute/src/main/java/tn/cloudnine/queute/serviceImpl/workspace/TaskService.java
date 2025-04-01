@@ -35,9 +35,10 @@ public class TaskService implements ITaskService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("Project not found with ID : " + projectId)
         );
-        task.setProject(project);
         saveDocuments(task, documents);
-        return repository.save(task);
+        project.getTasks().add(task);
+        projectRepository.save(project);
+        return task;
     }
 
     @Override
@@ -45,9 +46,10 @@ public class TaskService implements ITaskService {
         ProjectModule module = moduleRepository.findById(moduleId).orElseThrow(
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
-        task.setModule(module);
         saveDocuments(task, documents);
-        return repository.save(task);
+        module.getTasks().add(task);
+        moduleRepository.save(module);
+        return task;
     }
 
     @Override
@@ -89,7 +91,7 @@ public class TaskService implements ITaskService {
     @Override
     public TaskResponse getTasksByModule(Long moduleId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<TaskProjection> tasks = repository.findAllByModuleModuleIdAndDeletedFalse(moduleId, pageable);
+        Page<TaskProjection> tasks = repository.findAllByModuleIdAndDeletedFalse(moduleId, pageable);
 
         return new TaskResponse(
                 tasks.toList(), tasks.getNumber(),
@@ -101,7 +103,7 @@ public class TaskService implements ITaskService {
     @Override
     public TaskResponse getTasksByProject(Long projectId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<TaskProjection> tasks = repository.findAllByProjectProjectIdAndDeletedFalse(projectId, pageable);
+        Page<TaskProjection> tasks = repository.findAllByProjectIdAndDeletedFalse(projectId, pageable);
 
         return new TaskResponse(
                 tasks.toList(), tasks.getNumber(),

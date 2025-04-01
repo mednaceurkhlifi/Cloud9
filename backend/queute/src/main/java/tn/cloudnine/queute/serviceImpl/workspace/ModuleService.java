@@ -1,7 +1,12 @@
 package tn.cloudnine.queute.serviceImpl.workspace;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import tn.cloudnine.queute.dto.workspace.projections.ProjectModuleProjection;
+import tn.cloudnine.queute.dto.workspace.responses.ModuleResponse;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectModule;
 import tn.cloudnine.queute.repository.workspace.ModuleRepository;
@@ -55,6 +60,25 @@ public class ModuleService implements IModuleService {
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
         repository.delete(module);
+    }
+
+    @Override
+    public ProjectModuleProjection getModuleById(Long moduleId) {
+        return repository.findByModuleId(moduleId).orElseThrow(
+                () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
+        );
+    }
+
+    @Override
+    public ModuleResponse getModulesByProject(Long projectId, Integer size, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        Page<ProjectModuleProjection> modules = repository.findByProjectId(projectId, pageable);
+
+        return new ModuleResponse(
+                modules.toList(), modules.getNumber(),
+                modules.getSize(), modules.getTotalElements(),
+                modules.getTotalPages(), modules.isLast()
+        );
     }
 
 }

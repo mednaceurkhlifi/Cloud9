@@ -38,14 +38,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @ManyToOne
-    @JsonIgnore
-    private Project project;
-
-    @ManyToOne
-    @JsonIgnore
-    private ProjectModule module;
-
     private boolean isDeleted;
 
     @CreatedDate

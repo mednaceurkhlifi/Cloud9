@@ -80,7 +80,7 @@ public class WorkspaceService implements IWrokspaceService {
         );
 
         Pageable pageable = PageRequest.of(page_no, size);
-        Page<ProjectProjection> projects = projectRepository.findByWorkspaceWorkspaceId(workspaceId, pageable);
+        Page<ProjectProjection> projects = projectRepository.findByWorkspaceId(workspaceId, pageable);
 
         ProjectResponse projectResponse = new ProjectResponse(
                 projects.toList(), projects.getNumber(),

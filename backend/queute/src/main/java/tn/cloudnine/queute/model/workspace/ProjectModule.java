@@ -31,6 +31,7 @@ public class ProjectModule {
     private LocalDateTime deadline;
 
     @OneToMany(mappedBy = "module", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "module_id")
     private Set<Task> tasks;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
