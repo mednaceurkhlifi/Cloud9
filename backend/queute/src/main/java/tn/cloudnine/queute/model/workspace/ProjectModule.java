@@ -18,16 +18,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE modules m SET m.is_deleted = true WHERE m.module_id=? AND m.is_deleted = false ")
+@SQLDelete(sql = "UPDATE modules m SET m.isDeleted = true WHERE m.moduleId=? AND m.isDeleted = false ")
 public class ProjectModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long module_id;
+    private Long moduleId;
     private String title;
     private String description;
     private Integer priority;
-    private LocalDateTime begin_date;
+    private LocalDateTime beginDate;
     private LocalDateTime deadline;
 
     @OneToMany(mappedBy = "module", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -36,12 +36,12 @@ public class ProjectModule {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
 
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }

@@ -38,6 +38,7 @@ public class Project {
     private Workspace workspace;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "project_id")
     private Set<ProjectModule> modules;
 
     @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

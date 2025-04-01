@@ -48,7 +48,8 @@ public class TaskController {
     public ResponseEntity<Map<String, String>> deleteTask(
             @PathVariable("task_id") Long task_id
     ) {
-        return ResponseEntity.ok(Map.of("status", "success", "message", "Task with ID " + task_id.toString() + " deleted successfully."));
+        service.deleteTask(task_id);
+        return ResponseEntity.ok(Map.of("status", "success", "message", "Task with ID " + task_id + " deleted successfully."));
     }
 
     @GetMapping("get-task-by-id/{task_id}")
@@ -59,11 +60,20 @@ public class TaskController {
     }
 
     @GetMapping("get-task-by-module/{module_id}/{size}/{page_no}")
-    public ResponseEntity<TaskResponse> getTaskByModule(
+    public ResponseEntity<TaskResponse> getTasksByModule(
             @PathVariable("module_id") Long module_id,
             @PathVariable("size") Integer size,
             @PathVariable("page_no") Integer page_no
             ) {
-        return ResponseEntity.ok(service.getTaskByModule(module_id, size, page_no));
+        return ResponseEntity.ok(service.getTasksByModule(module_id, size, page_no));
+    }
+
+    @GetMapping("get-task-by-project/{project_id}/{size}/{page_no}")
+    public ResponseEntity<TaskResponse> getTaskByProject(
+            @PathVariable("project_id") Long project_id,
+            @PathVariable("size") Integer size,
+            @PathVariable("page_no") Integer page_no
+    ) {
+        return ResponseEntity.ok(service.getTasksByProject(project_id, size, page_no));
     }
 }

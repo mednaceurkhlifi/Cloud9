@@ -87,15 +87,35 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public TaskResponse getTaskByModule(Long moduleId, Integer size, Integer pageNo) {
+    public TaskResponse getTasksByModule(Long moduleId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<TaskProjection> tasks = repository.findAllByModuleModule_idAndDeletedFalse(moduleId, pageable);
+        Page<TaskProjection> tasks = repository.findAllByModuleModuleIdAndDeletedFalse(moduleId, pageable);
 
         return new TaskResponse(
                 tasks.toList(), tasks.getNumber(),
                 tasks.getSize(), tasks.getTotalElements(),
                 tasks.getTotalPages(), tasks.isLast()
         );
+    }
+
+    @Override
+    public TaskResponse getTasksByProject(Long projectId, Integer size, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        Page<TaskProjection> tasks = repository.findAllByProjectProjectIdAndDeletedFalse(projectId, pageable);
+
+        return new TaskResponse(
+                tasks.toList(), tasks.getNumber(),
+                tasks.getSize(), tasks.getTotalElements(),
+                tasks.getTotalPages(), tasks.isLast()
+        );
+    }
+
+    @Override
+    public void deleteTask(Long taskId) {
+        Task task = repository.findById(taskId).orElseThrow(
+                () -> new IllegalArgumentException("Task not found with ID : " + taskId)
+        );
+        repository.delete(task);
     }
 
     /**

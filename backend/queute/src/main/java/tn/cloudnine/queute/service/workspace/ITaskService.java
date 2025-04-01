@@ -15,5 +15,9 @@ public interface ITaskService {
 
     Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents);
 
-    TaskResponse getTaskByModule(Long moduleId, Integer size, Integer pageNo);
+    TaskResponse getTasksByModule(Long moduleId, Integer size, Integer pageNo);
+
+    TaskResponse getTasksByProject(Long projectId, Integer size, Integer pageNo);
+
+    void deleteTask(Long taskId);
 }
