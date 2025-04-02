@@ -12,5 +12,4 @@ import tn.cloudnine.queute.enums.DocumentType;
 public class DocumentRequest {
     String document_name;
     DocumentType doc_type;
-    MultipartFile document;
 }

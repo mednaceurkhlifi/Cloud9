@@ -37,6 +37,9 @@ public class Project {
     @JoinColumn(name = "project_id")
     private Set<ProjectModule> modules;
 
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<ProjectDocument> documents;
+
     @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "project_id")
     private Set<Task> tasks;

@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.service.workspace;
 
+import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
@@ -7,13 +8,13 @@ import tn.cloudnine.queute.model.workspace.Task;
 import java.util.List;
 
 public interface ITaskService {
-    Task addTaskToProject(Long projectId, Task task, List<DocumentRequest> documents);
+    Task addTaskToProject(Long projectId, Task task, List<DocumentRequest> documents_request, List<MultipartFile> documents);
 
     Task updateTask(Long taskId, Task request);
 
     Task getTaskById(Long taskId);
 
-    Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents);
+    Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents_request, List<MultipartFile> documents);
 
     TaskResponse getTasksByModule(Long moduleId, Integer size, Integer pageNo);
 

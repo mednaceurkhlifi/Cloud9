@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
@@ -18,6 +19,7 @@ import tn.cloudnine.queute.repository.workspace.TaskRepository;
 import tn.cloudnine.queute.service.workspace.ITaskService;
 import tn.cloudnine.queute.utils.IFileUploader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,22 +33,22 @@ public class TaskService implements ITaskService {
     private final IFileUploader fileUploader;
 
     @Override
-    public Task addTaskToProject(Long projectId, Task task, List<DocumentRequest> documents) {
+    public Task addTaskToProject(Long projectId, Task task, List<DocumentRequest> documents_request, List<MultipartFile> documents) {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("Project not found with ID : " + projectId)
         );
-        saveDocuments(task, documents);
+        saveDocuments(task, documents_request, documents);
         project.getTasks().add(task);
         projectRepository.save(project);
         return task;
     }
 
     @Override
-    public Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents) {
+    public Task addTaskToModule(Long moduleId, Task task, List<DocumentRequest> documents_request, List<MultipartFile> documents) {
         ProjectModule module = moduleRepository.findById(moduleId).orElseThrow(
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
-        saveDocuments(task, documents);
+        saveDocuments(task, documents_request, documents);
         module.getTasks().add(task);
         moduleRepository.save(module);
         return task;
@@ -123,25 +125,27 @@ public class TaskService implements ITaskService {
     /**
      * Util methods
      */
-    private void saveDocuments(Task task, List<DocumentRequest> documents) {
-        if(documents != null && !documents.isEmpty()) {
-            for (DocumentRequest doc : documents) {
-
+    private void saveDocuments(
+            Task task, List<DocumentRequest> documentsRequest, List<MultipartFile> documents
+    ) {
+        if (!documentsRequest.isEmpty() && !documents.isEmpty()
+                && documentsRequest.size() == documents.size()
+        ) {
+            for (int i = 0; i < documents.size(); i++) {
                 ProjectDocument document = ProjectDocument.builder()
-                        .document_name(doc.getDocument_name())
-                        .document_type(doc.getDoc_type())
+                        .document_name(documentsRequest.get(i).getDocument_name())
+                        .document_type(documentsRequest.get(i).getDoc_type())
                         .build();
 
-                switch (doc.getDoc_type()) {
+                switch (documentsRequest.get(i).getDoc_type()) {
                     case IMAGE -> {
-                        document.setPath(fileUploader.saveImage(doc.getDocument()));
-                        task.getDocuments().add(document);
+                        document.setPath(fileUploader.saveImage(documents.get(i)));
                     }
                     case OTHER -> {
-                        document.setPath(fileUploader.saveDocument(doc.getDocument()));
-                        task.getDocuments().add(document);
+                        document.setPath(fileUploader.saveDocument(documents.get(i)));
                     }
                 }
+                task.getDocuments().add(document);
             }
         }
     }

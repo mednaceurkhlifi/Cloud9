@@ -3,6 +3,7 @@ package tn.cloudnine.queute.controller.workspace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
@@ -22,18 +23,20 @@ public class TaskController {
     public ResponseEntity<Task> addTaskToProject(
             @PathVariable("project_id") Long project_id,
             @RequestPart("task") Task task,
-            @RequestPart(value = "documents", required = false) List<DocumentRequest> documents
+            @RequestPart(value = "documents_request") List<DocumentRequest> documents_request,
+            @RequestPart(value = "documents") List<MultipartFile> documents
             ) {
-        return ResponseEntity.ok(service.addTaskToProject(project_id, task, documents));
+        return ResponseEntity.ok(service.addTaskToProject(project_id, task, documents_request, documents));
     }
 
     @PostMapping(value = "add-task-module/{module_id}", consumes = "multipart/form-data")
     public ResponseEntity<Task> addTaskToModule(
             @PathVariable("module_id") Long module_id,
             @RequestPart("task") Task task,
-            @RequestPart(value = "documents", required = false) List<DocumentRequest> documents
+            @RequestPart(value = "documents_request") List<DocumentRequest> documents_request,
+            @RequestPart(value = "documents") List<MultipartFile> documents
     ) {
-        return ResponseEntity.ok(service.addTaskToModule(module_id, task, documents));
+        return ResponseEntity.ok(service.addTaskToModule(module_id, task, documents_request, documents));
     }
 
     @PatchMapping("update-task/{task_id}")
