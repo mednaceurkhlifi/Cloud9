@@ -24,9 +24,9 @@ public class ModuleService implements IModuleService {
     public ProjectModule addModule(Long projectId, ProjectModule module) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found with ID : " + projectId));
-        project.getModules().add(module);
-        projectRepository.save(project);
-        return module;
+
+        module.setProject(project);
+        return repository.save(module);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ModuleService implements IModuleService {
     @Override
     public ModuleResponse getModulesByProject(Long projectId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<ProjectModuleProjection> modules = repository.findByProjectId(projectId, pageable);
+        Page<ProjectModule> modules = repository.findByProjectProjectId(projectId, pageable);
 
         return new ModuleResponse(
                 modules.toList(), modules.getNumber(),

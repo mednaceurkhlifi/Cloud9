@@ -9,6 +9,6 @@ import tn.cloudnine.queute.model.workspace.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    Page<TaskProjection> findAllByModuleIdAndDeletedFalse(Long module_id, Pageable pageable);
-    Page<TaskProjection> findAllByProjectIdAndDeletedFalse(Long project_id, Pageable pageable);
+    Page<TaskProjection> findAllByModuleModuleId(Long module_id, Pageable pageable);
+    Page<TaskProjection> findAllByProjectProjectId(Long project_id, Pageable pageable);
 }

@@ -3,7 +3,6 @@ package tn.cloudnine.queute.service.workspace;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.WorkspaceRequest;
 import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
-import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 
 public interface IWrokspaceService {
@@ -13,5 +12,5 @@ public interface IWrokspaceService {
 
     void deleteWorkspace(Long workspaceId);
 
-    WorkspaceResponse getWorkspace(Long workspaceId, Integer size, Integer page_no);
+    WorkspaceResponse getWorkspace(Long organizationId, Integer size, Integer page_no);
 }

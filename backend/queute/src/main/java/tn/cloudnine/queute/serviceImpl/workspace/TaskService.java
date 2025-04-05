@@ -38,9 +38,8 @@ public class TaskService implements ITaskService {
                 () -> new IllegalArgumentException("Project not found with ID : " + projectId)
         );
         saveDocuments(task, documents_request, documents);
-        project.getTasks().add(task);
-        projectRepository.save(project);
-        return task;
+        task.setProject(project);
+        return repository.save(task);
     }
 
     @Override
@@ -49,9 +48,8 @@ public class TaskService implements ITaskService {
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
         saveDocuments(task, documents_request, documents);
-        module.getTasks().add(task);
-        moduleRepository.save(module);
-        return task;
+        task.setModule(module);
+        return repository.save(task);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class TaskService implements ITaskService {
     @Override
     public TaskResponse getTasksByModule(Long moduleId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<TaskProjection> tasks = repository.findAllByModuleIdAndDeletedFalse(moduleId, pageable);
+        Page<TaskProjection> tasks = repository.findAllByModuleModuleId(moduleId, pageable);
 
         return new TaskResponse(
                 tasks.toList(), tasks.getNumber(),
@@ -105,7 +103,7 @@ public class TaskService implements ITaskService {
     @Override
     public TaskResponse getTasksByProject(Long projectId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        Page<TaskProjection> tasks = repository.findAllByProjectIdAndDeletedFalse(projectId, pageable);
+        Page<TaskProjection> tasks = repository.findAllByProjectProjectId(projectId, pageable);
 
         return new TaskResponse(
                 tasks.toList(), tasks.getNumber(),
@@ -128,7 +126,8 @@ public class TaskService implements ITaskService {
     private void saveDocuments(
             Task task, List<DocumentRequest> documentsRequest, List<MultipartFile> documents
     ) {
-        if (!documentsRequest.isEmpty() && !documents.isEmpty()
+        if (documentsRequest != null && documents != null &&
+                !documentsRequest.isEmpty() && !documents.isEmpty()
                 && documentsRequest.size() == documents.size()
         ) {
             for (int i = 0; i < documents.size(); i++) {

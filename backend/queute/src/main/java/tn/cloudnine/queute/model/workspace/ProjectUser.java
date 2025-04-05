@@ -1,6 +1,7 @@
 package tn.cloudnine.queute.model.workspace;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -11,6 +12,7 @@ import tn.cloudnine.queute.enums.workspace.ProjectRole;
 import tn.cloudnine.queute.model.user.User;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "project_users")
@@ -20,7 +22,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE project_users pu SET pu.is_deleted = true WHERE pu.project_user_id=? AND pu.is_deleted = false ")
 public class ProjectUser {
 
     @Id
@@ -31,11 +32,10 @@ public class ProjectUser {
     private ProjectRole role;
 
     @ManyToOne
-    private User member;
-    @ManyToOne
     private Project project;
 
-    private boolean is_deleted;
+    @ManyToOne
+    private User user;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

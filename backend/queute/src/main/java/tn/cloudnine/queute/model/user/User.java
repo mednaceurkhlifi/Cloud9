@@ -7,9 +7,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import tn.cloudnine.queute.model.workspace.ProjectUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,9 +25,9 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long userId;
 
-    private String firs_name;
+    private String first_name;
     private String last_name;
     private String full_name;
     private LocalDate birth_date;

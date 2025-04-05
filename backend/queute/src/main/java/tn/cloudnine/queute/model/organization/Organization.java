@@ -21,11 +21,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE organizations o SET o.is_deleted = true WHERE o.organization_id=? AND o.is_deleted = false ")
+@SQLDelete(sql = "UPDATE organizations o SET o.is_deleted = true WHERE o.organizationId=? AND o.is_deleted = false ")
 public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long organization_id;
+    private Long organizationId;
 
     private String name;
     private String address;

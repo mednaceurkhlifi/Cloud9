@@ -20,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE projects p SET p.isDeleted = true WHERE p.projectId=? AND p.isDeleted = false ")
 public class Project {
 
     @Id
@@ -30,23 +29,20 @@ public class Project {
     private String description;
     private String image;
     private Integer priority;
+
+    @Column(name = "begin_date")
     private LocalDateTime beginDate;
     private LocalDateTime deadline;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "project_id")
-    private Set<ProjectModule> modules;
+    @ManyToOne
+    @JsonIgnore
+    private Workspace workspace;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "project_id")
-    private Set<Task> tasks;
-
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
-    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

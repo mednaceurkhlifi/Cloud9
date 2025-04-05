@@ -27,7 +27,7 @@ public class WorkspaceController {
     @PatchMapping(value = "update-workspace/{workspace_id}", consumes = "multipart/form-data")
     public ResponseEntity<Workspace> updateWorkspace(
             @PathVariable("workspace_id") Long workspace_id,
-            @RequestPart("request") WorkspaceRequest request,
+            @RequestPart(value = "request", required = false) WorkspaceRequest request,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
         return ResponseEntity.ok().body(service.updateWorkspace(workspace_id, request, image));
@@ -38,13 +38,13 @@ public class WorkspaceController {
         service.deleteWorkspace(workspace_id);
     }
 
-    @GetMapping(value = "get-workspace/{workspace_id}/{size}/{page_no}")
+    @GetMapping(value = "get-workspace/{organization_id}/{size}/{page_no}")
     public ResponseEntity<WorkspaceResponse> getWorkspace(
-            @PathVariable("workspace_id") Long workspace_id,
+            @PathVariable("organization_id") Long organization_id,
             @PathVariable("size") Integer size,
             @PathVariable("page_no") Integer page_no
     ) {
-        return ResponseEntity.ok().body(service.getWorkspace(workspace_id, size, page_no));
+        return ResponseEntity.ok().body(service.getWorkspace(organization_id, size, page_no));
     }
 
 }

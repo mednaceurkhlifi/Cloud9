@@ -22,7 +22,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE workspaces w SET w.isDeleted = true WHERE w.workspaceId=? AND w.isDeleted = false ")
 public class Workspace implements Serializable {
 
     @Id
@@ -37,11 +36,9 @@ public class Workspace implements Serializable {
     private Organization organization;
 
     @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "workspace_id")
     private Set<Project> projects;
 
     private boolean isLocked;
-    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

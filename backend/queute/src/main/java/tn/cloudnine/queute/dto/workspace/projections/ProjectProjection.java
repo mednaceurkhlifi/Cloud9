@@ -5,6 +5,7 @@ import tn.cloudnine.queute.model.workspace.ProjectDocument;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface ProjectProjection {
     Long getProjectId();
@@ -15,5 +16,5 @@ public interface ProjectProjection {
     LocalDateTime getBeginDate();
     LocalDateTime getDeadline();
     ProjectStatus getStatus();
-    List<ProjectDocument> getDocuments();
+    Set<ProjectDocument> getDocuments();
 }

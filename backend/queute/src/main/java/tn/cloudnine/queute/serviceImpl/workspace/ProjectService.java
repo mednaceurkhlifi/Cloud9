@@ -48,6 +48,7 @@ public class ProjectService implements IProjectService {
         if (incomingProject.getStatus() != null) {
             existingProject.setStatus(incomingProject.getStatus());
         }
+
         if (image != null && !image.isEmpty()) {
             if (!existingProject.getImage().equals(DEFAULT_IMAGE))
                 fileUploader.deleteFile(existingProject.getImage());
@@ -85,9 +86,8 @@ public class ProjectService implements IProjectService {
         } else {
             project.setImage(DEFAULT_IMAGE);
         }
-        workspace.getProjects().add(project);
-        workspaceRepository.save(workspace);
-        return project;
+        project.setWorkspace(workspace);
+        return repository.save(project);
     }
     /**
      * Get projects related to an existent workspace
@@ -95,7 +95,7 @@ public class ProjectService implements IProjectService {
     @Override
     public ProjectResponse getProjectsByWorkspace(Long workspaceId, Integer size, Integer page_no) {
         Pageable pageable = PageRequest.of(page_no, size);
-        Page<ProjectProjection> projects = repository.findByWorkspaceId(workspaceId, pageable);
+        Page<ProjectProjection> projects = repository.findByWorkspaceWorkspaceId(workspaceId, pageable);
 
         return  new ProjectResponse(
                 projects.toList(), projects.getNumber(),

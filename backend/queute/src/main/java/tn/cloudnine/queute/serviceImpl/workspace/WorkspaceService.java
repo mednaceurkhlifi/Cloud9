@@ -32,8 +32,8 @@ public class WorkspaceService implements IWrokspaceService {
 
     @Override
     public Workspace createWorkspace(Workspace workspace, MultipartFile image) {
-        Organization organization = organizationRepository.findById(workspace.getOrganization().getOrganization_id())
-                .orElseThrow(() -> new IllegalArgumentException("Organization not found with ID: " + workspace.getOrganization().getOrganization_id()));
+        Organization organization = organizationRepository.findById(workspace.getOrganization().getOrganizationId())
+                .orElseThrow(() -> new IllegalArgumentException("Organization not found with ID: " + workspace.getOrganization().getOrganizationId()));
 
         workspace.setOrganization(organization);
 
@@ -52,12 +52,13 @@ public class WorkspaceService implements IWrokspaceService {
         Workspace workspace = repository.findById(workspace_id).orElseThrow(
                 () -> new IllegalArgumentException("Workspace not found with ID: " + workspace_id)
         );
-
-        if(request.getName() != null && !request.getName().isEmpty()) {
-            workspace.setName(request.getName());
-        }
-        if(request.getDescription() != null && !request.getDescription().isEmpty()) {
-            workspace.setDescription(request.getDescription());
+        if (request != null) {
+            if(request.getName() != null && !request.getName().isEmpty()) {
+                workspace.setName(request.getName());
+            }
+            if(request.getDescription() != null && !request.getDescription().isEmpty()) {
+                workspace.setDescription(request.getDescription());
+            }
         }
         if (image != null && !image.isEmpty()) {
             if(!workspace.getImage().equals(DEFAULT_IMAGE))
@@ -74,20 +75,19 @@ public class WorkspaceService implements IWrokspaceService {
     }
 
     @Override
-    public WorkspaceResponse getWorkspace(Long workspaceId, Integer size, Integer page_no) {
-        WorkspaceProjection projection = repository.findByWorkspaceIdAndIsDeletedIsFalse(workspaceId).orElseThrow(
-                () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
+    public WorkspaceResponse getWorkspace(Long organizationId, Integer size, Integer page_no) {
+        WorkspaceProjection projection = repository.findByOrganizationOrganizationId(organizationId).orElseThrow(
+                () -> new IllegalArgumentException("Workspace not found for organization with ID: " + organizationId)
         );
 
         Pageable pageable = PageRequest.of(page_no, size);
-        Page<ProjectProjection> projects = projectRepository.findByWorkspaceId(workspaceId, pageable);
+        Page<ProjectProjection> projects = projectRepository.findByWorkspaceWorkspaceId(projection.getWorkspaceId(), pageable);
 
         ProjectResponse projectResponse = new ProjectResponse(
                 projects.toList(), projects.getNumber(),
                 projects.getSize(), projects.getTotalElements(),
                 projects.getTotalPages(), projects.isLast()
         );
-
         return new WorkspaceResponse(
                 projection, projectResponse
         );

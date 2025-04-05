@@ -11,14 +11,13 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "modules")
+@Table(name = "project_modules")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE modules m SET m.isDeleted = true WHERE m.moduleId=? AND m.isDeleted = false ")
 public class ProjectModule {
 
     @Id
@@ -27,17 +26,20 @@ public class ProjectModule {
     private String title;
     private String description;
     private Integer priority;
+
+    @Column(name = "begin_date")
     private LocalDateTime beginDate;
     private LocalDateTime deadline;
 
-    @OneToMany(mappedBy = "module", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
+    private Project project;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "module_id")
     private Set<Task> tasks;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
-
-    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

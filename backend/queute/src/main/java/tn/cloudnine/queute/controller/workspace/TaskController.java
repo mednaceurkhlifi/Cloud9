@@ -23,8 +23,8 @@ public class TaskController {
     public ResponseEntity<Task> addTaskToProject(
             @PathVariable("project_id") Long project_id,
             @RequestPart("task") Task task,
-            @RequestPart(value = "documents_request") List<DocumentRequest> documents_request,
-            @RequestPart(value = "documents") List<MultipartFile> documents
+            @RequestPart(value = "documents_request", required = false) List<DocumentRequest> documents_request,
+            @RequestPart(value = "documents", required = false) List<MultipartFile> documents
             ) {
         return ResponseEntity.ok(service.addTaskToProject(project_id, task, documents_request, documents));
     }
@@ -33,8 +33,8 @@ public class TaskController {
     public ResponseEntity<Task> addTaskToModule(
             @PathVariable("module_id") Long module_id,
             @RequestPart("task") Task task,
-            @RequestPart(value = "documents_request") List<DocumentRequest> documents_request,
-            @RequestPart(value = "documents") List<MultipartFile> documents
+            @RequestPart(value = "documents_request", required = false) List<DocumentRequest> documents_request,
+            @RequestPart(value = "documents", required = false) List<MultipartFile> documents
     ) {
         return ResponseEntity.ok(service.addTaskToModule(module_id, task, documents_request, documents));
     }
