@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
@@ -78,5 +79,24 @@ public class TaskController {
             @PathVariable("page_no") Integer page_no
     ) {
         return ResponseEntity.ok(service.getTasksByProject(project_id, size, page_no));
+    }
+
+    @PatchMapping("assign-user/{task_id}/{user_email}")
+    public ResponseEntity<UserDTO> assignUserToTask(
+            @PathVariable("task_id") Long task_id,
+            @PathVariable("user_email") String user_email
+    ) {
+        return ResponseEntity.ok(service.assignUserToTask(task_id, user_email));
+    }
+
+    @PatchMapping("remove-user/{task_id}/{user_email}")
+    public ResponseEntity<Map<String, String>> removeUserFromTask(
+            @PathVariable("task_id") Long task_id,
+            @PathVariable("user_email") String user_email
+    ) {
+        service.removeUserFromTask(task_id, user_email);
+        return ResponseEntity.ok(
+                Map.of("status", "success", "message", "User removed successfully.")
+        );
     }
 }

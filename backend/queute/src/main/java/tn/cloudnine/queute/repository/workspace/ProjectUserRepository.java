@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import tn.cloudnine.queute.dto.workspace.projections.ProjectUserProjection;
 import tn.cloudnine.queute.enums.workspace.ProjectRole;
+import tn.cloudnine.queute.model.Embeddable.ProjectUserId;
 import tn.cloudnine.queute.model.workspace.ProjectUser;
+
+import java.util.Optional;
 
 @Repository
 public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> {
     long countByProjectProjectIdAndRole(Long projectId, ProjectRole role);
     Page<ProjectUserProjection> findByUserUserId(Long id, Pageable pageable);
+    Optional<ProjectUser> findById(ProjectUserId id);
 }

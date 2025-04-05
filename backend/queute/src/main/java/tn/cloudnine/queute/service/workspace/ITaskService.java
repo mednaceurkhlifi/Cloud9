@@ -1,6 +1,7 @@
 package tn.cloudnine.queute.service.workspace;
 
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
@@ -21,4 +22,8 @@ public interface ITaskService {
     TaskResponse getTasksByProject(Long projectId, Integer size, Integer pageNo);
 
     void deleteTask(Long taskId);
+
+    UserDTO assignUserToTask(Long taskId, String userEmail);
+
+    void removeUserFromTask(Long taskId, String userEmail);
 }

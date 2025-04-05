@@ -5,7 +5,11 @@ import tn.cloudnine.queute.dto.workspace.responses.ProjectUserResponse;
 import tn.cloudnine.queute.model.workspace.ProjectUser;
 
 public interface IProjectUserService {
-    UserDTO addProjectManager(Long projectId, ProjectUser projectUser);
+    UserDTO addProjectManager(ProjectUser projectUser);
 
     ProjectUserResponse getProjects(Long userId, Integer size, Integer pageNo);
+
+    UserDTO addProjectMember(Long projectId, ProjectUser projectUser);
+
+    void deleteProjectUser(Long projectId, String userEmail);
 }

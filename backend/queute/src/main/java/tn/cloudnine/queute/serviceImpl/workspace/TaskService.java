@@ -6,15 +6,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
-import tn.cloudnine.queute.model.workspace.Project;
-import tn.cloudnine.queute.model.workspace.ProjectDocument;
-import tn.cloudnine.queute.model.workspace.ProjectModule;
-import tn.cloudnine.queute.model.workspace.Task;
+import tn.cloudnine.queute.model.Embeddable.ProjectUserId;
+import tn.cloudnine.queute.model.user.User;
+import tn.cloudnine.queute.model.workspace.*;
+import tn.cloudnine.queute.repository.user.UserRepository;
 import tn.cloudnine.queute.repository.workspace.ModuleRepository;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;
+import tn.cloudnine.queute.repository.workspace.ProjectUserRepository;
 import tn.cloudnine.queute.repository.workspace.TaskRepository;
 import tn.cloudnine.queute.service.workspace.ITaskService;
 import tn.cloudnine.queute.utils.IFileUploader;
@@ -30,6 +32,8 @@ public class TaskService implements ITaskService {
     private final TaskRepository repository;
     private final ProjectRepository projectRepository;
     private final ModuleRepository moduleRepository;
+    private final ProjectUserRepository projectUserRepository;
+    private final UserRepository userRepository;
     private final IFileUploader fileUploader;
 
     @Override
@@ -118,6 +122,43 @@ public class TaskService implements ITaskService {
                 () -> new IllegalArgumentException("Task not found with ID : " + taskId)
         );
         repository.delete(task);
+    }
+
+    @Override
+    public UserDTO assignUserToTask(Long taskId, String userEmail) {
+        Task task = repository.findById(taskId).orElseThrow(
+                () -> new IllegalArgumentException("Task not found with ID : " + taskId)
+        );
+        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(
+                () -> new IllegalArgumentException("User not found with email : " + userEmail)
+        );
+        if(task.getMembers().contains(user))
+            throw new IllegalArgumentException("User already assigned to task.");
+        Project project;
+        if (task.getProject() != null) {
+            project = task.getProject();
+        } else {
+            project = task.getModule().getProject();
+        }
+        ProjectUser projectUser = projectUserRepository.findById(
+                new ProjectUserId(project.getProjectId(), user.getUserId())
+        ).orElseThrow(
+                () -> new IllegalArgumentException("You need to add " + userEmail + " to the project first.")
+        );
+        task.getMembers().add(user);
+        repository.save(task);
+        return new UserDTO(user.getFull_name(), user.getEmail(), user.getImage(), projectUser.getRole());
+    }
+
+    @Override
+    public void removeUserFromTask(Long taskId, String userEmail) {
+        Task task = repository.findTasksByIdAndUserEmail(taskId, userEmail).orElseThrow(
+                () -> new IllegalArgumentException("User is not assigned to task or the task not found with ID : " + taskId)
+        );
+        task.getMembers().stream()
+                .filter(u -> u.getEmail().equals(userEmail))
+                .findFirst().ifPresent(user -> task.getMembers().remove(user));
+        repository.save(task);
     }
 
     /**
