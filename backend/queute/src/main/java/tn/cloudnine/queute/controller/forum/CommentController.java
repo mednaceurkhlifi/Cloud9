@@ -25,8 +25,11 @@ public class CommentController {
     @DeleteMapping("delete-comment/{id}")
     public ResponseEntity<Comment> deleteComment(@PathVariable long id) {
         //TODO: check for comment existence
-        commentService.delete(id);
         var comment = commentService.findById(id);
+        if(comment == null){
+            return ResponseEntity.notFound().build();
+        }
+        commentService.delete(id);
         return ResponseEntity.ok().body(comment);
     }
     @GetMapping("get-comments/{id}")
