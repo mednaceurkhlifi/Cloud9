@@ -2,6 +2,7 @@ package tn.cloudnine.queute.model.forum;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.cloudnine.queute.enums.forum.VoteType;
 import tn.cloudnine.queute.model.user.User;
 
 @Data
