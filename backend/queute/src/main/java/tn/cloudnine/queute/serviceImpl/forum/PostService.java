@@ -23,13 +23,23 @@ public class PostService implements IPostService {
     @Override
     public Post update(Post post) {
         //TODO: update post to the users list
-        return postRepository.save(post);
+        Post oldPost = findById(post.getId());
+        oldPost.setTitle(post.getTitle());
+        oldPost.setContent(post.getContent());
+        oldPost.setDate(post.getDate());
+        oldPost.setImage(post.getImage());
+        return postRepository.save(oldPost);
     }
 
     @Override
-    public void delete(Post post) {
+    public void delete(long id) {
         //TODO: remove post from the users list
-         postRepository.delete(post);
+        try{
+            Post post = findById(id);
+        }catch (EntityNotFoundException e){
+            return;
+        }
+        postRepository.deleteById(id);
     }
 
     @Override
