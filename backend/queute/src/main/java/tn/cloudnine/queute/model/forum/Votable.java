@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 public class Votable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
