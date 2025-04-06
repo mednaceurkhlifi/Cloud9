@@ -32,14 +32,16 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void delete(long id) {
+    public Post delete(long id) {
         //TODO: remove post from the users list
         try{
             Post post = findById(id);
+            postRepository.deleteById(id);
+            return post;
         }catch (EntityNotFoundException e){
-            return;
+            //TODO: do some abt this
+            return null;
         }
-        postRepository.deleteById(id);
     }
 
     @Override
