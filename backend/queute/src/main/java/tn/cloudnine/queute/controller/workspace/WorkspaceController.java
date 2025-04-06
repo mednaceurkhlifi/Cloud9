@@ -12,6 +12,7 @@ import tn.cloudnine.queute.service.workspace.IWrokspaceService;
 @RestController
 @RequestMapping("workspace")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class WorkspaceController {
 
     private final IWrokspaceService service;

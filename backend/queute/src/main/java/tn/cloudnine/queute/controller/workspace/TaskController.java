@@ -16,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("task")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
     private final ITaskService service;

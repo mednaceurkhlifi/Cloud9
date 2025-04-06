@@ -13,6 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("project-user")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectUserController {
 
     private final IProjectUserService service;

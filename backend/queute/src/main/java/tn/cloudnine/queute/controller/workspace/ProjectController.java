@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
     private final IProjectService service;

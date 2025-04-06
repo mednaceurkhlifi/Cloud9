@@ -1,0 +1,2142 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Cloud nine - queute - ESPRIT PI 4ArcTic",
+        "description": "OpenApi documentation for Queute App - PI ESPRIT 2024-2025",
+        "contact": {
+            "name": "Ouerfelli Mohamed",
+            "email": "mohamedouerfelli3@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8082/api/v1",
+            "description": "Local ENV"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/workspace/add-workspace": {
+            "post": {
+                "tags": [
+                    "workspace-controller"
+                ],
+                "operationId": "createWorkspace",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "workspace": {
+                                        "$ref": "#/components/schemas/Workspace"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "workspace"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Workspace"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/add-task-project/{project_id}": {
+            "post": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "addTaskToProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "task": {
+                                        "$ref": "#/components/schemas/Task"
+                                    },
+                                    "documents_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "documents": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "task"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/add-task-module/{module_id}": {
+            "post": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "addTaskToModule",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "task": {
+                                        "$ref": "#/components/schemas/Task"
+                                    },
+                                    "documents_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "documents": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "task"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/add-project-workspace/{workspace_id}": {
+            "post": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "addProjectToWorkspace",
+                "parameters": [
+                    {
+                        "name": "workspace_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "project": {
+                                        "$ref": "#/components/schemas/Project"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "project"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/add-project-member/{project_id}": {
+            "post": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "addProjectMember",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/add-project-manager": {
+            "post": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "addProjectManager",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-module/add-module/{project_id}": {
+            "post": {
+                "tags": [
+                    "module-controller"
+                ],
+                "operationId": "addModule",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectModule"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectModule"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace/update-workspace/{workspace_id}": {
+            "patch": {
+                "tags": [
+                    "workspace-controller"
+                ],
+                "operationId": "updateWorkspace",
+                "parameters": [
+                    {
+                        "name": "workspace_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "request": {
+                                        "$ref": "#/components/schemas/WorkspaceRequest"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Workspace"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/update-task/{task_id}": {
+            "patch": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "updateTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Task"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/remove-user/{task_id}/{user_email}": {
+            "patch": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "removeUserFromTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/assign-user/{task_id}/{user_email}": {
+            "patch": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "assignUserToTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/update-project": {
+            "patch": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "updateProject",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "project": {
+                                        "$ref": "#/components/schemas/Project"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "project"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-module/update-module/{module_id}": {
+            "patch": {
+                "tags": [
+                    "module-controller"
+                ],
+                "operationId": "updateModule",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectModule"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectModule"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/add-documents-project/{project_id}": {
+            "patch": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "addDocumentsToProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "documents_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "documents": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "documents",
+                                    "documents_request"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProjectDocument"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/add-documents-module/{task_id}": {
+            "patch": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "addDocumentsToTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "documents_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "documents": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "documents",
+                                    "documents_request"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProjectDocument"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/add-documents-module/{module_id}": {
+            "patch": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "addDocumentsToModule",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "documents_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "documents": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "documents",
+                                    "documents_request"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProjectDocument"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace/get-workspace/{organization_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "workspace-controller"
+                ],
+                "operationId": "getWorkspace",
+                "parameters": [
+                    {
+                        "name": "organization_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkspaceResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/get-task-by-project/{project_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "getTaskByProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/get-task-by-module/{module_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "getTasksByModule",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/get-task-by-id/{task_id}": {
+            "get": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "getTaskById",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/get-projects/{workspace_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "getProjectsByWorkspace",
+                "parameters": [
+                    {
+                        "name": "workspace_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/get-project/{project_id}": {
+            "get": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "getProjectById",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/get-projects/{user_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "getProjects",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectUserResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-module/get-modules/{project_id}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "module-controller"
+                ],
+                "operationId": "getModulesByProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModuleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-module/get-module/{module_id}": {
+            "get": {
+                "tags": [
+                    "module-controller"
+                ],
+                "operationId": "getModuleById",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectModuleProjection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace/delete-workspace/{workspace_id}": {
+            "delete": {
+                "tags": [
+                    "workspace-controller"
+                ],
+                "operationId": "deleteWorkspace",
+                "parameters": [
+                    {
+                        "name": "workspace_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/task/delete-task/{task_id}": {
+            "delete": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "deleteTask",
+                "parameters": [
+                    {
+                        "name": "task_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/delete-project/{project_id}": {
+            "delete": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "deleteProject",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/delete-project-user/{project_id}/{user_email}": {
+            "delete": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "deleteProjectUser",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-module/delete-module/{module_id}": {
+            "delete": {
+                "tags": [
+                    "module-controller"
+                ],
+                "operationId": "deleteModule",
+                "parameters": [
+                    {
+                        "name": "module_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/delete-document/{document_id}": {
+            "delete": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "deleteDocument",
+                "parameters": [
+                    {
+                        "name": "document_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Organization": {
+                "type": "object",
+                "properties": {
+                    "organizationId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "$ref": "#/components/schemas/Workspace"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_deleted": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Project": {
+                "type": "object",
+                "properties": {
+                    "projectId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "ON_HOLD",
+                            "CANCELED",
+                            "UNDER_REVIEW",
+                            "FINISHED"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "ProjectDocument": {
+                "type": "object",
+                "properties": {
+                    "document_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "document_type": {
+                        "type": "string",
+                        "enum": [
+                            "IMAGE",
+                            "OTHER"
+                        ]
+                    },
+                    "document_name": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Workspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "organization": {
+                        "$ref": "#/components/schemas/Organization"
+                    },
+                    "projects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Project"
+                        },
+                        "uniqueItems": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "locked": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProjectModule": {
+                "type": "object",
+                "properties": {
+                    "moduleId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
+                    },
+                    "tasks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Task"
+                        },
+                        "uniqueItems": true
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Task": {
+                "type": "object",
+                "properties": {
+                    "taskId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
+                    },
+                    "module": {
+                        "$ref": "#/components/schemas/ProjectModule"
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        },
+                        "uniqueItems": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "TO_DO",
+                            "IN_PROGRESS",
+                            "BLOCKED",
+                            "REWORK_NEEDED",
+                            "DONE",
+                            "ARCHIVED"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "full_name": {
+                        "type": "string"
+                    },
+                    "birth_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "reset_pwd_code": {
+                        "type": "string"
+                    },
+                    "reset_pwd_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "phone_number": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_deleted": {
+                        "type": "boolean"
+                    },
+                    "is_locked": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "DocumentRequest": {
+                "type": "object",
+                "properties": {
+                    "document_name": {
+                        "type": "string"
+                    },
+                    "doc_type": {
+                        "type": "string",
+                        "enum": [
+                            "IMAGE",
+                            "OTHER"
+                        ]
+                    }
+                }
+            },
+            "ProjectUser": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/ProjectUserId"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "MANAGER",
+                            "TEAM_MEMBER"
+                        ]
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "ProjectUserId": {
+                "type": "object",
+                "properties": {
+                    "project": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "UserDTO": {
+                "type": "object",
+                "properties": {
+                    "full_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "MANAGER",
+                            "TEAM_MEMBER"
+                        ]
+                    }
+                }
+            },
+            "WorkspaceRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "organization": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "ProjectProjection": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "ON_HOLD",
+                            "CANCELED",
+                            "UNDER_REVIEW",
+                            "FINISHED"
+                        ]
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "projectId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "image": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProjectResponse": {
+                "type": "object",
+                "properties": {
+                    "projection": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectProjection"
+                        }
+                    },
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "WorkspaceProjection": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "workspaceId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "isLocked": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "WorkspaceResponse": {
+                "type": "object",
+                "properties": {
+                    "projection": {
+                        "$ref": "#/components/schemas/WorkspaceProjection"
+                    },
+                    "projectResponse": {
+                        "$ref": "#/components/schemas/ProjectResponse"
+                    }
+                }
+            },
+            "TaskProjection": {
+                "type": "object",
+                "properties": {
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "TO_DO",
+                            "IN_PROGRESS",
+                            "BLOCKED",
+                            "REWORK_NEEDED",
+                            "DONE",
+                            "ARCHIVED"
+                        ]
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "taskId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "TaskResponse": {
+                "type": "object",
+                "properties": {
+                    "projections": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TaskProjection"
+                        }
+                    },
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProjectUserProjection": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "MANAGER",
+                            "TEAM_MEMBER"
+                        ]
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/ProjectProjection"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserProjection"
+                    }
+                }
+            },
+            "ProjectUserResponse": {
+                "type": "object",
+                "properties": {
+                    "projections": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectUserProjection"
+                        },
+                        "uniqueItems": true
+                    },
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "UserProjection": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "full_name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ModuleResponse": {
+                "type": "object",
+                "properties": {
+                    "modules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectModule"
+                        }
+                    },
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProjectModuleProjection": {
+                "type": "object",
+                "properties": {
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "documents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        },
+                        "uniqueItems": true
+                    },
+                    "moduleId": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT auth description",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

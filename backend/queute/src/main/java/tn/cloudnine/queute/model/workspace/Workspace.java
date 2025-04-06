@@ -28,6 +28,8 @@ public class Workspace implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workspaceId;
     private String name;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
 
