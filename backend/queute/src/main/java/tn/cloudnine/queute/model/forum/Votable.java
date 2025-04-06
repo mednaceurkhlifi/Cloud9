@@ -1,4 +1,4 @@
-package com.example.projforum.Entity;
+package tn.cloudnine.queute.model.forum;
 
 import jakarta.persistence.*;
 import lombok.*;

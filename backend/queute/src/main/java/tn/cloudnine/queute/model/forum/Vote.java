@@ -1,7 +1,8 @@
-package com.example.projforum.Entity;
+package tn.cloudnine.queute.model.forum;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import tn.cloudnine.queute.model.user.User;
 
 @Data
 @Entity

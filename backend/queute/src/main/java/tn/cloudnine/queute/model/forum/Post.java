@@ -1,8 +1,9 @@
-package com.example.projforum.Entity;
+package tn.cloudnine.queute.model.forum;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.domain.Auditable;
+import tn.cloudnine.queute.model.user.User;
 
 import java.util.Date;
 import java.util.List;
