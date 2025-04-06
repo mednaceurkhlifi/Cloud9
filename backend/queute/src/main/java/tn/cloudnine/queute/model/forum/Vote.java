@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.forum;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import tn.cloudnine.queute.enums.forum.VoteType;
@@ -14,7 +15,9 @@ public class Vote {
     @Enumerated(EnumType.STRING)
     private VoteType voteType;
     @ManyToOne
+    @JsonBackReference
     private Votable votable;
     @ManyToOne
+    @JsonBackReference
     private User user;
 }
