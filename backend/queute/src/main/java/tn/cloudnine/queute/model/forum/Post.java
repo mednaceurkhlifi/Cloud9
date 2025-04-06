@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.forum;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.domain.Auditable;
@@ -18,6 +19,7 @@ public class Post extends Votable {
     @OneToMany(mappedBy = "votable", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> votes;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> comments;
 
     @ManyToOne

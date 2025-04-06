@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.forum;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import tn.cloudnine.queute.model.user.User;
@@ -15,6 +16,7 @@ public class Comment extends Votable {
     private List<Vote> votes;
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
+    @JsonBackReference
     private Post post;
     @ManyToOne
     @JoinColumn(name = "user_id")
