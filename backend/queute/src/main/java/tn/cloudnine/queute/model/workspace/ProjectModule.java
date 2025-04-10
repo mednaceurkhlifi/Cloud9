@@ -35,10 +35,6 @@ public class ProjectModule {
     private Project project;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "module_id")
-    private Set<Task> tasks;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
 
     @CreatedDate

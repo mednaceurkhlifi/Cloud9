@@ -53,6 +53,14 @@ export class ProjectFormComponent implements OnInit {
     constructor(private _projectService: ProjectControllerService) {}
 
     ngOnInit() {
+        this.initForm();
+        this.projectForm.get('priority')?.valueChanges.subscribe((value) => {
+            this.updatePriorityLabel(value);
+        });
+        this.updatePriorityLabel(this.projectForm.get('priority')?.value);
+    }
+
+    initForm() {
         this.projectForm = new FormGroup(
             {
                 name: new FormControl('', [Validators.required]),
@@ -65,14 +73,11 @@ export class ProjectFormComponent implements OnInit {
             },
             { validators: validateProjectDates() }
         );
-        this.projectForm.get('priority')?.valueChanges.subscribe((value) => {
-            this.updatePriorityLabel(value);
-        });
-        this.updatePriorityLabel(this.projectForm.get('priority')?.value);
     }
 
     saveProject() {
         this.setRequest();
+        this.loading = true;
         if (!this.isOnUpdate) {
             if(this.workspace_id) {
                 this._projectService.addProjectToWorkspace({
@@ -83,15 +88,26 @@ export class ProjectFormComponent implements OnInit {
                     }
                 }).subscribe({
                     next: response => {
-
+                        this.resetPage();
                     },
                     error: err => {
-
+                        // treat errors
                     }
                 });
             }
         } else {
         }
+    }
+
+    resetPage() {
+        this.projectCreated.emit();
+        this.initForm();
+        this.loading = false;
+        this.isOnUpdate = false;
+        this.project = {};
+        this.image = null;
+        this.isImageChanged = false;
+        this.selectedStatus = null;
     }
 
     changeImage(event: FileSelectEvent) {
@@ -101,6 +117,7 @@ export class ProjectFormComponent implements OnInit {
 
     cancel() {
         this.hideForm.emit();
+        this.initForm();
     }
 
     removeImage() {

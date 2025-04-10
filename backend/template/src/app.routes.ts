@@ -6,6 +6,8 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 import { WorkspaceComponent } from './app/workspace/workspace/workspace.component';
 import { WorkspaceOverviewComponent } from './app/workspace/workspace-overview/workspace-overview.component';
+import { ProjectDetailsComponent } from './app/workspace/project-details/project-details.component';
+import { ModuleDetailsComponent } from './app/workspace/module-details/module-details.component';
 
 export const appRoutes: Routes = [
     {
@@ -23,6 +25,8 @@ export const appRoutes: Routes = [
         component: WorkspaceComponent,
         children: [
             { path: '', component: WorkspaceOverviewComponent },
+            { path: 'project/:project_id', component: ProjectDetailsComponent },
+            { path: 'module/:module_id', component: ModuleDetailsComponent }
         ]
     },
     { path: 'landing', component: Landing },

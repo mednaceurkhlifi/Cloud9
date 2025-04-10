@@ -1467,9 +1467,6 @@
                     "email": {
                         "type": "string"
                     },
-                    "workspace": {
-                        "$ref": "#/components/schemas/Workspace"
-                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time"
@@ -1633,13 +1630,6 @@
                     "project": {
                         "$ref": "#/components/schemas/Project"
                     },
-                    "tasks": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Task"
-                        },
-                        "uniqueItems": true
-                    },
                     "documents": {
                         "type": "array",
                         "items": {
@@ -1773,10 +1763,10 @@
                         "type": "string",
                         "format": "date-time"
                     },
-                    "is_locked": {
+                    "is_deleted": {
                         "type": "boolean"
                     },
-                    "is_deleted": {
+                    "is_locked": {
                         "type": "boolean"
                     }
                 }
@@ -1964,9 +1954,6 @@
                     "description": {
                         "type": "string"
                     },
-                    "isLocked": {
-                        "type": "boolean"
-                    },
                     "image": {
                         "type": "string"
                     },
@@ -1977,6 +1964,9 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "isLocked": {
+                        "type": "boolean"
                     }
                 }
             },
@@ -2001,9 +1991,6 @@
                     "description": {
                         "type": "string"
                     },
-                    "title": {
-                        "type": "string"
-                    },
                     "status": {
                         "type": "string",
                         "enum": [
@@ -2014,6 +2001,9 @@
                             "DONE",
                             "ARCHIVED"
                         ]
+                    },
+                    "title": {
+                        "type": "string"
                     },
                     "beginDate": {
                         "type": "string",
@@ -2121,10 +2111,10 @@
                     "image": {
                         "type": "string"
                     },
-                    "email": {
+                    "full_name": {
                         "type": "string"
                     },
-                    "full_name": {
+                    "email": {
                         "type": "string"
                     },
                     "userId": {
@@ -2190,6 +2180,9 @@
                             "$ref": "#/components/schemas/ProjectDocument"
                         },
                         "uniqueItems": true
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
                     },
                     "moduleId": {
                         "type": "integer",

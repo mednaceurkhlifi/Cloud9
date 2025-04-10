@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.dto.workspace.projections;
 
+import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.model.workspace.Task;
 
@@ -14,4 +15,5 @@ public interface ProjectModuleProjection {
     LocalDateTime getBeginDate();
     LocalDateTime getDeadline();
     Set<ProjectDocument> getDocuments();
+    Project getProject();
 }

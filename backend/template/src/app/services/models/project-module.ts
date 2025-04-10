@@ -4,7 +4,6 @@
 
 import { Project } from '../models/project';
 import { ProjectDocument } from '../models/project-document';
-import { Task } from '../models/task';
 export interface ProjectModule {
   beginDate?: string;
   createdAt?: string;
@@ -14,7 +13,6 @@ export interface ProjectModule {
   moduleId?: number;
   priority?: number;
   project?: Project;
-  tasks?: Array<Task>;
   title?: string;
   updatedAt?: string;
 }

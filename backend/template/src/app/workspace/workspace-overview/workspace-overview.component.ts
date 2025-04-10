@@ -315,4 +315,13 @@ export class WorkspaceOverviewComponent implements OnInit {
     addProject() {
         this.createProject = true;
     }
+
+    projectCreated() {
+        this.getWorkspace();
+        this.createProject = false;
+    }
+
+    showProject(projectId: number) {
+        this.router.navigate(['/workspace/project', projectId]);
+    }
 }

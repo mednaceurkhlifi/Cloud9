@@ -1,0 +1,231 @@
+<div class="card !mb-8">
+    <div class="general-info" *ngIf="project">
+        <div class="flex flex-col items-start justify-start gap-6" >
+            <img *ngIf="project.image != 'default_project.jpg' else default_image_project" src="http://localhost:8082/api/v1/project-document/images/{{project.image}}" width="50" style="vertical-align: middle; border-radius: 50%;" />
+            <ng-template #default_image_project>
+                <img src="workspace/images/default_workspace.jpg" width="50" style="vertical-align: middle; border-radius: 50%;" />
+            </ng-template>
+            <div class="flex flex-row items-center justify-center w-full">
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct()" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct()" />
+            </div>
+        </div>
+
+
+        <div class="general-info-container">
+
+            <span class="title">{{project.name}}</span>
+
+            <p class="description"> {{project.description}}</p>
+
+            <div class="details">
+                <div class="flex flex-row gap-24">
+
+                    <div class="flex flex-col gap-5">
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-spinner-dotted"></i>
+                            </span>
+                            <span>Status</span>
+                        </div>
+
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-user"></i>
+                            </span>
+                            <span>Team manager</span>
+                        </div>
+
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-users"></i>
+                            </span>
+                            <span>Team</span>
+                        </div>
+
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-chart-line"></i>
+                            </span>
+                            <span>Achievement</span>
+                        </div>
+
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-calendar-clock"></i>
+                            </span>
+                            <span>Dates</span>
+                        </div>
+
+                        <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-heart-fill"></i>
+                            </span>
+                            <span>Priority</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-around gap-5">
+
+                        <div class="single">
+                            <p-tag [value]="project.status" [severity]="getSeverityStatus(project.status)" styleClass="tag"/>
+                        </div>
+
+                        <div class="single">
+                            <img src="default_user.jpg" alt="team manager image">
+                            <span>Mohamed Ouerfelli</span>
+                        </div>
+
+                        <div class="single">
+                            <p-avatargroup styleClass="cursor-pointer">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="normal" shape="circle"></p-avatar>
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" size="normal" shape="circle"></p-avatar>
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" size="normal" shape="circle"></p-avatar>
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/ionibowcher.png" size="normal" shape="circle"></p-avatar>
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/xuxuefeng.png" size="normal" shape="circle"></p-avatar>
+                                <p-avatar label="+2" shape="circle" size="normal" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                            </p-avatargroup>
+                        </div>
+
+                        <p-progressbar [value]="80"></p-progressbar>
+
+                        <div class="single">
+                            <span>From {{project.beginDate | date: "medium" }} to {{project.deadline | date: "medium" }}</span>
+                        </div>
+
+                        <div class="single">
+                            <p-tag [value]="project.priority?.toString()" [severity]="getSeverityPriority(project.priority)" styleClass="tag"/>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card mt-10">
+        <p-dialog header="Add new module" [modal]="true" [(visible)]="isCreatingModule" [style]="{ width: '80rem' }">
+            <app-module-form
+                [isOnUpdate]="false"
+                [project_id]="project.projectId"
+                (hideForm)="isCreatingModule = !isCreatingModule"
+                (moduleCreated)="moduleCreated()"
+            ></app-module-form>
+        </p-dialog>
+        <p-table
+            #dt2
+            [value]="moduleResponse.modules!"
+            dataKey="id"
+            [rows]="size_module"
+            [loading]="loading_module"
+            [tableStyle]="{ 'min-width': '75rem' }"
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Project modules</span>
+                    <p-button icon="pi pi-plus" label="Create new" (click)="addModule()"/>
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr style="font-size: 1.1rem; font-weight: 500;">
+                    <th style="width:22%;">Title</th>
+                    <th style="width:22%;">Description</th>
+                    <th style="width:22%;">Begin date</th>
+                    <th style="width:22%;">Deadline</th>
+                    <th style="width:22%;">Priority</th>
+                    <th style="width:22%;">Achievement</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-module>
+                <tr style="font-size: 1rem; font-weight: 500;">
+                    <td class="browsable" (click)="showModule(module.moduleId)">
+                        {{ module.title }}
+                    </td>
+                    <td>
+                        {{ module.description }}
+                    </td>
+                    <td>
+                        {{ module.beginDate | date: 'medium' }}
+                    </td>
+                    <td>
+                        {{ module.deadline | date: 'medium' }}
+                    </td>
+                    <td>
+                        <p-tag [value]="module.priority" [severity]="getSeverityPriority(module.priority)" />
+                    </td>
+                    <td>
+                        <p-progressbar [value]="80"></p-progressbar>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">No modules found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChangeModule($event)"  [first]="page_module * size_module" [rows]="size_module" [totalRecords]="moduleResponse.totalElements!!"
+                     [rowsPerPageOptions]="[10, 20, 30]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+
+    <div class="card">
+        <p-dialog header="Add new task" [modal]="true" [(visible)]="isCreatingTask" [style]="{ width: '25rem' }">
+        </p-dialog>
+        <p-table
+            #dt2
+            [value]="taskResponse.projections!"
+            dataKey="id"
+            [loading]="loading_task"
+            [tableStyle]="{ 'min-width': '75rem' }"
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Project tasks</span>
+                    <p-button icon="pi pi-plus" label="Create new" (click)="addTask()"/>
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr style="font-size: 1.1rem; font-weight: 500;">
+                    <th style="width:22%;">Title</th>
+                    <th style="width:22%;">Description</th>
+                    <th style="width:22%;">Begin date</th>
+                    <th style="width:22%;">Deadline</th>
+                    <th style="width:22%;">Priority</th>
+                    <th style="width:22%;">Status</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-task>
+                <tr style="font-size: 1rem; font-weight: 500;">
+                    <td class="browsable" (click)="showModule(task.taskId)">
+                        {{ task.title }}
+                    </td>
+                    <td>
+                        {{ task.description }}
+                    </td>
+                    <td>
+                        {{ task.beginDate | date: 'medium' }}
+                    </td>
+                    <td>
+                        {{ task.deadline | date: 'medium' }}
+                    </td>
+                    <td>
+                        <p-tag [value]="task.priority" [severity]="getSeverityPriority(task.priority)" />
+                    </td>
+                    <td>
+                        <p-tag [value]="task.status" [severity]="getSeverityStatusTask(task.status)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">No tasks found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChangeTask($event)"  [first]="page_task * size_task" [rows]="size_task" [totalRecords]="taskResponse.totalElements!!"
+                     [rowsPerPageOptions]="[10, 20, 30]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+</div>
