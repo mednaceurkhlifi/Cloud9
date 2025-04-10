@@ -28,7 +28,7 @@ public class WorkspaceController {
     @PatchMapping(value = "update-workspace/{workspace_id}", consumes = "multipart/form-data")
     public ResponseEntity<Workspace> updateWorkspace(
             @PathVariable("workspace_id") Long workspace_id,
-            @RequestPart(value = "request", required = false) WorkspaceRequest request,
+            @RequestPart("request") WorkspaceRequest request,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
         return ResponseEntity.ok().body(service.updateWorkspace(workspace_id, request, image));

@@ -25,7 +25,7 @@ public class ProjectService implements IProjectService {
     private final String DEFAULT_IMAGE = "default_project.jpg";
 
     @Override
-    public Project updateProject(Project incomingProject, MultipartFile image) {
+    public Project updateProject(Project incomingProject, MultipartFile image, boolean imageOnUpdate) {
         Project existingProject = repository.findById(incomingProject.getProjectId()).orElseThrow(
                 () -> new IllegalArgumentException("Project not found with ID: " + incomingProject.getProjectId())
         );
@@ -48,11 +48,16 @@ public class ProjectService implements IProjectService {
         if (incomingProject.getStatus() != null) {
             existingProject.setStatus(incomingProject.getStatus());
         }
-
-        if (image != null && !image.isEmpty()) {
-            if (!existingProject.getImage().equals(DEFAULT_IMAGE))
-                fileUploader.deleteFile(existingProject.getImage());
-            existingProject.setImage(fileUploader.saveImage(image));
+        if(imageOnUpdate) {
+            if (image != null && !image.isEmpty()) {
+                if (!existingProject.getImage().equals(DEFAULT_IMAGE))
+                    fileUploader.deleteFile(existingProject.getImage());
+                existingProject.setImage(fileUploader.saveImage(image));
+            } else {
+                if (!existingProject.getImage().equals(DEFAULT_IMAGE))
+                    fileUploader.deleteFile(existingProject.getImage());
+                existingProject.setImage(DEFAULT_IMAGE);
+            }
         }
 
         return repository.save(existingProject);

@@ -1,0 +1,204 @@
+<p-fluid>
+    <div class="card !mb-8">
+        <div class="card flex flex-col gap-6 w-full">
+            <div class="font-bold text-3xl mb-4">{{ formTitle }}</div>
+            <form [formGroup]="projectForm" (ngSubmit)="saveProject()"
+                  class="font-semibold flex-col gap-10 text-xl mb-4">
+
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <label for="name" class="text-lg">Name <span style="color: red">*</span></label>
+                        <input pInputText id="name" type="text" formControlName="name"
+                               placeholder="Great project need great name" />
+                        <p-message *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched"
+                                   severity="error"
+                                   text="Project name is required.">
+                        </p-message>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 w-full h-fit">
+                        <label for="horizontal" class="text-lg">Priority <span style="color: red">*</span></label>
+                        <div class="flex flex-row w-full gap-2">
+                            <p-inputnumber formControlName="priority" [showButtons]="true" buttonLayout="horizontal"
+                                           inputId="horizontal" spinnerMode="horizontal" [step]="1" [min]="1"
+                                           [max]="10">
+                                <ng-template #incrementbuttonicon>
+                                    <span class="pi pi-plus"></span>
+                                </ng-template>
+                                <ng-template #decrementbuttonicon>
+                                    <span class="pi pi-minus"></span>
+                                </ng-template>
+                            </p-inputnumber>
+                            <p-tag [value]="priority" [severity]="prioritySeverity" class="w-44" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-wrap mt-5">
+                    <label for="description" class="text-lg">Description <span style="color: red">*</span></label>
+                    <textarea pTextarea id="description" rows="4" formControlName="description"
+                              placeholder="Tell your team about the project"></textarea>
+                    <p-message
+                        *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched"
+                        severity="error" text="Description is required.">
+                    </p-message>
+                </div>
+
+                <div class="flex flex-col gap-2 mt-5 w-full">
+                    <label class="text-lg">
+                        Begin date and Time <span style="color: red">*</span>
+                    </label>
+
+                    <div class="flex flex-col md:flex-row gap-4 w-full">
+                        <!-- Date Picker -->
+                        <p-datepicker
+                            class="w-full"
+                            formControlName="beginDateDate"
+                            [showIcon]="true"
+                            inputId="buttondisplay"
+                            [showOnFocus]="false">
+                        </p-datepicker>
+
+                        <!-- Time Picker -->
+                        <p-datepicker
+                            class="w-full"
+                            formControlName="beginDateTime"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [timeOnly]="true"
+                            inputId="templatedisplay">
+                            <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                            </ng-template>
+                        </p-datepicker>
+                    </div>
+                    <p-message
+                        *ngIf="(projectForm.get('beginDateDate')?.invalid || projectForm.get('beginDateTime')?.invalid) && (projectForm.get('beginDateDate')?.touched || projectForm.get('beginDateTime')?.touched )"
+                        severity="error"
+                        text="Begin date and time are required.">
+                    </p-message>
+                    <p-message
+                        *ngIf="projectForm.errors?.['beginInPast'] "
+                        severity="error"
+                        text="Begin date and time must be in the future.">
+                    </p-message>
+                </div>
+
+                <div class="flex flex-col gap-2 mt-5 w-full">
+                    <label class="text-lg">
+                        Deadline date and Time <span style="color: red">*</span>
+                    </label>
+
+                    <div class="flex flex-col md:flex-row gap-4 w-full">
+                        <!-- Date Picker -->
+                        <p-datepicker
+                            class="w-full"
+                            formControlName="deadlineDate"
+                            [showIcon]="true"
+                            inputId="buttondisplay"
+                            [showOnFocus]="false">
+                        </p-datepicker>
+
+                        <!-- Time Picker -->
+                        <p-datepicker
+                            class="w-full"
+                            formControlName="deadlineTime"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            [timeOnly]="true"
+                            inputId="templatedisplay">
+                            <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                            </ng-template>
+                        </p-datepicker>
+                    </div>
+
+                    <p-message
+                        *ngIf="(projectForm.get('deadlineDate')?.invalid || projectForm.get('deadlineTime')?.invalid) && (projectForm.get('deadlineDate')?.touched || projectForm.get('deadlineTime')?.touched )"
+                        severity="error"
+                        text="Deadline date and time are required.">
+
+                    </p-message>
+
+                    <p-message
+                        *ngIf="projectForm.errors?.['invalidDateOrder']"
+                        severity="error"
+                        text="Deadline must be after begin date.">
+                    </p-message>
+
+                    <p-message
+                        *ngIf="projectForm.errors?.['deadlineInPast']"
+                        severity="error"
+                        text="Deadline must be in the future.">
+                    </p-message>
+
+                </div>
+
+                <div class="card" *ngIf="!isOnUpdate">
+                    <p-fileupload [multiple]="false"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                                  (onSelect)="changeImage($event)"
+                    >
+                        <ng-template #empty>
+                            <div>Drag and drop workspace image to here.</div>
+                        </ng-template>
+                        <ng-template #content>
+                            <ul *ngIf="image">
+                                <li>{{ image.name }} - {{ image.size }} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileupload>
+                </div>
+
+                <div class="image-form" *ngIf="isOnUpdate">
+                    <div class="card flex justify-center">
+                        <p-select
+                            [options]="projectStatusList"
+                            [(ngModel)]="selectedStatus"
+                            [checkmark]="true"
+                            [showClear]="true"
+                            optionLabel="name"
+                            optionValue="value"
+                            placeholder="Select a status"
+                            class="w-full md:w-56" />
+                    </div>
+
+                    <div class="img-container">
+                        <img *ngIf="project.image != 'default_project.jpg' else default_image_project"
+                             src="http://localhost:8082/api/v1/project-document/images/{{project.image}}"
+                             alt="workspace image">
+                        <ng-template #default_image_project>
+                            <img src="workspace/images/default_project.jpg" alt="workspace image">
+                        </ng-template>
+                    </div>
+                    <p-button *ngIf="project.image != 'default_project.jpg'" icon="pi pi-trash" [rounded]="true"
+                              severity="danger" label="remove image" (click)="removeImage()" />
+                    <p-fileupload [multiple]="false"
+                                  (onSelect)="changeImage($event)"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                    >
+                        <ng-template #empty>
+                            <div>Drag and drop project image to here.</div>
+                        </ng-template>
+                        <ng-template #content>
+                            <ul *ngIf="image">
+                                <li>{{ image.name }} - {{ image.size }} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileupload>
+                </div>
+
+                <div class="flex justify-end mt-4 gap-1">
+                    <p-button label="Cancel" iconPos="right" severity="warn"
+                              styleClass="text-lg font-semibold px-4 py-2 w-40" (click)="cancel()" />
+                    <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"
+                              styleClass="text-lg font-semibold px-4 py-2 w-40" [disabled]="projectForm.invalid" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</p-fluid>

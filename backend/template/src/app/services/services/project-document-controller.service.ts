@@ -19,6 +19,10 @@ import { addDocumentsToTask } from '../fn/project-document-controller/add-docume
 import { AddDocumentsToTask$Params } from '../fn/project-document-controller/add-documents-to-task';
 import { deleteDocument } from '../fn/project-document-controller/delete-document';
 import { DeleteDocument$Params } from '../fn/project-document-controller/delete-document';
+import { getDocument } from '../fn/project-document-controller/get-document';
+import { GetDocument$Params } from '../fn/project-document-controller/get-document';
+import { getImage } from '../fn/project-document-controller/get-image';
+import { GetImage$Params } from '../fn/project-document-controller/get-image';
 import { ProjectDocument } from '../models/project-document';
 
 @Injectable({ providedIn: 'root' })
@@ -99,6 +103,56 @@ export class ProjectDocumentControllerService extends BaseService {
   addDocumentsToModule(params: AddDocumentsToModule$Params, context?: HttpContext): Observable<Array<ProjectDocument>> {
     return this.addDocumentsToModule$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<ProjectDocument>>): Array<ProjectDocument> => r.body)
+    );
+  }
+
+  /** Path part for operation `getImage()` */
+  static readonly GetImagePath = '/project-document/images/{filename}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getImage()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getImage$Response(params: GetImage$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+    return getImage(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getImage$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getImage(params: GetImage$Params, context?: HttpContext): Observable<Blob> {
+    return this.getImage$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
+    );
+  }
+
+  /** Path part for operation `getDocument()` */
+  static readonly GetDocumentPath = '/project-document/documents/{filename}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getDocument()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getDocument$Response(params: GetDocument$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+    return getDocument(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getDocument$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getDocument(params: GetDocument$Params, context?: HttpContext): Observable<Blob> {
+    return this.getDocument$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
     );
   }
 

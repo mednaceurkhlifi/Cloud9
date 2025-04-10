@@ -34,7 +34,6 @@ public class Workspace implements Serializable {
     private String image;
 
     @OneToOne
-    @JsonBackReference
     private Organization organization;
 
     @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

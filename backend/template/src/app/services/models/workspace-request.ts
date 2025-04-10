@@ -4,6 +4,7 @@
 
 export interface WorkspaceRequest {
   description?: string;
+  imageOnUpdate?: boolean;
   name?: string;
   organization?: number;
 }

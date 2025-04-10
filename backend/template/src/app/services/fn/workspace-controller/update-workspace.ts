@@ -14,7 +14,7 @@ import { WorkspaceRequest } from '../../models/workspace-request';
 export interface UpdateWorkspace$Params {
   workspace_id: number;
       body?: {
-'request'?: WorkspaceRequest;
+'request': WorkspaceRequest;
 'image'?: Blob;
 }
 }

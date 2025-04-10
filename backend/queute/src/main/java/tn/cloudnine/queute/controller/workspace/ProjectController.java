@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
-import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
 import tn.cloudnine.queute.model.workspace.Project;
 import org.springframework.web.multipart.MultipartFile;
-import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.service.workspace.IProjectService;
 
 import java.util.Map;
@@ -35,10 +33,11 @@ public class ProjectController {
     @PatchMapping(value = "update-project", consumes = "multipart/form-data")
     public ResponseEntity<Project> updateProject(
             @RequestPart("project") Project project,
-            @RequestPart(value = "image", required = false) MultipartFile image
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestPart("imageOnUpdate") boolean imageOnUpdate
     ) {
         return ResponseEntity.ok().body(service.updateProject(
-                project, image
+                project, image, imageOnUpdate
         ));
     }
 

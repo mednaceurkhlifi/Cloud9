@@ -3,3 +3,7 @@
 @use './assets/layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
+:root {
+    --granite-gray: hsl(0, 0%, 40%);
+    --light-gray: hsl(0, 0%, 80%);
+}

@@ -7,7 +7,6 @@ export interface Organization {
   address?: string;
   created_at?: string;
   email?: string;
-  is_deleted?: boolean;
   name?: string;
   organizationId?: number;
   phone_number?: string;

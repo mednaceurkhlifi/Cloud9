@@ -378,7 +378,10 @@
                                         "type": "string",
                                         "format": "binary"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "request"
+                                ]
                             }
                         }
                     }
@@ -537,9 +540,13 @@
                                     "image": {
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "imageOnUpdate": {
+                                        "type": "boolean"
                                     }
                                 },
                                 "required": [
+                                    "imageOnUpdate",
                                     "project"
                                 ]
                             }
@@ -1174,6 +1181,68 @@
                 }
             }
         },
+        "/project-document/images/{filename}": {
+            "get": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "getImage",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/documents/{filename}": {
+            "get": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "getDocument",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/workspace/delete-workspace/{workspace_id}": {
             "delete": {
                 "tags": [
@@ -1408,9 +1477,6 @@
                     "updated_at": {
                         "type": "string",
                         "format": "date-time"
-                    },
-                    "is_deleted": {
-                        "type": "boolean"
                     }
                 }
             },
@@ -1707,10 +1773,10 @@
                         "type": "string",
                         "format": "date-time"
                     },
-                    "is_deleted": {
+                    "is_locked": {
                         "type": "boolean"
                     },
-                    "is_locked": {
+                    "is_deleted": {
                         "type": "boolean"
                     }
                 }
@@ -1805,6 +1871,9 @@
                     "organization": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "imageOnUpdate": {
+                        "type": "boolean"
                     }
                 }
             },
@@ -1832,6 +1901,9 @@
                             "FINISHED"
                         ]
                     },
+                    "image": {
+                        "type": "string"
+                    },
                     "beginDate": {
                         "type": "string",
                         "format": "date-time"
@@ -1850,9 +1922,6 @@
                     "projectId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "image": {
-                        "type": "string"
                     }
                 }
             },
@@ -1895,6 +1964,9 @@
                     "description": {
                         "type": "string"
                     },
+                    "isLocked": {
+                        "type": "boolean"
+                    },
                     "image": {
                         "type": "string"
                     },
@@ -1905,9 +1977,6 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
-                    },
-                    "isLocked": {
-                        "type": "boolean"
                     }
                 }
             },
@@ -1932,6 +2001,9 @@
                     "description": {
                         "type": "string"
                     },
+                    "title": {
+                        "type": "string"
+                    },
                     "status": {
                         "type": "string",
                         "enum": [
@@ -1942,9 +2014,6 @@
                             "DONE",
                             "ARCHIVED"
                         ]
-                    },
-                    "title": {
-                        "type": "string"
                     },
                     "beginDate": {
                         "type": "string",
@@ -2055,12 +2124,12 @@
                     "email": {
                         "type": "string"
                     },
+                    "full_name": {
+                        "type": "string"
+                    },
                     "userId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "full_name": {
-                        "type": "string"
                     }
                 }
             },

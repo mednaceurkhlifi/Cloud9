@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.service.workspace.IProjectDocumentService;
+import org.springframework.core.io.Resource;
+import tn.cloudnine.queute.utils.IFileUploader;
+
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import java.util.Map;
 public class ProjectDocumentController {
 
     private final IProjectDocumentService service;
+    private final IFileUploader fileUploader;
 
     @PatchMapping(value = "add-documents-project/{project_id}", consumes = "multipart/form-data")
     public ResponseEntity<List<ProjectDocument>> addDocumentsToProject(
@@ -63,6 +67,16 @@ public class ProjectDocumentController {
                         "status", "error",
                         "message", "Document with ID " + document_id + " not deleted."
                 ));
+    }
+
+    @GetMapping("/images/{filename}")
+    public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) {
+        return fileUploader.serveFile("images", filename, "image/jpeg");
+    }
+
+    @GetMapping("/documents/{filename}")
+    public ResponseEntity<Resource> getDocument(@PathVariable("filename") String filename) {
+        return fileUploader.serveFile("documents", filename, null);
     }
 
 }

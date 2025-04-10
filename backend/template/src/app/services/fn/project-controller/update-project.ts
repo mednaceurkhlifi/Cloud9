@@ -14,6 +14,7 @@ export interface UpdateProject$Params {
       body?: {
 'project': Project;
 'image'?: Blob;
+'imageOnUpdate': boolean;
 }
 }
 

@@ -52,26 +52,33 @@ public class WorkspaceService implements IWrokspaceService {
         Workspace workspace = repository.findById(workspace_id).orElseThrow(
                 () -> new IllegalArgumentException("Workspace not found with ID: " + workspace_id)
         );
-        if (request != null) {
-            if(request.getName() != null && !request.getName().isEmpty()) {
-                workspace.setName(request.getName());
-            }
-            if(request.getDescription() != null && !request.getDescription().isEmpty()) {
-                workspace.setDescription(request.getDescription());
-            }
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            workspace.setName(request.getName());
         }
-        if (image != null && !image.isEmpty()) {
-            if(!workspace.getImage().equals(DEFAULT_IMAGE))
-                fileUploader.deleteFile(workspace.getImage());
-            workspace.setImage(fileUploader.saveImage(image));
+        if (request.getDescription() != null && !request.getDescription().isEmpty()) {
+            workspace.setDescription(request.getDescription());
+        }
+        if (request.isImageOnUpdate()) {
+            if (image != null && !image.isEmpty()) {
+                if (!workspace.getImage().equals(DEFAULT_IMAGE))
+                    fileUploader.deleteFile(workspace.getImage());
+                workspace.setImage(fileUploader.saveImage(image));
+            } else {
+                if (!workspace.getImage().equals(DEFAULT_IMAGE))
+                    fileUploader.deleteFile(workspace.getImage());
+                workspace.setImage(DEFAULT_IMAGE);
+            }
         }
 
-        return workspace;
+        return repository.save(workspace);
     }
 
     @Override
     public void deleteWorkspace(Long workspaceId) {
-        repository.deleteById(workspaceId);
+        Workspace workspace = repository.findById(workspaceId).orElseThrow(
+                () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
+        );
+        repository.delete(workspace);
     }
 
     @Override

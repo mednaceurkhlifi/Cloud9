@@ -21,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE organizations o SET o.is_deleted = true WHERE o.organizationId=? AND o.is_deleted = false ")
 public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +35,6 @@ public class Organization {
     @Column(unique = true)
     private String email;
 
-    @OneToOne(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JsonManagedReference
-    private Workspace workspace;
-
-    private boolean is_deleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

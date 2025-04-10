@@ -1,6 +1,6 @@
 <div class="card !mb-8">
     <div class="card">
-        <div class="font-bold text-4xl mb-4">Workspace</div>
+        <div class="font-bold text-3xl mb-4">Workspace</div>
         <p-fieldset legend="What is ?" [toggleable]="true">
             <p class="m-0 text-lg">
                 Welcome to your Workspace — the place where your ideas turn into action. Here, you can create and manage
@@ -18,18 +18,16 @@
     </div>
 </div>
 
-<p-fluid *ngIf="!isWkFound && wkForm">
+<p-fluid *ngIf="(!isWkFound || isOnUpdate) && wkForm && !createProject">
     <div class="card !mb-8">
         <div class="card flex flex-col gap-6 w-full">
-            <div class="font-bold text-2xl mb-4">Create yours now !</div>
+            <div class="font-bold text-3xl mb-4">{{ formTitle }}</div>
             <form [formGroup]="wkForm" (ngSubmit)="createWorkspace()" class="font-semibold gap-6 text-xl mb-4">
-                <p-message *ngIf="wkForm.invalid && !wkForm.untouched" severity="error" icon="pi pi-times-circle"
-                           styleClass="mb-2">Validation Failed
-                </p-message>
+
                 <div class="flex flex-col md:flex-row gap-6">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="name" class="text-lg">Name</label>
-                        <input pInputText id="name" type="text" formControlName="name" />
+                        <input pInputText id="name" type="text" formControlName="name" placeholder="Great workspace need great name"/>
                         <p-message *ngIf="wkForm.get('name')?.invalid && wkForm.get('name')?.touched" severity="error"
                                    variant="simple">Workspace name is required
                         </p-message>
@@ -38,15 +36,18 @@
 
                 <div class="flex flex-wrap">
                     <label for="description" class="text-lg">Description</label>
-                    <textarea pTextarea id="description" rows="4" formControlName="description"></textarea>
+                    <textarea pTextarea id="description" rows="4" formControlName="description" placeholder="Tell your team about the workspace"></textarea>
                     <p-message *ngIf="wkForm.get('description')?.invalid && wkForm.get('description')?.touched"
                                severity="error" variant="simple">Description is required
                     </p-message>
                 </div>
 
-                <div class="card">
-
-                    <p-fileupload [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced">
+                <div class="card" *ngIf="!isOnUpdate">
+                    <p-fileupload [multiple]="false"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                                  (onSelect)="changeImage($event)"
+                                  >
                         <ng-template #empty>
                             <div>Drag and drop workspace image to here.</div>
                         </ng-template>
@@ -57,8 +58,34 @@
                         </ng-template>
                     </p-fileupload>
                 </div>
-                <div class="flex justify-end mt-4">
-                    <p-button label="Save" icon="pi pi-check" iconPos="right"
+
+                <div class="image-form" *ngIf="isOnUpdate">
+                    <div class="img-container">
+                        <img *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg' else default_image_workspace" src="http://localhost:8082/api/v1/project-document/images/{{workspaceResponse.projection?.image}}" alt="workspace image">
+                        <ng-template #default_image_workspace>
+                            <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+                        </ng-template>
+                    </div>
+                    <p-button *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg'" icon="pi pi-trash" [rounded]="true" severity="danger" label="remove image" (click)="removeImage()"/>
+                    <p-fileupload [multiple]="false"
+                                  (onSelect)="changeImage($event)"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                    >
+                        <ng-template #empty>
+                            <div>Drag and drop workspace image to here.</div>
+                        </ng-template>
+                        <ng-template #content>
+                            <ul *ngIf="image">
+                                <li>{{ image.name }} - {{ image.size }} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileupload>
+                </div>
+                <div class="flex justify-end mt-4 gap-1">
+                    <p-button label="Cancel" iconPos="right" severity="warn"
+                              styleClass="text-lg font-semibold px-4 py-2 w-40" (click)="cancelUpdate()"/>
+                    <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"
                               styleClass="text-lg font-semibold px-4 py-2 w-40" [disabled]="wkForm.invalid" />
                 </div>
 
@@ -67,18 +94,28 @@
     </div>
 </p-fluid>
 
+<div class="card !mb-8" *ngIf="isWkFound && !isOnUpdate && !createProject">
+    <p-toast />
+    <p-confirmdialog />
 
-<div class="card !mb-8" *ngIf="isWkFound">
     <div class="workspace-card">
         <div class="workspace-group">
-            <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+            <img *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg' else default_image_workspace" src="http://localhost:8082/api/v1/project-document/images/{{workspaceResponse.projection?.image}}" alt="workspace image">
+            <ng-template #default_image_workspace>
+                <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+            </ng-template>
             <span class="title">{{ workspaceResponse.projection?.name | uppercase }}</span>
+            <div class="side-btn">
+            <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="warn" (click)="showUpdateWorkspace()" />
+            <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="deleteWorkspace(workspaceResponse.projection?.workspaceId)"/>
+            </div>
         </div>
         <div class="workspace-description">
             <p>{{ workspaceResponse.projection?.description }}</p>
             <span>Created at : {{workspaceResponse.projection?.createdAt | date: 'medium' }}</span>
         </div>
     </div>
+
     <div class="card">
         <p-table
             #dt2
@@ -88,36 +125,41 @@
             [rowsPerPageOptions]="[10, 25, 50]"
             [loading]="loading"
             [paginator]="true"
-            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
             [tableStyle]="{ 'min-width': '75rem' }"
         >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Projects list</span>
+                    <p-button icon="pi pi-plus" label="Create new" (click)="addProject()"/>
+                </div>
+            </ng-template>
             <ng-template #header>
-                <tr>
-                    <th style="width:22%">Name</th>
-                    <th style="width:22%">Image</th>
-                    <th style="width:22%">Description</th>
-                    <th style="width:22%">Begin date</th>
-                    <th style="width:22%">Deadline</th>
-                    <th style="width:22%">Priority</th>
-                    <th style="width:22%">Status</th>
+                <tr style="font-size: 1.2rem; font-weight: 650;">
+                    <th style="width:22%;">Name</th>
+                    <th style="width:22%;">Image</th>
+                    <th style="width:22%;">Description</th>
+                    <th style="width:22%;">Begin date</th>
+                    <th style="width:22%;">Deadline</th>
+                    <th style="width:22%;">Priority</th>
+                    <th style="width:22%;">Status</th>
                 </tr>
             </ng-template>
             <ng-template #body let-project>
-                <tr>
-                    <td>
+                <tr style="font-size: 1.1rem; font-weight: 550;">
+                    <td class="project-name">
                         {{ project.name }}
                     </td>
                     <td>
                         <div class="flex items-center gap-2">
-                            <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" style="width: 20px" />
+                            <img *ngIf="project.image != 'default_project.jpg' else default_image_project" src="http://localhost:8082/api/v1/project-document/images/{{project.image}}" width="50" style="vertical-align: middle; border-radius: 50%;" />
+                            <ng-template #default_image_project>
+                                <img src="workspace/images/default_workspace.jpg" width="50" style="vertical-align: middle; border-radius: 50%;" />
+                            </ng-template>
                         </div>
                     </td>
                     <td>
                         {{ project.description }}
                     </td>
-<!--                    <td>-->
-<!--                        <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />-->
-<!--                    </td>-->
                     <td>
                         {{ project.beginDate }}
                     </td>
@@ -125,10 +167,10 @@
                         {{ project.deadline }}
                     </td>
                     <td>
-                        {{ project.priority }}
+                        <p-tag [value]="project.priority" [severity]="getSeverityPriority(project.priority)" />
                     </td>
                     <td>
-                        {{ project.status }}
+                        <p-tag [value]="project.status" [severity]="getSeverityStatus(project.status)" />
                     </td>
                 </tr>
             </ng-template>
@@ -140,3 +182,8 @@
         </p-table>
     </div>
 </div>
+
+<app-project-form *ngIf=" isWkFound && createProject" [isOnUpdate]="false"
+                  [workspace_id]="workspaceResponse.projection?.workspaceId"
+                  (hideForm)="createProject = !createProject"
+                  (projectCreated)="createProject = !createProject"></app-project-form>

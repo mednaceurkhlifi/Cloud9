@@ -11,4 +11,5 @@ public class WorkspaceRequest{
     private String name;
     private String description;
     private Long organization;
+    private boolean imageOnUpdate;
 }
