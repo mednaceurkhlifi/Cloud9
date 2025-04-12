@@ -36,4 +36,4 @@ export function addDocumentsToTask(http: HttpClient, rootUrl: string, params: Ad
   );
 }
 
-addDocumentsToTask.PATH = '/project-document/add-documents-module/{task_id}';
+addDocumentsToTask.PATH = '/project-document/add-documents-task/{task_id}';

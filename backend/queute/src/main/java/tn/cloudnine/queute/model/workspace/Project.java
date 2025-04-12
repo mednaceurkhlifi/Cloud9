@@ -26,9 +26,11 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
     private Integer priority;
+    private Integer achievement;
 
     @Column(name = "begin_date")
     private LocalDateTime beginDate;

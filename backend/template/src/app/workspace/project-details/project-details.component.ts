@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { ProgressBar } from 'primeng/progressbar';
 import { Button } from 'primeng/button';
-import { DatePipe, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectControllerService } from '../../services/services/project-controller.service';
@@ -18,11 +18,45 @@ import { ModuleFormComponent } from '../module-form/module-form.component';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { Avatar } from 'primeng/avatar';
 import { AvatarGroup } from 'primeng/avatargroup';
+import { TaskFormComponent } from '../task-form/task-form.component';
+import { TaskDetailsComponent } from '../task-details/task-details.component';
+import { DocumentsViewComponent } from '../documents-view/documents-view.component';
+import { ProjectUserControllerService } from '../../services/services/project-user-controller.service';
+import { ProjectUserProjection } from '../../services/models/project-user-projection';
+import { Message } from 'primeng/message';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { validateProjectDates } from '../util/validators/ValidateProjectDates';
+import { InputText } from 'primeng/inputtext';
+import { ProjectUser } from '../../services/models/project-user';
+import { UserDto } from '../../services/models/user-dto';
+import { AddMemberFormComponent } from '../add-member-form/add-member-form.component';
+import { TeamViewComponent } from '../team-view/team-view.component';
 
 @Component({
     selector: 'app-project-details',
     standalone: true,
-    imports: [Tag, ProgressBar, Button, DatePipe, NgIf, TableModule, Paginator, Dialog, ModuleFormComponent, ProjectFormComponent, Avatar, AvatarGroup],
+    imports: [
+        Tag,
+        ProgressBar,
+        Button,
+        DatePipe,
+        CommonModule,
+        TableModule,
+        Paginator,
+        Dialog,
+        ModuleFormComponent,
+        ProjectFormComponent,
+        Avatar,
+        AvatarGroup,
+        TaskFormComponent,
+        TaskDetailsComponent,
+        DocumentsViewComponent,
+        Message,
+        ReactiveFormsModule,
+        InputText,
+        AddMemberFormComponent,
+        TeamViewComponent
+    ],
     templateUrl: './project-details.component.html',
     styleUrl: './project-details.component.scss'
 })
@@ -32,6 +66,7 @@ export class ProjectDetailsComponent implements OnInit {
     project: Project = {};
     taskResponse: TaskResponse = {};
     moduleResponse: ModuleResponse = {};
+    team: ProjectUserProjection[] = [];
     size_task!: number;
     page_task!: number;
     size_module!: number;
@@ -40,13 +75,15 @@ export class ProjectDetailsComponent implements OnInit {
     loading_task: boolean = false;
     isCreatingModule: boolean = false;
     isCreatingTask: boolean = false;
+    isCreatingManager: boolean = false;
+    isCreatingMember: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
         private _projectService: ProjectControllerService,
         private _moduleService: ModuleControllerService,
         private _taskService: TaskControllerService,
-        private _documentService: ProjectDocumentControllerService,
+        private _projectUserService: ProjectUserControllerService,
         private router: Router
     ) {}
 
@@ -56,6 +93,7 @@ export class ProjectDetailsComponent implements OnInit {
         this.page_task = 0;
         this.size_module = 10;
         this.page_module = 0;
+
         if (projectId) {
             this.getProject(parseInt(projectId));
         }
@@ -69,6 +107,7 @@ export class ProjectDetailsComponent implements OnInit {
             .subscribe({
                 next: (response) => {
                     this.project = response;
+                    this.getTeam(projectId);
                     this.getProjectTasks(projectId);
                     this.getProjectModules(projectId);
                 },
@@ -76,6 +115,29 @@ export class ProjectDetailsComponent implements OnInit {
                     // treat errors
                 }
             });
+    }
+
+    getTeam(projectId: number) {
+        this._projectUserService
+            .getProjectTeams({
+                project_id: projectId
+            })
+            .subscribe({
+                next: (response) => {
+                    this.team = response;
+                },
+                error: (err) => {
+                    // treat errors
+                }
+            });
+    }
+
+    getInFrontTeam() {
+        return this.team.slice(0, 8);
+    }
+
+    getSizeEndTeam() {
+        return Math.max(this.team.length - 8, 0);
     }
 
     getProjectTasks(projectId: number) {
@@ -194,5 +256,77 @@ export class ProjectDetailsComponent implements OnInit {
     moduleCreated() {
         this.getProjectModules(this.project.projectId!);
         this.isCreatingModule = false;
+    }
+
+    taskCreated() {
+        this.getProjectTasks(this.project.projectId!);
+        this.isCreatingTask = false;
+    }
+
+    showTask(taskId: any) {
+        this.router.navigate(['/workspace/task', taskId]);
+    }
+
+    checkProjectManagerExist(): boolean {
+        if (this.team.length > 0) {
+            if (this.team.findIndex((p) => p.role === 'MANAGER') != -1) return true;
+        }
+        return false;
+    }
+
+    getProjectManager(): ProjectUserProjection | undefined {
+        if (this.checkProjectManagerExist()) {
+            return this.team.find((p) => p.role === 'MANAGER');
+        }
+        return {};
+    }
+
+    checkProjectMemberExist(): boolean {
+        if (this.team.length > 0) {
+            if (this.team.findIndex((p) => p.role === 'TEAM_MEMBER') != -1) return true;
+        }
+        return false;
+    }
+
+    showAddManagerForm() {
+        this.isCreatingManager = true;
+    }
+
+    memberCreated(member: UserDto) {
+        this.team.push({
+            role: member.role,
+            project: this.project!,
+            user: {
+                email: member.email,
+                full_name: member.full_name,
+                image: member.image
+            }
+        });
+        this.isCreatingManager = false;
+        this.isCreatingMember = false;
+    }
+
+    deleteProjectManager() {
+        let index = this.team.findIndex((p) => p.role === 'MANAGER');
+        this._projectUserService
+            .deleteProjectUser({
+                project_id: this.project.projectId!,
+                user_email: this.team[index].user!.email!
+            })
+            .subscribe({
+                next: (response) => {
+                    this.team.splice(index, 1);
+                },
+                error: (err) => {}
+            });
+    }
+
+    showAddMemberForm() {
+        this.isCreatingMember = true;
+    }
+
+    memberDeleted($event: String) {
+        let index = this.team.findIndex((p) => p.user?.email === $event);
+        this.team.splice(index, 1);
     }
 }

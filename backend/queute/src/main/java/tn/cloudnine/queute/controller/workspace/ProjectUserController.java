@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
+import tn.cloudnine.queute.dto.workspace.projections.ProjectUserProjection;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectUserResponse;
 import tn.cloudnine.queute.model.workspace.ProjectUser;
 import tn.cloudnine.queute.service.workspace.IProjectUserService;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("project-user")
@@ -50,5 +52,12 @@ public class ProjectUserController {
             @PathVariable("page_no") Integer page_no
     ) {
         return ResponseEntity.ok(service.getProjects(user_id, size, page_no));
+    }
+
+    @GetMapping("get-project-team/{project_id}")
+    public ResponseEntity<Set<ProjectUserProjection>> getProjectTeams(
+            @PathVariable("project_id") Long project_id
+    ) {
+        return ResponseEntity.ok(service.getProjectTeams(project_id));
     }
 }

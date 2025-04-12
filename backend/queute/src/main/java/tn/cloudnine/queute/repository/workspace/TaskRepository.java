@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
+import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.model.workspace.Task;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,4 +23,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t JOIN t.members m WHERE t.taskId = :taskId AND m.email = :email")
     Optional<Task> findTasksByIdAndUserEmail(@Param("taskId") Long taskId, @Param("email") String email);
+
+    List<Task> findAllByDocumentsContains(ProjectDocument document);
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
+import tn.cloudnine.queute.enums.DocumentType;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.model.workspace.ProjectModule;
@@ -34,7 +35,7 @@ public class ProjectDocumentService implements IProjectDocumentService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("Project not found with ID : " + projectId)
         );
-        documentList = saveDocuments(documentsRequest, documents);
+        documentList = repository.saveAll(saveDocuments(documentsRequest, documents));
         project.getDocuments().addAll(documentList);
         projectRepository.save(project);
         return documentList;
@@ -46,7 +47,7 @@ public class ProjectDocumentService implements IProjectDocumentService {
         ProjectModule module = moduleRepository.findById(moduleId).orElseThrow(
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
-        documentList = saveDocuments(documentsRequest, documents);
+        documentList = repository.saveAll(saveDocuments(documentsRequest, documents));
         module.getDocuments().addAll(documentList);
         moduleRepository.save(module);
         return documentList;
@@ -58,19 +59,41 @@ public class ProjectDocumentService implements IProjectDocumentService {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new IllegalArgumentException("Task not found with ID : " + taskId)
         );
-        documentList = saveDocuments(documentsRequest, documents);
+        documentList = repository.saveAll(saveDocuments(documentsRequest, documents));
         task.getDocuments().addAll(documentList);
         taskRepository.save(task);
         return documentList;
     }
 
     @Override
-    public boolean deleteDocument(Long documentId) {
+    public boolean deleteDocument(Long documentId, Long targetId, Integer target) {
         ProjectDocument document = repository.findById(documentId).orElseThrow(
                 () -> new IllegalArgumentException("Document not found with ID : " + documentId)
         );
-        if(fileUploader.deleteFile(document.getPath())){
+
+        if (fileUploader.deleteFile(document.getPath(), document.getDocument_type())) {
+            if (target == 1) {
+                Project project = projectRepository.findById(targetId).orElseThrow(
+                        () -> new IllegalArgumentException("Project not found with ID: " + targetId)
+                );
+                project.getDocuments().remove(document);
+                projectRepository.save(project);
+            } else if (target == 2) {
+                ProjectModule module = moduleRepository.findById(targetId).orElseThrow(
+                        () -> new IllegalArgumentException("Module not found with ID : " + documentId)
+                );
+                module.getDocuments().remove(document);
+                moduleRepository.save(module);
+            } else if (target == 3) {
+                Task task = taskRepository.findById(targetId).orElseThrow(
+                        () -> new IllegalArgumentException("Task not found with ID : " + documentId)
+                );
+                task.getDocuments().remove(document);
+                taskRepository.save(task);
+            }
+
             repository.delete(document);
+            return true;
         }
         return false;
     }

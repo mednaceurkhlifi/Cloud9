@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModuleControllerService } from '../../services/services/module-controller.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Project } from '../../services/models/project';
 import { ProjectModule } from '../../services/models/project-module';
 import { Fluid } from 'primeng/fluid';
 import { Message } from 'primeng/message';

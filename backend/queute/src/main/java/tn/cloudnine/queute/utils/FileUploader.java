@@ -9,6 +9,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import tn.cloudnine.queute.enums.DocumentType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,8 +89,15 @@ public class FileUploader implements IFileUploader{
         }
     }
 
-    public boolean deleteFile(String filePath) {
-        File file = new File(filePath);
+    public boolean deleteFile(String filePath, DocumentType type) {
+        String fileUploadSubPath = "";
+        switch (type) {
+            case IMAGE -> fileUploadSubPath  = "images" + separator;
+            case OTHER -> fileUploadSubPath  = "documents" + separator;
+        }
+
+        final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath + separator + filePath;
+        File file = new File(finalUploadPath);
         if (file.exists()) {
             return file.delete();
         } else {

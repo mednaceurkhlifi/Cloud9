@@ -19,6 +19,9 @@ import { deleteProjectUser } from '../fn/project-user-controller/delete-project-
 import { DeleteProjectUser$Params } from '../fn/project-user-controller/delete-project-user';
 import { getProjects } from '../fn/project-user-controller/get-projects';
 import { GetProjects$Params } from '../fn/project-user-controller/get-projects';
+import { getProjectTeams } from '../fn/project-user-controller/get-project-teams';
+import { GetProjectTeams$Params } from '../fn/project-user-controller/get-project-teams';
+import { ProjectUserProjection } from '../models/project-user-projection';
 import { ProjectUserResponse } from '../models/project-user-response';
 import { UserDto } from '../models/user-dto';
 
@@ -100,6 +103,31 @@ export class ProjectUserControllerService extends BaseService {
   getProjects(params: GetProjects$Params, context?: HttpContext): Observable<ProjectUserResponse> {
     return this.getProjects$Response(params, context).pipe(
       map((r: StrictHttpResponse<ProjectUserResponse>): ProjectUserResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getProjectTeams()` */
+  static readonly GetProjectTeamsPath = '/project-user/get-project-team/{project_id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getProjectTeams()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProjectTeams$Response(params: GetProjectTeams$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProjectUserProjection>>> {
+    return getProjectTeams(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getProjectTeams$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProjectTeams(params: GetProjectTeams$Params, context?: HttpContext): Observable<Array<ProjectUserProjection>> {
+    return this.getProjectTeams$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProjectUserProjection>>): Array<ProjectUserProjection> => r.body)
     );
   }
 

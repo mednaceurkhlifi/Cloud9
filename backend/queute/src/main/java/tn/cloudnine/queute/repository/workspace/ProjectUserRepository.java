@@ -10,10 +10,12 @@ import tn.cloudnine.queute.model.Embeddable.ProjectUserId;
 import tn.cloudnine.queute.model.workspace.ProjectUser;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> {
     long countByProjectProjectIdAndRole(Long projectId, ProjectRole role);
     Page<ProjectUserProjection> findByUserUserId(Long id, Pageable pageable);
+    Set<ProjectUserProjection> findByProjectProjectId(Long id);
     Optional<ProjectUser> findById(ProjectUserId id);
 }

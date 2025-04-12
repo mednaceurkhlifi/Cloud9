@@ -11,6 +11,8 @@ import { RequestBuilder } from '../../request-builder';
 
 export interface DeleteDocument$Params {
   document_id: number;
+  target_id: number;
+  target: number;
 }
 
 export function deleteDocument(http: HttpClient, rootUrl: string, params: DeleteDocument$Params, context?: HttpContext): Observable<StrictHttpResponse<{
@@ -19,6 +21,8 @@ export function deleteDocument(http: HttpClient, rootUrl: string, params: Delete
   const rb = new RequestBuilder(rootUrl, deleteDocument.PATH, 'delete');
   if (params) {
     rb.path('document_id', params.document_id, {});
+    rb.path('target_id', params.target_id, {});
+    rb.path('target', params.target, {});
   }
 
   return http.request(
@@ -33,4 +37,4 @@ export function deleteDocument(http: HttpClient, rootUrl: string, params: Delete
   );
 }
 
-deleteDocument.PATH = '/project-document/delete-document/{document_id}';
+deleteDocument.PATH = '/project-document/delete-document/{document_id}/{target_id}/{target}';

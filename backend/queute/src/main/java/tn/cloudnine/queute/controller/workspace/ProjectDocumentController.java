@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
+import tn.cloudnine.queute.enums.DocumentType;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.service.workspace.IProjectDocumentService;
 import org.springframework.core.io.Resource;
@@ -45,7 +46,7 @@ public class ProjectDocumentController {
         ));
     }
 
-    @PatchMapping(value = "add-documents-module/{task_id}", consumes = "multipart/form-data")
+    @PatchMapping(value = "add-documents-task/{task_id}", consumes = "multipart/form-data")
     public ResponseEntity<List<ProjectDocument>> addDocumentsToTask(
             @PathVariable("task_id") Long task_id,
             @RequestPart(value = "documents_request") List<DocumentRequest> documents_request,
@@ -56,9 +57,13 @@ public class ProjectDocumentController {
         ));
     }
 
-    @DeleteMapping("delete-document/{document_id}")
-    public ResponseEntity<Map<String, String>> deleteDocument(@PathVariable("document_id") Long document_id) {
-        return service.deleteDocument(document_id) ?
+    @DeleteMapping("delete-document/{document_id}/{target_id}/{target}")
+    public ResponseEntity<Map<String, String>> deleteDocument(
+            @PathVariable("document_id") Long document_id,
+            @PathVariable("target_id") Long targetId,
+            @PathVariable("target") Integer target
+    ) {
+        return service.deleteDocument(document_id,targetId, target) ?
                 ResponseEntity.ok(Map.of(
                         "status", "success",
                         "message", "Document with ID " + document_id + " deleted successfully."

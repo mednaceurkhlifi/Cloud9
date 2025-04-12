@@ -24,8 +24,10 @@ public class ProjectModule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long moduleId;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private Integer priority;
+    private Integer achievement;
 
     @Column(name = "begin_date")
     private LocalDateTime beginDate;

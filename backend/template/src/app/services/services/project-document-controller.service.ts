@@ -24,11 +24,37 @@ import { GetDocument$Params } from '../fn/project-document-controller/get-docume
 import { getImage } from '../fn/project-document-controller/get-image';
 import { GetImage$Params } from '../fn/project-document-controller/get-image';
 import { ProjectDocument } from '../models/project-document';
+import { DocumentRequest } from '../models/document-request';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectDocumentControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `addDocumentsToTask()` */
+  static readonly AddDocumentsToTaskPath = '/project-document/add-documents-task/{task_id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addDocumentsToTask()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addDocumentsToTask$Response(params: AddDocumentsToTask$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProjectDocument>>> {
+    return addDocumentsToTask(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addDocumentsToTask$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addDocumentsToTask(params: AddDocumentsToTask$Params, context?: HttpContext): Observable<Array<ProjectDocument>> {
+    return this.addDocumentsToTask$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProjectDocument>>): Array<ProjectDocument> => r.body)
+    );
   }
 
   /** Path part for operation `addDocumentsToProject()` */
@@ -52,31 +78,6 @@ export class ProjectDocumentControllerService extends BaseService {
    */
   addDocumentsToProject(params: AddDocumentsToProject$Params, context?: HttpContext): Observable<Array<ProjectDocument>> {
     return this.addDocumentsToProject$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<ProjectDocument>>): Array<ProjectDocument> => r.body)
-    );
-  }
-
-  /** Path part for operation `addDocumentsToTask()` */
-  static readonly AddDocumentsToTaskPath = '/project-document/add-documents-module/{task_id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addDocumentsToTask()` instead.
-   *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
-   */
-  addDocumentsToTask$Response(params: AddDocumentsToTask$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProjectDocument>>> {
-    return addDocumentsToTask(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `addDocumentsToTask$Response()` instead.
-   *
-   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
-   */
-  addDocumentsToTask(params: AddDocumentsToTask$Params, context?: HttpContext): Observable<Array<ProjectDocument>> {
-    return this.addDocumentsToTask$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<ProjectDocument>>): Array<ProjectDocument> => r.body)
     );
   }
@@ -157,7 +158,7 @@ export class ProjectDocumentControllerService extends BaseService {
   }
 
   /** Path part for operation `deleteDocument()` */
-  static readonly DeleteDocumentPath = '/project-document/delete-document/{document_id}';
+  static readonly DeleteDocumentPath = '/project-document/delete-document/{document_id}/{target_id}/{target}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -189,4 +190,34 @@ export class ProjectDocumentControllerService extends BaseService {
     );
   }
 
+  /**** manually added methods ****/
+  addDocumentsToTaskManual(task_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
+      const formData = new FormData();
+      formData.append('documents_request', new Blob([JSON.stringify(documents_request)], { type: 'application/json' }));
+      for (let doc of documents) {
+          formData.append('documents', doc);
+      }
+
+      return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-task/${task_id}`, formData);
+  }
+
+    addDocumentsToProjectManual(project_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
+        const formData = new FormData();
+        formData.append('documents_request', new Blob([JSON.stringify(documents_request)], { type: 'application/json' }));
+        for (let doc of documents) {
+            formData.append('documents', doc);
+        }
+
+        return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-project/${project_id}`, formData);
+    }
+
+    addDocumentsToModuleManual(module_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
+        const formData = new FormData();
+        formData.append('documents_request', new Blob([JSON.stringify(documents_request)], { type: 'application/json' }));
+        for (let doc of documents) {
+            formData.append('documents', doc);
+        }
+
+        return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-module/${module_id}`, formData);
+    }
 }

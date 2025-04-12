@@ -8,6 +8,7 @@ import { WorkspaceComponent } from './app/workspace/workspace/workspace.componen
 import { WorkspaceOverviewComponent } from './app/workspace/workspace-overview/workspace-overview.component';
 import { ProjectDetailsComponent } from './app/workspace/project-details/project-details.component';
 import { ModuleDetailsComponent } from './app/workspace/module-details/module-details.component';
+import { TaskDetailsComponent } from './app/workspace/task-details/task-details.component';
 
 export const appRoutes: Routes = [
     {
@@ -26,7 +27,8 @@ export const appRoutes: Routes = [
         children: [
             { path: '', component: WorkspaceOverviewComponent },
             { path: 'project/:project_id', component: ProjectDetailsComponent },
-            { path: 'module/:module_id', component: ModuleDetailsComponent }
+            { path: 'module/:module_id', component: ModuleDetailsComponent },
+            { path: 'task/:task_id', component: TaskDetailsComponent }
         ]
     },
     { path: 'landing', component: Landing },

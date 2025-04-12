@@ -11,6 +11,7 @@ import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
 import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
 import tn.cloudnine.queute.dto.workspace.projections.ProjectProjection;
 import tn.cloudnine.queute.dto.workspace.projections.WorkspaceProjection;
+import tn.cloudnine.queute.enums.DocumentType;
 import tn.cloudnine.queute.model.organization.Organization;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.repository.organization.OrganizationRepository;
@@ -61,11 +62,11 @@ public class WorkspaceService implements IWrokspaceService {
         if (request.isImageOnUpdate()) {
             if (image != null && !image.isEmpty()) {
                 if (!workspace.getImage().equals(DEFAULT_IMAGE))
-                    fileUploader.deleteFile(workspace.getImage());
+                    fileUploader.deleteFile(workspace.getImage(), DocumentType.IMAGE);
                 workspace.setImage(fileUploader.saveImage(image));
             } else {
                 if (!workspace.getImage().equals(DEFAULT_IMAGE))
-                    fileUploader.deleteFile(workspace.getImage());
+                    fileUploader.deleteFile(workspace.getImage(), DocumentType.IMAGE);
                 workspace.setImage(DEFAULT_IMAGE);
             }
         }

@@ -608,15 +608,15 @@
                 }
             }
         },
-        "/project-document/add-documents-project/{project_id}": {
+        "/project-document/add-documents-task/{task_id}": {
             "patch": {
                 "tags": [
                     "project-document-controller"
                 ],
-                "operationId": "addDocumentsToProject",
+                "operationId": "addDocumentsToTask",
                 "parameters": [
                     {
-                        "name": "project_id",
+                        "name": "task_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -670,15 +670,15 @@
                 }
             }
         },
-        "/project-document/add-documents-module/{task_id}": {
+        "/project-document/add-documents-project/{project_id}": {
             "patch": {
                 "tags": [
                     "project-document-controller"
                 ],
-                "operationId": "addDocumentsToTask",
+                "operationId": "addDocumentsToProject",
                 "parameters": [
                     {
-                        "name": "task_id",
+                        "name": "project_id",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -1101,6 +1101,41 @@
                 }
             }
         },
+        "/project-user/get-project-team/{project_id}": {
+            "get": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "getProjectTeams",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProjectUserProjection"
+                                    },
+                                    "uniqueItems": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/project-module/get-modules/{project_id}/{size}/{page_no}": {
             "get": {
                 "tags": [
@@ -1411,7 +1446,7 @@
                 }
             }
         },
-        "/project-document/delete-document/{document_id}": {
+        "/project-document/delete-document/{document_id}/{target_id}/{target}": {
             "delete": {
                 "tags": [
                     "project-document-controller"
@@ -1425,6 +1460,24 @@
                         "schema": {
                             "type": "integer",
                             "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "target_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "target",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
                         }
                     }
                 ],
@@ -1948,6 +2001,9 @@
             "WorkspaceProjection": {
                 "type": "object",
                 "properties": {
+                    "isLocked": {
+                        "type": "boolean"
+                    },
                     "name": {
                         "type": "string"
                     },
@@ -1964,9 +2020,6 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
-                    },
-                    "isLocked": {
-                        "type": "boolean"
                     }
                 }
             },
@@ -1991,6 +2044,9 @@
                     "description": {
                         "type": "string"
                     },
+                    "title": {
+                        "type": "string"
+                    },
                     "status": {
                         "type": "string",
                         "enum": [
@@ -2001,9 +2057,6 @@
                             "DONE",
                             "ARCHIVED"
                         ]
-                    },
-                    "title": {
-                        "type": "string"
                     },
                     "beginDate": {
                         "type": "string",
@@ -2111,15 +2164,15 @@
                     "image": {
                         "type": "string"
                     },
-                    "full_name": {
-                        "type": "string"
-                    },
                     "email": {
                         "type": "string"
                     },
                     "userId": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "full_name": {
+                        "type": "string"
                     }
                 }
             },

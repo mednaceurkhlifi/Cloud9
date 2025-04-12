@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
 import tn.cloudnine.queute.dto.workspace.projections.ProjectProjection;
+import tn.cloudnine.queute.enums.DocumentType;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;
@@ -51,11 +52,11 @@ public class ProjectService implements IProjectService {
         if(imageOnUpdate) {
             if (image != null && !image.isEmpty()) {
                 if (!existingProject.getImage().equals(DEFAULT_IMAGE))
-                    fileUploader.deleteFile(existingProject.getImage());
+                    fileUploader.deleteFile(existingProject.getImage(), DocumentType.IMAGE);
                 existingProject.setImage(fileUploader.saveImage(image));
             } else {
                 if (!existingProject.getImage().equals(DEFAULT_IMAGE))
-                    fileUploader.deleteFile(existingProject.getImage());
+                    fileUploader.deleteFile(existingProject.getImage(), DocumentType.IMAGE);
                 existingProject.setImage(DEFAULT_IMAGE);
             }
         }
