@@ -41,13 +41,6 @@
 
                     <div class="single">
                             <span class="icon-container">
-                                <i class="pi pi-users"></i>
-                            </span>
-                        <span>Team</span>
-                    </div>
-
-                    <div class="single">
-                            <span class="icon-container">
                                 <i class="pi pi-chart-line"></i>
                             </span>
                         <span>Achievement</span>
@@ -70,18 +63,7 @@
 
                 <div class="flex flex-col justify-around gap-5">
 
-                    <div class="single">
-                        <p-avatargroup styleClass="cursor-pointer">
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="normal" shape="circle"></p-avatar>
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png" size="normal" shape="circle"></p-avatar>
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" size="normal" shape="circle"></p-avatar>
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/ionibowcher.png" size="normal" shape="circle"></p-avatar>
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/xuxuefeng.png" size="normal" shape="circle"></p-avatar>
-                            <p-avatar label="+2" shape="circle" size="normal" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                        </p-avatargroup>
-                    </div>
-
-                    <p-progressbar [value]="80"></p-progressbar>
+                    <p-progressbar [value]="module.achievement"></p-progressbar>
 
                     <div class="single">
                         <span>From {{module.beginDate | date: "medium" }} to {{module.deadline | date: "medium" }}</span>
@@ -101,7 +83,13 @@
     </div>
 
     <div class="card">
-        <p-dialog header="Add new task" [modal]="true" [(visible)]="isCreatingTask" [style]="{ width: '25rem' }">
+        <p-dialog header="Add new task" [modal]="true" [(visible)]="isCreatingTask" [style]="{ width: '60rem' }">
+            <app-task-form
+                [module_id]="module.moduleId"
+                (hideForm)="cancelAddTask()"
+                (taskCreated)="taskCreated($event)"
+            >
+            </app-task-form>
         </p-dialog>
         <p-table
             #dt2

@@ -10,6 +10,8 @@ import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
+import tn.cloudnine.queute.enums.workspace.ProjectStatus;
+import tn.cloudnine.queute.enums.workspace.TaskStatus;
 import tn.cloudnine.queute.model.Embeddable.ProjectUserId;
 import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.model.workspace.*;
@@ -21,8 +23,15 @@ import tn.cloudnine.queute.repository.workspace.TaskRepository;
 import tn.cloudnine.queute.service.workspace.ITaskService;
 import tn.cloudnine.queute.utils.IFileUploader;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static tn.cloudnine.queute.enums.workspace.ProjectStatus.*;
+import static tn.cloudnine.queute.enums.workspace.ProjectStatus.IN_PROGRESS;
+import static tn.cloudnine.queute.enums.workspace.TaskStatus.*;
 
 
 @Service
@@ -43,7 +52,9 @@ public class TaskService implements ITaskService {
         );
         saveDocuments(task, documents_request, documents);
         task.setProject(project);
-        return repository.save(task);
+        task = repository.save(task);
+        updateAchievement(task.getProject().getProjectId(), 0L);
+        return task;
     }
 
     @Override
@@ -53,7 +64,9 @@ public class TaskService implements ITaskService {
         );
         saveDocuments(task, documents_request, documents);
         task.setModule(module);
-        return repository.save(task);
+        task = repository.save(task);
+        updateAchievement(0L, task.getModule().getModuleId());
+        return task;
     }
 
     @Override
@@ -61,28 +74,33 @@ public class TaskService implements ITaskService {
         Task task = repository.findById(taskId).orElseThrow(
                 () -> new IllegalArgumentException("Task not found with ID : " + taskId)
         );
-
-        if(request.getTitle() != null && !request.getTitle().isEmpty()) {
+        if (hasText(request.getTitle())) {
             task.setTitle(request.getTitle());
         }
-        if(request.getDescription() != null && !request.getDescription().isEmpty()) {
+        if (hasText(request.getDescription())) {
             task.setDescription(request.getDescription());
         }
-        if(request.getPriority() != null) {
+        if (request.getPriority() != null) {
             task.setPriority(request.getPriority());
         }
-        if(request.getBeginDate() != null) {
+        if (request.getBeginDate() != null) {
             task.setBeginDate(request.getBeginDate());
         }
-        if(request.getDeadline() != null) {
+        if (request.getDeadline() != null) {
             task.setDeadline(request.getDeadline());
         }
-        if(request.getStatus() != null) {
+        if (request.getStatus() != null) {
             task.setStatus(request.getStatus());
         }
-
-        return repository.save(task);
-
+        task = repository.save(task);
+        if (request.getStatus() != null) {
+            if (task.getProject() != null) {
+                updateAchievement(task.getProject().getProjectId(), 0L);
+            } else if (task.getModule() != null) {
+                updateAchievement(0L, task.getModule().getModuleId());
+            }
+        }
+        return task;
     }
 
     @Override
@@ -122,6 +140,10 @@ public class TaskService implements ITaskService {
                 () -> new IllegalArgumentException("Task not found with ID : " + taskId)
         );
         repository.delete(task);
+        if(task.getProject() != null)
+            updateAchievement(task.getProject().getProjectId(), 0L);
+        else
+            updateAchievement(0L, task.getModule().getModuleId());
     }
 
     @Override
@@ -132,7 +154,7 @@ public class TaskService implements ITaskService {
         User user = userRepository.findByEmailEquals(userEmail).orElseThrow(
                 () -> new IllegalArgumentException("User not found with email : " + userEmail)
         );
-        if(task.getMembers().contains(user))
+        if (task.getMembers().contains(user))
             throw new IllegalArgumentException("User already assigned to task.");
         Project project;
         if (task.getProject() != null) {
@@ -164,6 +186,10 @@ public class TaskService implements ITaskService {
     /**
      * Util methods
      */
+    private boolean hasText(String str) {
+        return str != null && !str.trim().isEmpty();
+    }
+
     private void saveDocuments(
             Task task, List<DocumentRequest> documentsRequest, List<MultipartFile> documents
     ) {
@@ -189,5 +215,78 @@ public class TaskService implements ITaskService {
             }
         }
     }
+
+    /**
+     * Update achievement
+     */
+    private Float updateAchievement(Long projectId, Long moduleId) {
+        if (projectId > 0) {
+            return updateProjectAchievement(projectId);
+        } else {
+            return updateModuleAndProjectAchievement(moduleId);
+        }
+    }
+
+    private Float updateProjectAchievement(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("Project not found with ID : " + projectId)
+        );
+
+        Set<Long> moduleIds = getModuleIdsByProject(projectId);
+
+        long completed = repository.countByProjectProjectIdAndStatus(projectId, DONE)
+                + repository.countByModulesAndStatus(moduleIds, DONE);
+        long notCompleted = repository.countByProjectProjectIdAndStatusNot(projectId, DONE)
+                + repository.countByModulesAndStatusNotEquals(moduleIds, DONE);
+
+        float achievement = calculateAchievement(completed, notCompleted);
+        project.setAchievement(achievement);
+        if(achievement == 100f) {
+            project.setStatus(FINISHED);
+        } else {
+            project.setStatus(IN_PROGRESS);
+        }
+        projectRepository.save(project);
+
+        return achievement;
+    }
+
+    private Float updateModuleAndProjectAchievement(Long moduleId) {
+        ProjectModule module = moduleRepository.findById(moduleId).orElseThrow(
+                () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
+        );
+
+        // Update module achievement
+        long completed = repository.countByModuleModuleIdAndStatus(moduleId, DONE);
+        long notCompleted = repository.countByModuleModuleIdAndStatusNot(moduleId, DONE);
+        float moduleAchievement = calculateAchievement(completed, notCompleted);
+
+        module.setAchievement(moduleAchievement);
+        moduleRepository.save(module);
+
+        // Update related project achievement
+        Long projectId = module.getProject().getProjectId();
+        updateProjectAchievement(projectId);
+
+        return moduleAchievement;
+    }
+
+    private Set<Long> getModuleIdsByProject(Long projectId) {
+        return moduleRepository.findByProjectProjectId(projectId).stream()
+                .map(ProjectModule::getModuleId)
+                .collect(Collectors.toSet());
+    }
+
+    private float calculateAchievement(long completed, long notCompleted) {
+        long total = completed + notCompleted;
+        if (total == 0) return 0f;
+
+        float achievement = ((float) completed / total) * 100;
+        return BigDecimal.valueOf(achievement)
+                .setScale(2, RoundingMode.HALF_UP)
+                .floatValue();
+    }
+
+
 
 }

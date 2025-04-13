@@ -1,4 +1,15 @@
 <div class="card !mb-8">
+    <p-toast />
+    <p-confirmdialog></p-confirmdialog>
+    <p-dialog header="Update project" [modal]="true" [(visible)]="isOnUpdate" [style]="{ width: '80rem' }">
+        <app-project-form
+            [isOnUpdate]="true"
+            [project]="project"
+            [initUpdateF]="isOnUpdate"
+            (projectUpdated)="projectUpdated($event)"
+            (hideForm)="isOnUpdate = !isOnUpdate"
+        ></app-project-form>
+    </p-dialog>
     <div class="general-info" *ngIf="project">
         <div class="flex flex-col items-start justify-start gap-6" >
             <img *ngIf="project.image != 'default_project.jpg' else default_image_project" src="http://localhost:8082/api/v1/project-document/images/{{project.image}}" width="50" style="vertical-align: middle; border-radius: 50%;" />
@@ -6,8 +17,8 @@
                 <img src="workspace/images/default_workspace.jpg" width="50" style="vertical-align: middle; border-radius: 50%;" />
             </ng-template>
             <div class="flex flex-row items-center justify-center w-full">
-                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProduct()" />
-                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct()" />
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProject()" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProject()" />
             </div>
         </div>
 
@@ -121,7 +132,7 @@
                             <p-button class="ml-2" label="Add member" (click)="showAddMemberForm()" severity="info" icon="pi pi-user-edit"/>
                         </div>
 
-                        <p-progressbar [value]="80"></p-progressbar>
+                        <p-progressbar [value]="project.achievement"></p-progressbar>
 
                         <div class="single">
                             <span>From {{project.beginDate | date: "medium" }} to {{project.deadline | date: "medium" }}</span>
@@ -196,7 +207,7 @@
                         <p-tag [value]="module.priority" [severity]="getSeverityPriority(module.priority)" />
                     </td>
                     <td>
-                        <p-progressbar [value]="80"></p-progressbar>
+                        <p-progressbar [value]="module.achievement"></p-progressbar>
                     </td>
                 </tr>
             </ng-template>

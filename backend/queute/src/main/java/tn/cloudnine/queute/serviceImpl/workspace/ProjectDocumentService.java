@@ -19,6 +19,8 @@ import tn.cloudnine.queute.utils.IFileUploader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tn.cloudnine.queute.enums.DocumentType.OTHER;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectDocumentService implements IProjectDocumentService {
@@ -96,6 +98,21 @@ public class ProjectDocumentService implements IProjectDocumentService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void addDocumentsToProjectAutomation(Long projectId, String docName, MultipartFile file) {
+        ProjectDocument document = ProjectDocument.builder()
+                .document_name(docName)
+                .document_type(OTHER)
+                .build();
+        document.setPath(fileUploader.saveDocument(file));
+        document = repository.save(document);
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("Project not found with ID : " + projectId)
+        );
+        project.getDocuments().add(document);
+        projectRepository.save(project);
     }
 
 

@@ -1,0 +1,26 @@
+**Cahier des charges : Système de gestion d'inventaire Web**
+
+**1. Titre du projet :** Système de gestion d'inventaire Web pour petites entreprises de vente au détail
+
+**2. Objectif du projet :** Développer un système de gestion d'inventaire basé sur le web, robuste et convivial, destiné aux petites entreprises de vente au détail. Ce système permettra une gestion efficace du stock, des produits, des fournisseurs et la génération de rapports d'activité.
+
+**3. Description fonctionnelle :** Le système permettra la gestion complète de l'inventaire d'une entreprise, incluant la gestion des produits, le suivi des stocks, la gestion des fournisseurs et la génération de rapports.  Le système supportera un système de connexion multi-utilisateurs avec des rôles et des permissions définis.  Les utilisateurs pourront ajouter, modifier et supprimer des produits, suivre les niveaux de stock (réception, émission, ajustement), gérer les informations des fournisseurs et générer des rapports sur divers aspects de l'inventaire.
+
+**4. Modules et leurs objectifs :**
+
+* **Module de gestion des produits :** Permettre l'ajout, la modification, la suppression et la recherche de produits.  Inclure la gestion des informations clés du produit (nom, description, prix, etc.).
+* **Module de suivi des stocks :**  Suivre les niveaux de stock en temps réel, enregistrer les réceptions, les émissions et les ajustements de stock.  Gérer les alertes de stock bas.
+* **Module de gestion des fournisseurs :** Permettre l'ajout, la modification et la suppression des informations des fournisseurs (nom, coordonnées, etc.).
+* **Module de génération de rapports :** Générer des rapports sur les niveaux de stock, les ventes, les achats et d'autres indicateurs clés de performance (KPI).  Les rapports devront être exportables (format CSV, PDF).
+* **Module de gestion des utilisateurs :**  Gérer les comptes utilisateurs, attribuer des rôles (administrateur, employé, etc.) et définir les permissions associées à chaque rôle.  Sécuriser l'accès au système.
+
+**5. Tâches par module :**  Les tâches spécifiques pour chaque module seront définies dans un document annexe plus détaillé, après une phase d'analyse plus approfondie.  Ce document précisera les fonctionnalités détaillées, les interfaces utilisateurs, et les exigences techniques.
+
+**6. Dates importantes :**
+
+* **Date de début :** 26 juillet 2024
+* **Date limite :** 26 septembre 2024
+
+**7. Statut initial :** Le projet est actuellement en phase de planification.
+
+**8. Contraintes ou remarques :**  Des spécifications techniques détaillées et une analyse des besoins plus approfondie seront nécessaires pour une estimation précise des coûts et des délais.  La sécurité du système est une priorité absolue et devra être prise en compte tout au long du développement.  La compatibilité avec les navigateurs web les plus courants est requise.  Une formation des utilisateurs finaux sera nécessaire à la livraison du projet.

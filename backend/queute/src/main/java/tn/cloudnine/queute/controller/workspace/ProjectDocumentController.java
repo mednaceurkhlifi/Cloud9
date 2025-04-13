@@ -84,4 +84,18 @@ public class ProjectDocumentController {
         return fileUploader.serveFile("documents", filename, null);
     }
 
+    @PostMapping(value = "add-documents-project-automation/{project_id}/{doc_name}", consumes = "multipart/form-data")
+    public ResponseEntity<Map<String, String>> addDocumentsToProjectAutomation(
+            @PathVariable("project_id") Long project_id,
+            @PathVariable("doc_name") String doc_name,
+            @RequestPart(value = "document") MultipartFile document
+    ) {
+        service.addDocumentsToProjectAutomation(
+                project_id, doc_name, document
+        );
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "document saved."
+        ));
+    }
 }

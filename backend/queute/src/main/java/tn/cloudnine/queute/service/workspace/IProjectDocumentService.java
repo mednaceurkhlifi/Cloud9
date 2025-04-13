@@ -15,4 +15,6 @@ public interface IProjectDocumentService {
     List<ProjectDocument> addDocumentsToTask(Long taskId, List<DocumentRequest> documentsRequest, List<MultipartFile> documents);
 
     boolean deleteDocument(Long documentId, Long targetId, Integer target);
+
+    void addDocumentsToProjectAutomation(Long projectId, String docName, MultipartFile document);
 }

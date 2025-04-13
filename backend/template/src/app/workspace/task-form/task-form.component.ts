@@ -102,23 +102,43 @@ export class TaskFormComponent implements OnInit {
         this.setRequest();
         this.loading = true;
         if (!this.isOnUpdate) {
-            this._taskService
-                .addTaskToProject({
-                    project_id: this.project_id!,
-                    body: {
-                        task: this.task
-                    }
-                })
-                .subscribe({
-                    next: (response) => {
-                        this.taskCreated.emit();
-                        this.initForm();
-                        this.task = {};
-                    },
-                    error: (err) => {
-                        // treat errors
-                    }
-                });
+            if(this.project_id) {
+                this._taskService
+                    .addTaskToProject({
+                        project_id: this.project_id!,
+                        body: {
+                            task: this.task
+                        }
+                    })
+                    .subscribe({
+                        next: (response) => {
+                            this.taskCreated.emit();
+                            this.initForm();
+                            this.task = {};
+                        },
+                        error: (err) => {
+                            // treat errors
+                        }
+                    });
+            } else {
+                this._taskService
+                    .addTaskToModule({
+                        module_id: this.module_id!,
+                        body: {
+                            task: this.task
+                        }
+                    })
+                    .subscribe({
+                        next: (response) => {
+                            this.taskCreated.emit();
+                            this.initForm();
+                            this.task = {};
+                        },
+                        error: (err) => {
+                            // treat errors
+                        }
+                    });
+            }
         } else {
             this._taskService
                 .updateTask({

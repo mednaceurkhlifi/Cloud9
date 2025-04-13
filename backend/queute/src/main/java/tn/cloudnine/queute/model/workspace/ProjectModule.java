@@ -27,7 +27,7 @@ public class ProjectModule {
     @Column(columnDefinition = "TEXT")
     private String description;
     private Integer priority;
-    private Integer achievement;
+    private Float achievement;
 
     @Column(name = "begin_date")
     private LocalDateTime beginDate;

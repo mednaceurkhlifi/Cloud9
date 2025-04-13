@@ -30,7 +30,7 @@ public class Project {
     private String description;
     private String image;
     private Integer priority;
-    private Integer achievement;
+    private Float achievement;
 
     @Column(name = "begin_date")
     private LocalDateTime beginDate;

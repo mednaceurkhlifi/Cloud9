@@ -19,11 +19,13 @@ import { Toast } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModuleFormComponent } from '../module-form/module-form.component';
 import { ProjectModule } from '../../services/models/project-module';
+import { TaskFormComponent } from '../task-form/task-form.component';
+import { Task } from '../../services/models/task';
 
 @Component({
     selector: 'app-module-details',
     standalone: true,
-    imports: [CommonModule, Button, ProgressBar, Tag, Avatar, AvatarGroup, Dialog, Paginator, TableModule, ConfirmDialog, Toast, ModuleFormComponent],
+    imports: [CommonModule, Button, ProgressBar, Tag, Avatar, AvatarGroup, Dialog, Paginator, TableModule, ConfirmDialog, Toast, ModuleFormComponent, TaskFormComponent],
     templateUrl: './module-details.component.html',
     styleUrl: './module-details.component.scss',
     providers: [ConfirmationService, MessageService]
@@ -99,7 +101,7 @@ export class ModuleDetailsComponent implements OnInit {
             .subscribe({
                 next: (response) => {
                     this.module = response;
-                    this. updatePriorityLabel(this.module.priority!);
+                    this.updatePriorityLabel(this.module.priority!);
                     this.getModuleTasks(this.module.moduleId!);
                 },
                 error: (err) => {
@@ -123,9 +125,13 @@ export class ModuleDetailsComponent implements OnInit {
         this.isOnUpdate = true;
     }
 
-    addTask() {}
+    addTask() {
+        this.isCreatingTask = true;
+    }
 
-    showTask(taskId: any) {}
+    showTask(taskId: any) {
+        this.router.navigate(['/workspace/task', taskId]);
+    }
 
     getSeverityStatusTask(status: any): 'success' | 'info' | 'warn' | 'secondary' | 'contrast' | 'danger' | undefined {
         switch (status) {
@@ -173,9 +179,9 @@ export class ModuleDetailsComponent implements OnInit {
         this.loading_task = false;
     }
 
-    moduleUpdated(m : ProjectModule) {
+    moduleUpdated(m: ProjectModule) {
         this.module = m;
-        this. updatePriorityLabel(this.module.priority!);
+        this.updatePriorityLabel(this.module.priority!);
         this.isOnUpdate = false;
     }
 
@@ -187,5 +193,15 @@ export class ModuleDetailsComponent implements OnInit {
         } else {
             this.priority = 'High';
         }
+    }
+
+    cancelAddTask() {
+        this.isCreatingTask = false;
+    }
+
+    taskCreated($event: Task) {
+        this.getModuleTasks(this.module.moduleId!);
+        this.getModule(this.module.moduleId!);
+        this.isCreatingTask = false;
     }
 }

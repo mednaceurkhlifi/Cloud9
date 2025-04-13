@@ -11,7 +11,11 @@ import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectModule;
 import tn.cloudnine.queute.repository.workspace.ModuleRepository;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;
+import tn.cloudnine.queute.repository.workspace.TaskRepository;
 import tn.cloudnine.queute.service.workspace.IModuleService;
+import tn.cloudnine.queute.service.workspace.ITaskService;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,8 @@ public class ModuleService implements IModuleService {
 
     private final ModuleRepository repository;
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
+    private final ITaskService taskService;
 
     @Override
     public ProjectModule addModule(Long projectId, ProjectModule module) {
@@ -59,6 +65,11 @@ public class ModuleService implements IModuleService {
         ProjectModule module = repository.findById(moduleId).orElseThrow(
                 () -> new IllegalArgumentException("Module not found with ID : " + moduleId)
         );
+        Set<Long> relatedTasks = taskRepository.findRelatedTaskIdByModule(moduleId);
+        for (Long id : relatedTasks){
+            taskService.deleteTask(id);
+        }
+
         repository.delete(module);
     }
 

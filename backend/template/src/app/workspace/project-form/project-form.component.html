@@ -153,16 +153,22 @@
                 </div>
 
                 <div class="image-form" *ngIf="isOnUpdate">
-                    <div class="card flex justify-center">
+                    <div class="card flex items-start justify-start">
                         <p-select
                             [options]="projectStatusList"
-                            [(ngModel)]="selectedStatus"
                             [checkmark]="true"
                             [showClear]="true"
+                            formControlName="projectStatus"
                             optionLabel="name"
                             optionValue="value"
                             placeholder="Select a status"
                             class="w-full md:w-56" />
+                        <p-message
+                            *ngIf="projectForm.get('projectStatus')?.touched && projectForm.get('projectStatus')?.invalid"
+                            severity="error"
+                            text="Status is required.">
+
+                        </p-message>
                     </div>
 
                     <div class="img-container">
@@ -170,28 +176,29 @@
                              src="http://localhost:8082/api/v1/project-document/images/{{project.image}}"
                              alt="workspace image">
                         <ng-template #default_image_project>
-                            <img src="workspace/images/default_project.jpg" alt="workspace image">
+                            <img src="workspace/images/default_workspace.jpg" alt="project image">
                         </ng-template>
+                        <p-button *ngIf="project.image != 'default_project.jpg'" icon="pi pi-trash" [rounded]="true"
+                                  severity="danger" label="remove image" (click)="removeImage()" />
+                        <p-fileupload [multiple]="false"
+                                      (onSelect)="changeImage($event)"
+                                      accept="image/*"
+                                      maxFileSize="1000000" mode="advanced"
+                        >
+                            <ng-template #empty>
+                                <div>Drag and drop project image to here.</div>
+                            </ng-template>
+                            <ng-template #content>
+                                <ul *ngIf="image">
+                                    <li>{{ image.name }} - {{ image.size }} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileupload>
                     </div>
-                    <p-button *ngIf="project.image != 'default_project.jpg'" icon="pi pi-trash" [rounded]="true"
-                              severity="danger" label="remove image" (click)="removeImage()" />
-                    <p-fileupload [multiple]="false"
-                                  (onSelect)="changeImage($event)"
-                                  accept="image/*"
-                                  maxFileSize="1000000" mode="advanced"
-                    >
-                        <ng-template #empty>
-                            <div>Drag and drop project image to here.</div>
-                        </ng-template>
-                        <ng-template #content>
-                            <ul *ngIf="image">
-                                <li>{{ image.name }} - {{ image.size }} bytes</li>
-                            </ul>
-                        </ng-template>
-                    </p-fileupload>
+
                 </div>
 
-                <div class="flex justify-end mt-4 gap-1">
+                <div class="flex justify-end mt-8 gap-1">
                     <p-button label="Cancel" iconPos="right" severity="warn"
                               styleClass="text-lg font-semibold px-4 py-2 w-40" (click)="cancel()" />
                     <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"

@@ -3,6 +3,7 @@ package tn.cloudnine.queute.controller.workspace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.cloudnine.queute.dto.workspace.automation.ProjectRequest;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectResponse;
 import tn.cloudnine.queute.model.workspace.Project;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5678"})
 public class ProjectController {
 
     private final IProjectService service;
@@ -30,11 +31,11 @@ public class ProjectController {
         return ResponseEntity.ok().body(service.addProjectToWorkspace(workspace_id, project, image));
     }
 
-    @PatchMapping(value = "update-project", consumes = "multipart/form-data")
+    @PatchMapping(value = "update-project/{imageOnUpdate}", consumes = "multipart/form-data")
     public ResponseEntity<Project> updateProject(
             @RequestPart("project") Project project,
             @RequestPart(value = "image", required = false) MultipartFile image,
-            @RequestPart("imageOnUpdate") boolean imageOnUpdate
+            @PathVariable("imageOnUpdate") boolean imageOnUpdate
     ) {
         return ResponseEntity.ok().body(service.updateProject(
                 project, image, imageOnUpdate
@@ -63,6 +64,14 @@ public class ProjectController {
             @PathVariable("page_no") Integer page_no
     ) {
         return ResponseEntity.ok().body(service.getProjectsByWorkspace(workspace_id, size, page_no));
+    }
+    /**
+     * Automate creating project
+     */
+    @PostMapping("automate-create-project")
+    public ResponseEntity<Map<String, String>> automateProjectCreation(@RequestBody ProjectRequest request){
+        Long projectId = service.automateProjectCreation(request);
+        return ResponseEntity.ok().body(Map.of("status", "success", "projectId", projectId.toString()));
     }
 
 }

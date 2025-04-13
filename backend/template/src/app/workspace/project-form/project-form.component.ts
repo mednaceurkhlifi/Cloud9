@@ -44,9 +44,15 @@ export class ProjectFormComponent implements OnInit {
     @Input() project: Project = {};
     @Input() workspace_id: number | undefined;
     @Input() isOnUpdate: boolean = false;
+    @Input() set initUpdateF(trigger: boolean) {
+        if (trigger) {
+            this.initFormUpdate();
+        }
+    }
 
     @Output() hideForm = new EventEmitter<void>();
     @Output() projectCreated = new EventEmitter<void>();
+    @Output() projectUpdated = new EventEmitter<Project>();
 
     prioritySeverity: 'info' | 'warn' | 'danger' = 'info';
 
@@ -58,6 +64,7 @@ export class ProjectFormComponent implements OnInit {
             this.updatePriorityLabel(value);
         });
         this.updatePriorityLabel(this.projectForm.get('priority')?.value);
+        if(this.isOnUpdate) this.formTitle = "";
     }
 
     initForm() {
@@ -66,10 +73,30 @@ export class ProjectFormComponent implements OnInit {
                 name: new FormControl('', [Validators.required]),
                 priority: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
                 description: new FormControl('', [Validators.required]),
+                projectStatus: new FormControl('NOT_STARTED', [Validators.required]),
                 beginDateDate: new FormControl(null, [Validators.required]),
                 beginDateTime: new FormControl(null, [Validators.required]),
                 deadlineDate: new FormControl(null, [Validators.required]),
                 deadlineTime: new FormControl(null, [Validators.required])
+            },
+            { validators: validateProjectDates() }
+        );
+    }
+
+    initFormUpdate() {
+        this.isOnUpdate = true;
+        const begin = new Date(this.project.beginDate!);
+        const deadline = new Date(this.project.deadline!);
+        this.projectForm = new FormGroup(
+            {
+                name: new FormControl(this.project.name, [Validators.required]),
+                priority: new FormControl(this.project.priority, [Validators.required, Validators.min(1), Validators.max(10)]),
+                description: new FormControl(this.project.description, [Validators.required]),
+                projectStatus: new FormControl(this.project.status, [Validators.required]),
+                beginDateDate: new FormControl(begin, [Validators.required]),
+                beginDateTime: new FormControl(begin, [Validators.required]),
+                deadlineDate: new FormControl(deadline, [Validators.required]),
+                deadlineTime: new FormControl(deadline, [Validators.required])
             },
             { validators: validateProjectDates() }
         );
@@ -96,6 +123,22 @@ export class ProjectFormComponent implements OnInit {
                 });
             }
         } else {
+            this._projectService.updateProject({
+                imageOnUpdate: this.isImageChanged,
+                body: {
+                    project: this.project,
+                    image: this.image ? this.image : undefined,
+                }
+            }).subscribe({
+                next: response => {
+                    this.project = response;
+                    this.projectUpdated.emit(response);
+                    this.resetPage();
+                },
+                error: err => {
+                    // treat errors
+                }
+            })
         }
     }
 
@@ -146,7 +189,8 @@ export class ProjectFormComponent implements OnInit {
         if (this.beginDateValue) this.project.beginDate = this.beginDateValue;
         if (this.deadlineValue) this.project.deadline = this.deadlineValue;
         if (!this.isOnUpdate) this.project.status = 'NOT_STARTED';
-        // status if on update
+        if(this.isOnUpdate)
+            this.project.status = this.projectForm.get('projectStatus')?.value;
     }
 
     get beginDateValue() {

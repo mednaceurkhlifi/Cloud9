@@ -15,5 +15,6 @@ public interface ProjectModuleProjection {
     LocalDateTime getBeginDate();
     LocalDateTime getDeadline();
     Set<ProjectDocument> getDocuments();
+    Float getAchievement();
     Project getProject();
 }

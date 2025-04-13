@@ -31,6 +31,9 @@ import { ProjectUser } from '../../services/models/project-user';
 import { UserDto } from '../../services/models/user-dto';
 import { AddMemberFormComponent } from '../add-member-form/add-member-form.component';
 import { TeamViewComponent } from '../team-view/team-view.component';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Toast } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-project-details',
@@ -55,10 +58,13 @@ import { TeamViewComponent } from '../team-view/team-view.component';
         ReactiveFormsModule,
         InputText,
         AddMemberFormComponent,
-        TeamViewComponent
+        TeamViewComponent,
+        ConfirmDialog,
+        Toast
     ],
     templateUrl: './project-details.component.html',
-    styleUrl: './project-details.component.scss'
+    styleUrl: './project-details.component.scss',
+    providers: [ConfirmationService, MessageService]
 })
 export class ProjectDetailsComponent implements OnInit {
     status: string = 'IN_PROGRESS';
@@ -77,6 +83,7 @@ export class ProjectDetailsComponent implements OnInit {
     isCreatingTask: boolean = false;
     isCreatingManager: boolean = false;
     isCreatingMember: boolean = false;
+    isOnUpdate: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -84,7 +91,9 @@ export class ProjectDetailsComponent implements OnInit {
         private _moduleService: ModuleControllerService,
         private _taskService: TaskControllerService,
         private _projectUserService: ProjectUserControllerService,
-        private router: Router
+        private router: Router,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit() {
@@ -204,9 +213,45 @@ export class ProjectDetailsComponent implements OnInit {
         return undefined;
     }
 
-    editProduct() {}
+    editProject() {
+        this.isOnUpdate = true;
+    }
 
-    deleteProduct() {}
+    deleteProject() {
+        this.confirmationService.confirm({
+            message: 'Do you want to delete this project?',
+            header: 'Danger Zone',
+            icon: 'pi pi-info-circle',
+            rejectLabel: 'Cancel',
+            rejectButtonProps: {
+                label: 'Cancel',
+                severity: 'secondary',
+                outlined: true
+            },
+            acceptButtonProps: {
+                label: 'Delete',
+                severity: 'danger'
+            },
+
+            accept: () => {
+                this._projectService
+                    .deleteProject({
+                        project_id: this.project.projectId!
+                    })
+                    .subscribe({
+                        next: () => {
+                            this.router.navigate(['/workspace']);
+                        },
+                        error: (err) => {
+                            // treat errors
+                        }
+                    });
+            },
+            reject: () => {
+                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            }
+        });
+    }
 
     addModule() {
         this.isCreatingModule = true;
@@ -260,6 +305,7 @@ export class ProjectDetailsComponent implements OnInit {
 
     taskCreated() {
         this.getProjectTasks(this.project.projectId!);
+        this.getProject(this.project.projectId!);
         this.isCreatingTask = false;
     }
 
@@ -328,5 +374,10 @@ export class ProjectDetailsComponent implements OnInit {
     memberDeleted($event: String) {
         let index = this.team.findIndex((p) => p.user?.email === $event);
         this.team.splice(index, 1);
+    }
+
+    projectUpdated($event: Project) {
+        this.isOnUpdate = false;
+        this.project = $event;
     }
 }

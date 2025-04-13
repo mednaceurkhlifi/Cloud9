@@ -13,6 +13,7 @@ public interface ProjectProjection {
     String getDescription();
     String getImage();
     Integer getPriority();
+    Float getAchievement();
     LocalDateTime getBeginDate();
     LocalDateTime getDeadline();
     ProjectStatus getStatus();

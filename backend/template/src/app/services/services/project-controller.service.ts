@@ -56,7 +56,7 @@ export class ProjectControllerService extends BaseService {
   }
 
   /** Path part for operation `updateProject()` */
-  static readonly UpdateProjectPath = '/project/update-project';
+  static readonly UpdateProjectPath = '/project/update-project/{imageOnUpdate}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -64,7 +64,7 @@ export class ProjectControllerService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  updateProject$Response(params?: UpdateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<Project>> {
+  updateProject$Response(params: UpdateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<Project>> {
     return updateProject(this.http, this.rootUrl, params, context);
   }
 
@@ -74,7 +74,7 @@ export class ProjectControllerService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  updateProject(params?: UpdateProject$Params, context?: HttpContext): Observable<Project> {
+  updateProject(params: UpdateProject$Params, context?: HttpContext): Observable<Project> {
     return this.updateProject$Response(params, context).pipe(
       map((r: StrictHttpResponse<Project>): Project => r.body)
     );

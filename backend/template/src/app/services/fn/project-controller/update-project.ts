@@ -11,16 +11,17 @@ import { RequestBuilder } from '../../request-builder';
 import { Project } from '../../models/project';
 
 export interface UpdateProject$Params {
+  imageOnUpdate: boolean;
       body?: {
 'project': Project;
 'image'?: Blob;
-'imageOnUpdate': boolean;
 }
 }
 
-export function updateProject(http: HttpClient, rootUrl: string, params?: UpdateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<Project>> {
+export function updateProject(http: HttpClient, rootUrl: string, params: UpdateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<Project>> {
   const rb = new RequestBuilder(rootUrl, updateProject.PATH, 'patch');
   if (params) {
+    rb.path('imageOnUpdate', params.imageOnUpdate, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
@@ -34,4 +35,4 @@ export function updateProject(http: HttpClient, rootUrl: string, params?: Update
   );
 }
 
-updateProject.PATH = '/project/update-project';
+updateProject.PATH = '/project/update-project/{imageOnUpdate}';

@@ -190,16 +190,16 @@ export class ProjectDocumentControllerService extends BaseService {
     );
   }
 
-  /**** manually added methods ****/
-  addDocumentsToTaskManual(task_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
-      const formData = new FormData();
-      formData.append('documents_request', new Blob([JSON.stringify(documents_request)], { type: 'application/json' }));
-      for (let doc of documents) {
-          formData.append('documents', doc);
-      }
+    /**** manually added methods ****/
+    addDocumentsToTaskManual(task_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
+        const formData = new FormData();
+        formData.append('documents_request', new Blob([JSON.stringify(documents_request)], { type: 'application/json' }));
+        for (let doc of documents) {
+            formData.append('documents', doc);
+        }
 
-      return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-task/${task_id}`, formData);
-  }
+        return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-task/${task_id}`, formData);
+    }
 
     addDocumentsToProjectManual(project_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
         const formData = new FormData();

@@ -5,6 +5,7 @@
 import { Project } from '../models/project';
 import { ProjectDocument } from '../models/project-document';
 export interface ProjectModule {
+  achievement?: number;
   beginDate?: string;
   createdAt?: string;
   deadline?: string;

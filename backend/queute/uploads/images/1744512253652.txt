@@ -1,0 +1,32 @@
+Cahier des charges : Système de gestion d'inventaire web
+
+1. **Titre du projet:** Système de gestion d'inventaire web pour petites entreprises
+
+2. **Objectif du projet:** Développer un système de gestion d'inventaire web accessible et convivial pour les petites entreprises de vente au détail. Ce système permettra une gestion efficace des produits, du stock, des fournisseurs et de la production de rapports.  Il assurera également la gestion des utilisateurs et leurs droits d'accès.
+
+3. **Description fonctionnelle:** Le système permettra la gestion complète de l'inventaire d'une entreprise, de la réception des produits à la génération de rapports.  Il offrira une interface utilisateur intuitive pour la gestion des produits, le suivi des stocks, la gestion des fournisseurs et la génération de rapports personnalisés.  Le système permettra un accès multi-utilisateurs avec des rôles et des permissions définis.
+
+4. **Modules et leurs objectifs:**
+
+* **Gestion des produits:**  Permettre l'ajout, la modification et la suppression de produits, incluant la gestion des informations détaillées telles que la description, le prix, le code-barre, et les images.
+* **Suivi des stocks:**  Suivre les niveaux de stock en temps réel, enregistrer les réceptions, les sorties et les ajustements de stock.  Générer des alertes pour les stocks bas.
+* **Gestion des fournisseurs:**  Permettre l'ajout, la modification et la suppression d'informations sur les fournisseurs, incluant les coordonnées et l'historique des transactions.
+* **Rapports:** Générer des rapports sur les niveaux de stock, les ventes, et d'autres indicateurs clés de performance (KPI).  Les rapports devront être exportables dans différents formats (ex: PDF, CSV).
+* **Gestion des utilisateurs:**  Gérer les utilisateurs du système, leur attribuer des rôles (ex: administrateur, gestionnaire, employé) et définir leurs permissions d'accès aux différentes fonctionnalités.
+
+5. **Tâches par module:**  (A définir plus précisément lors de la phase de planification détaillée.  Cette section sera complétée ultérieurement avec une liste exhaustive des tâches pour chaque module, incluant une estimation de temps et de ressources.)
+
+6. **Dates importantes:**
+
+* **Date de début du projet:** 27 Octobre 2024
+* **Date limite du projet:** 26 Décembre 2024
+* **Dates limites des modules (prévisionnelles):**
+    * Gestion des produits: 26 Novembre 2024
+    * Suivi des stocks: 26 Novembre 2024
+    * Gestion des fournisseurs: 26 Novembre 2024
+    * Gestion des utilisateurs: 16 Novembre 2024
+    * Rapports: 26 Décembre 2024
+
+7. **Statut initial:** Le projet est en phase de démarrage (NOT_STARTED).
+
+8. **Contraintes ou remarques:**  Les spécifications détaillées de chaque module et les tâches associées seront définies lors de la phase d'analyse détaillée.  L'architecture technique du système sera définie en tenant compte des contraintes de performance et de sécurité.  Un plan de test complet sera mis en place pour garantir la qualité du système.  Des réunions régulières seront organisées pour suivre l'avancement du projet et gérer les risques potentiels.

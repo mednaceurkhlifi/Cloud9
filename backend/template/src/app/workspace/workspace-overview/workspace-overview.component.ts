@@ -152,7 +152,7 @@ export class WorkspaceOverviewComponent implements OnInit {
         this._wkService
             .getWorkspace({
                 organization_id: this.organization_id,
-                size: 5,
+                size: 45,
                 page_no: 0
             })
             .subscribe({

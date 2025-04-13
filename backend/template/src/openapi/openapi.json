@@ -522,12 +522,22 @@
                 }
             }
         },
-        "/project/update-project": {
+        "/project/update-project/{imageOnUpdate}": {
             "patch": {
                 "tags": [
                     "project-controller"
                 ],
                 "operationId": "updateProject",
+                "parameters": [
+                    {
+                        "name": "imageOnUpdate",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -540,13 +550,9 @@
                                     "image": {
                                         "type": "string",
                                         "format": "binary"
-                                    },
-                                    "imageOnUpdate": {
-                                        "type": "boolean"
                                     }
                                 },
                                 "required": [
-                                    "imageOnUpdate",
                                     "project"
                                 ]
                             }
@@ -1550,6 +1556,10 @@
                         "type": "integer",
                         "format": "int32"
                     },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
+                    },
                     "beginDate": {
                         "type": "string",
                         "format": "date-time"
@@ -1671,6 +1681,10 @@
                     "priority": {
                         "type": "integer",
                         "format": "int32"
+                    },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
                     },
                     "beginDate": {
                         "type": "string",
@@ -1816,10 +1830,10 @@
                         "type": "string",
                         "format": "date-time"
                     },
-                    "is_deleted": {
+                    "is_locked": {
                         "type": "boolean"
                     },
-                    "is_locked": {
+                    "is_deleted": {
                         "type": "boolean"
                     }
                 }
@@ -1923,13 +1937,6 @@
             "ProjectProjection": {
                 "type": "object",
                 "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
                     "description": {
                         "type": "string"
                     },
@@ -1962,9 +1969,20 @@
                         },
                         "uniqueItems": true
                     },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
+                    },
                     "projectId": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
                     }
                 }
             },
@@ -2001,12 +2019,6 @@
             "WorkspaceProjection": {
                 "type": "object",
                 "properties": {
-                    "isLocked": {
-                        "type": "boolean"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
                     "description": {
                         "type": "string"
                     },
@@ -2020,6 +2032,12 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "isLocked": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
                     }
                 }
             },
@@ -2037,14 +2055,7 @@
             "TaskProjection": {
                 "type": "object",
                 "properties": {
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
                     "description": {
-                        "type": "string"
-                    },
-                    "title": {
                         "type": "string"
                     },
                     "status": {
@@ -2057,6 +2068,9 @@
                             "DONE",
                             "ARCHIVED"
                         ]
+                    },
+                    "title": {
+                        "type": "string"
                     },
                     "beginDate": {
                         "type": "string",
@@ -2076,6 +2090,10 @@
                     "taskId": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
                     }
                 }
             },
@@ -2119,11 +2137,11 @@
                             "TEAM_MEMBER"
                         ]
                     },
-                    "project": {
-                        "$ref": "#/components/schemas/ProjectProjection"
-                    },
                     "user": {
                         "$ref": "#/components/schemas/UserProjection"
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/ProjectProjection"
                     }
                 }
             },
@@ -2167,12 +2185,12 @@
                     "email": {
                         "type": "string"
                     },
+                    "full_name": {
+                        "type": "string"
+                    },
                     "userId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "full_name": {
-                        "type": "string"
                     }
                 }
             },
@@ -2209,10 +2227,6 @@
             "ProjectModuleProjection": {
                 "type": "object",
                 "properties": {
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
                     "description": {
                         "type": "string"
                     },
@@ -2234,12 +2248,20 @@
                         },
                         "uniqueItems": true
                     },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
+                    },
                     "project": {
                         "$ref": "#/components/schemas/Project"
                     },
                     "moduleId": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
                     }
                 }
             }

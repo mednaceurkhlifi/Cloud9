@@ -13,10 +13,12 @@ import tn.cloudnine.queute.dto.workspace.projections.ProjectProjection;
 import tn.cloudnine.queute.dto.workspace.projections.WorkspaceProjection;
 import tn.cloudnine.queute.enums.DocumentType;
 import tn.cloudnine.queute.model.organization.Organization;
+import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.repository.organization.OrganizationRepository;
 import tn.cloudnine.queute.repository.workspace.ProjectRepository;
 import tn.cloudnine.queute.repository.workspace.WorkspaceRepository;
+import tn.cloudnine.queute.service.workspace.IProjectService;
 import tn.cloudnine.queute.service.workspace.IWrokspaceService;
 import tn.cloudnine.queute.utils.IFileUploader;
 
@@ -27,6 +29,7 @@ public class WorkspaceService implements IWrokspaceService {
     private final WorkspaceRepository repository;
     private final OrganizationRepository organizationRepository;
     private final ProjectRepository projectRepository;
+    private final IProjectService projectService;
     private final IFileUploader fileUploader;
     private final String DEFAULT_IMAGE = "default_workspace.jpg";
     private final String DEFAULT_IMAGE_PROJECT = "default_project.jpg";
@@ -79,6 +82,9 @@ public class WorkspaceService implements IWrokspaceService {
         Workspace workspace = repository.findById(workspaceId).orElseThrow(
                 () -> new IllegalArgumentException("Workspace not found with ID: " + workspaceId)
         );
+        for (Project project : workspace.getProjects()) {
+            projectService.deleteProject(project.getProjectId());
+        }
         repository.delete(workspace);
     }
 
