@@ -26,6 +26,10 @@ import { Workspace } from '../../services/models/workspace';
 import { Router } from '@angular/router';
 import { WorkspaceRequest } from '../../services/models/workspace-request';
 import { ProjectFormComponent } from '../project-form/project-form.component';
+import { Paginator } from 'primeng/paginator';
+import { Dialog } from 'primeng/dialog';
+import { AiAutomationServiceService } from '../../AI/AI-Workflow-Automation/ai-automation-service.service';
+import { WorkFlowRequest } from '../../AI/WorkFlowRequest';
 
 @Component({
     selector: 'app-workspace-overview',
@@ -50,7 +54,9 @@ import { ProjectFormComponent } from '../project-form/project-form.component';
         MultiSelectModule,
         SelectModule,
         ConfirmDialog,
-        ProjectFormComponent
+        ProjectFormComponent,
+        Paginator,
+        Dialog
     ],
     templateUrl: './workspace-overview.component.html',
     styleUrl: './workspace-overview.component.scss',
@@ -58,6 +64,7 @@ import { ProjectFormComponent } from '../project-form/project-form.component';
 })
 export class WorkspaceOverviewComponent implements OnInit {
     wkForm!: FormGroup;
+    aiCreatePrForm!: FormGroup;
     image: any = null;
     workspaceResponse!: WorkspaceResponse;
     isWkFound: boolean = false;
@@ -67,6 +74,10 @@ export class WorkspaceOverviewComponent implements OnInit {
     isImageChanged: boolean = false;
     formTitle: string = 'Create yours now !';
     createProject: boolean = false;
+    page_no: number = 0;
+    size_pr: number = 10;
+    aiDialog: boolean = false;
+    waitingForAiResponse: boolean = false;
 
     data: TreeNode[] = [
         {
@@ -141,19 +152,23 @@ export class WorkspaceOverviewComponent implements OnInit {
         private _wkService: WorkspaceControllerService,
         private router: Router,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private _aiAutoService: AiAutomationServiceService
     ) {}
 
     ngOnInit() {
         this.getWorkspace();
+        this.aiCreatePrForm = new FormGroup({
+            description: new FormControl('', [Validators.required])
+        });
     }
 
     getWorkspace() {
         this._wkService
             .getWorkspace({
                 organization_id: this.organization_id,
-                size: 45,
-                page_no: 0
+                size: this.size_pr,
+                page_no: this.page_no
             })
             .subscribe({
                 next: (response) => {
@@ -323,5 +338,33 @@ export class WorkspaceOverviewComponent implements OnInit {
 
     showProject(projectId: number) {
         this.router.navigate(['/workspace/project', projectId]);
+    }
+
+    onPageChangeProject($event: any) {
+        this.page_no = $event.page;
+        this.size_pr = $event.rows;
+        this.getWorkspace();
+    }
+
+    exploreAi() {
+        this.aiDialog = true;
+    }
+
+    processAiCreatingProject() {
+        this.waitingForAiResponse = true;
+        let request: WorkFlowRequest = {
+            input: this.aiCreatePrForm.get('description')?.value,
+            workspace_id: this.workspaceResponse.projection?.workspaceId
+        }
+        this._aiAutoService.createProjectWithAi(request).subscribe({
+            next: (response) => {
+                this.messageService.add({ severity: 'success', summary: 'Done', detail: 'Project created, enjoy the power of AI !' });
+                console.log(response);
+                this.router.navigate(['/workspace/project', response.projectId]);
+            } ,
+            error: (err) => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong please try again !' });
+            }
+        })
     }
 }

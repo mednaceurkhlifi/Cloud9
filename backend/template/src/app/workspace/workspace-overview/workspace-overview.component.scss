@@ -81,3 +81,48 @@
     height: 100%;
     border-radius: 50%;
 }
+
+.ai-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    width: 150px;
+    height: 50px;
+}
+
+.ai-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.animated-text {
+    font-size: 1.2rem;
+    font-weight: 650;
+    color: #4a4a4a;
+    animation: bounce 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+

@@ -1,0 +1,40 @@
+**Cahier des Charges : Plateforme E-learning**
+
+**1. Titre du projet :** Plateforme E-learning
+
+**2. Objectif du projet :**  Développer une plateforme e-learning complète permettant aux utilisateurs de s'inscrire, d'accéder à des modules de cours, de visionner des vidéos, de réaliser des quiz et de suivre leur progression.
+
+**3. Description fonctionnelle :** La plateforme e-learning offrira les fonctionnalités suivantes : inscription et authentification des utilisateurs, gestion des modules de cours (création, édition, suppression),  hébergement et diffusion de vidéos, création et gestion de quiz avec système de notation, suivi de la progression de chaque utilisateur dans les différents modules.  L'interface utilisateur sera intuitive et facile à naviguer.
+
+**4. Modules et leurs objectifs :**
+
+* **Module Frontend :** Développement de l'interface utilisateur et de l'expérience utilisateur (UI/UX).  L'objectif est de créer une interface attractive, ergonomique et responsive, optimisée pour une expérience utilisateur fluide et intuitive sur tous les supports.
+
+* **Module Backend :** Développement de la logique côté serveur et de la base de données. L'objectif est de mettre en place une architecture robuste, sécurisée et performante pour gérer les données utilisateurs, les cours, les vidéos et les résultats des quiz.
+
+
+**5. Tâches par module :**
+
+**Module Frontend :**
+
+* **UI Inscription Utilisateur :** Conception et implémentation de l'interface d'inscription utilisateur (date limite : 22/03/2024).
+* **UI Module de Cours :** Conception et implémentation de l'interface des modules de cours (date limite : 15/04/2024).
+* **UI Quiz :** Conception et implémentation de l'interface des quiz (date limite : 01/05/2024).
+
+**Module Backend :**
+
+* **Authentification Utilisateur :** Implémentation de l'inscription et de l'authentification des utilisateurs (date limite : 29/03/2024).
+* **Gestion des Cours :** Implémentation de la création, de la gestion et du contrôle d'accès aux cours (date limite : 19/04/2024).
+* **Moteur de Quiz :** Implémentation du moteur de quiz et du système de notation (date limite : 06/05/2024).
+
+
+**6. Dates importantes :**
+
+* **Début du projet :** 08/03/2024
+* **Date limite du projet :** 31/12/2024
+* **Dates limites des modules (voir détail dans la section 5).**
+
+
+**7. Statut initial :**  Le projet est en phase de démarrage (NOT_STARTED).
+
+**8. Contraintes ou remarques :**  Aucune contrainte spécifique n'est actuellement identifiée.  Un suivi régulier du projet sera mis en place pour identifier et gérer d'éventuelles difficultés.  L'adaptation du planning pourra être nécessaire en fonction de l'avancement des tâches et de l'apparition d'imprévus.

@@ -1,0 +1,30 @@
+**Cahier des Charges : Système de Gestion d'Inventaire Web**
+
+**1. Titre du projet :** Système de Gestion d'Inventaire Web
+
+**2. Objectif du projet :** Développer un système de gestion d'inventaire basé sur le web pour les petites entreprises de vente au détail.  Ce système permettra la gestion des produits, le suivi des stocks, la gestion des fournisseurs et la génération de rapports, le tout accessible par plusieurs utilisateurs avec des rôles définis.
+
+**3. Description fonctionnelle :** Le système permettra la gestion complète du cycle de vie des produits, du suivi des stocks à la génération de rapports.  Il offrira une interface utilisateur intuitive et facile à utiliser pour les employés de l'entreprise.  Le système sera accessible via un navigateur web et sera compatible avec les principaux navigateurs modernes.  La sécurité des données sera une priorité absolue.  L'authentification des utilisateurs sera gérée par un module de gestion des utilisateurs avec attribution de rôles et de permissions.
+
+**4. Modules et leurs objectifs :**
+
+* **Gestion des Produits :** Permettre l'ajout, la modification et la suppression de produits, incluant la gestion des informations détaillées de chaque produit (nom, description, prix, image, etc.).
+* **Suivi des Stocks :** Permettre le suivi précis des niveaux de stock en temps réel, incluant la gestion des entrées, des sorties et des ajustements de stock.  Des alertes pourront être configurées pour prévenir les niveaux de stock bas.
+* **Gestion des Fournisseurs :** Permettre la gestion des informations des fournisseurs (nom, coordonnées, historique des commandes, etc.).
+* **Rapports :** Permettre la génération de rapports sur les niveaux de stock, les ventes, et d'autres indicateurs clés de performance (KPI).  Les rapports pourront être exportables au format PDF ou CSV.
+* **Gestion des Utilisateurs :** Permettre la création, la modification et la suppression de comptes utilisateurs, avec la gestion des rôles et des permissions pour contrôler l'accès aux différentes fonctionnalités du système.
+
+
+**5. Tâches par module :**  Les tâches spécifiques pour chaque module seront définies dans un document séparé.  Ce document sera élaboré suite à l'analyse plus détaillée des besoins et la conception technique.  Une description plus détaillée des tâches sera fournie ultérieurement.
+
+
+**6. Dates importantes :**
+
+* **Date de début du projet :** 26 juillet 2024
+* **Date limite du projet :** 26 septembre 2024
+* **Dates limites des modules :**  Les dates limites pour chaque module sont précisées dans la structure du projet JSON, mais nécessitent une confirmation après une analyse plus fine des tâches.
+
+
+**7. Statut initial :** Le projet est actuellement au statut "NON COMMENCÉ".
+
+**8. Contraintes ou remarques :**  L'équipe de développement devra se conformer aux normes de sécurité et de confidentialité des données en vigueur.  Des tests unitaires et d'intégration seront effectués pour garantir la qualité du logiciel.  Une documentation complète du système sera fournie à la fin du projet.  Des réunions de suivi régulières seront organisées pour assurer le bon déroulement du projet.  Une analyse plus approfondie sera nécessaire pour affiner le planning et les tâches.

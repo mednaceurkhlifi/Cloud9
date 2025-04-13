@@ -1,0 +1,37 @@
+Cahier des charges : Plateforme E-learning
+
+1. **Titre du projet :** Plateforme E-learning
+
+2. **Objectif du projet :**  Développer une plateforme e-learning complète permettant aux utilisateurs de s'inscrire, de suivre des modules de cours, de visionner des vidéos, de passer des quiz et de suivre leur progression.
+
+3. **Description fonctionnelle :** La plateforme offrira un système d'inscription et d'authentification des utilisateurs.  Elle permettra la création et la gestion de modules de cours incluant des vidéos.  Un système de quiz avec évaluation automatique sera intégré.  Un suivi de la progression de chaque utilisateur sera mis en place.
+
+4. **Modules et leurs objectifs :**
+
+    * **Frontend :** Développement de l'interface utilisateur (UI) et de l'expérience utilisateur (UX).  L'objectif est de créer une interface intuitive et ergonomique pour une navigation facile et agréable.
+
+    * **Backend :** Développement de la logique côté serveur et de la base de données. L'objectif est de fournir une infrastructure robuste et sécurisée pour gérer les données utilisateurs, les cours, les quiz et le suivi de la progression.
+
+
+5. **Tâches par module :**
+
+    * **Module Frontend :**
+        * **UI Inscription Utilisateur :** Conception et implémentation de l'interface d'inscription utilisateur (Date butoir : 22/03/2024).
+        * **UI Module de Cours :** Conception et implémentation de l'interface des modules de cours (Date butoir : 15/04/2024).
+        * **UI Quiz :** Conception et implémentation de l'interface des quiz (Date butoir : 01/05/2024).
+
+    * **Module Backend :**
+        * **Authentification Utilisateur :** Implémentation de l'inscription et de l'authentification des utilisateurs (Date butoir : 29/03/2024).
+        * **Gestion des Cours :** Implémentation de la création, de la gestion et du contrôle d'accès aux cours (Date butoir : 19/04/2024).
+        * **Moteur de Quiz :** Implémentation du moteur de quiz et du système de notation (Date butoir : 06/05/2024).
+
+
+6. **Dates importantes :**
+
+    * **Date de début du projet :** 08/03/2024
+    * **Date limite du projet :** 31/12/2024
+    * Dates butoirs des tâches précisées ci-dessus.
+
+7. **Statut initial :**  Non commencé.
+
+8. **Contraintes ou remarques :**  Des contraintes techniques ou des modifications de spécifications pourraient survenir et nécessiteront une adaptation du planning. Une communication régulière entre les parties prenantes est essentielle pour garantir le succès du projet.  Le respect des dates butoirs est crucial pour la livraison du projet dans les temps.
