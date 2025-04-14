@@ -19,20 +19,26 @@ export class PostComponent implements OnInit{
     post: Post;
     votes : Vote[];
     voteNum: number;
-    @Input() postId?: string;
-    finalPostId!:string|null;
+    @Input() postId?: number;
+    finalPostId!:number;
     constructor(private postController : PostControllerService,private route : ActivatedRoute,private voteController: VoteControllerService){
         this.votes=[];
         this.post= {};
         this.voteNum=0;
     }
     ngOnInit() {
-        this.finalPostId=this.postId ?? this.route.snapshot.paramMap.get("id")
+        let routeId=this.route.snapshot.paramMap.get("id");
+        if(routeId!=null){
+            this.finalPostId=parseInt(routeId);
+        }else{
+            if(this.postId!=undefined)
+                this.finalPostId=this.postId
+        }
         if(this.finalPostId!=null){
-            this.postController.getPost(parseInt(this.finalPostId)).subscribe(data =>{
+            this.postController.getPost(this.finalPostId).subscribe(data =>{
                 this.post=data;
             });
-            this.voteController.getVotesPerPost(parseInt(this.finalPostId)).subscribe(data => {
+            this.voteController.getVotesPerPost(this.finalPostId).subscribe(data => {
                 this.votes=data;
                 this.votes.forEach(v => {
                     if(v.voteType == "UPVOTE")
