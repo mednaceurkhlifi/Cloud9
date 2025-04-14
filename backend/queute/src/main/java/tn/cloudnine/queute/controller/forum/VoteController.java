@@ -16,6 +16,7 @@ import java.util.List;
 public class VoteController {
 
     public final IVoteService voteService;
+    public final IPostService postService;
     @PostMapping("create-vote")
     public ResponseEntity<Vote> createVote(@RequestBody Vote vote) {
         return ResponseEntity.ok().body(voteService.create(vote));
@@ -41,5 +42,10 @@ public class VoteController {
     @GetMapping("get-votes")
     public ResponseEntity<List<Vote>> getVotes() {
         return ResponseEntity.ok().body(voteService.findAll());
+    }
+    @GetMapping("get-votes/post/{id}")
+    public ResponseEntity<List<Vote>> getVotesPerPost(@PathVariable Long id) {
+        List<Vote> votes = postService.findById(id).getVotes();
+        return ResponseEntity.ok().body(votes);
     }
 }
