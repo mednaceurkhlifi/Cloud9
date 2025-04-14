@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.forum;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,10 +18,10 @@ public class Post extends Votable {
     @JoinColumn(name = "image_id",nullable = true)
     private ImageEntity image;
     @OneToMany(mappedBy = "votable", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Vote> votes;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Comment> comments;
 
     @ManyToOne

@@ -15,9 +15,7 @@ public class Vote {
     @Enumerated(EnumType.STRING)
     private VoteType voteType;
     @ManyToOne
-    @JsonBackReference
     private Votable votable;
     @ManyToOne
-    @JsonBackReference
     private User user;
 }

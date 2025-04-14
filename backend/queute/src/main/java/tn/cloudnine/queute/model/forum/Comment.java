@@ -1,6 +1,7 @@
 package tn.cloudnine.queute.model.forum;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,11 +15,10 @@ import java.util.List;
 public class Comment extends Votable {
 
     @OneToMany(mappedBy = "votable", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Vote> votes;
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    @JsonBackReference
     private Post post;
     @ManyToOne
     @JoinColumn(name = "user_id")
