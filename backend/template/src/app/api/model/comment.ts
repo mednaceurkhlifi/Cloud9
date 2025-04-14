@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Vote } from './vote';
 import { User } from './user';
 import { Post } from './post';
 
@@ -16,7 +15,6 @@ export interface Comment {
     id?: number;
     content?: string;
     date?: string;
-    votes?: Array<Vote>;
     post?: Post;
     user?: User;
 }

@@ -7,8 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Vote } from './vote';
-import { Post } from './post';
 
 
 export interface User { 
@@ -26,9 +24,6 @@ export interface User {
     email?: string;
     created_at?: string;
     updated_at?: string;
-    posts?: Array<Post>;
-    Votes?: Array<Vote>;
-    votes?: Array<Vote>;
     is_deleted?: boolean;
     is_locked?: boolean;
 }

@@ -1,0 +1,32 @@
+<div class="card container">
+    <p-panel [toggleable]="true">
+        <ng-template #header>
+            <div class="flex items-center gap-2">
+                <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
+                <span class="font-bold">{{ post.title }}</span>
+            </div>
+        </ng-template>
+        <ng-template #footer>
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <p-button icon="pi pi-arrow-up" severity="success" rounded text></p-button>
+
+                    <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum}}</span>
+                    <ng-template #noVotes>
+                        <span  class="font-bold">0</span>
+                    </ng-template>
+                    <p-button icon="pi pi-arrow-down" severity="danger" rounded text></p-button>
+                    <p-button icon="pi pi-comment" severity="secondary" rounded text></p-button>
+                    <p-button icon="pi pi-bookmark" severity="secondary" rounded text></p-button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #icons>
+            <p-button icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
+            <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
+        </ng-template>
+        <p class="m-0">
+            {{ post.content }}
+        </p>
+    </p-panel>
+</div>
