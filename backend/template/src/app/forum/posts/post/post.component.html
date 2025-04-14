@@ -11,7 +11,7 @@
                 <div class="flex items-center gap-2">
                     <p-button icon="pi pi-arrow-up" severity="success" rounded text></p-button>
 
-                    <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum}}</span>
+                    <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum }}</span>
                     <ng-template #noVotes>
                         <span  class="font-bold">0</span>
                     </ng-template>
@@ -21,12 +21,17 @@
                 </div>
             </div>
         </ng-template>
-        <ng-template #icons>
-            <p-button icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
+        <ng-template #icons >
+            <p-button *ngIf="owner" icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
             <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
         </ng-template>
         <p class="m-0">
             {{ post.content }}
         </p>
     </p-panel>
+<div class="card flex justify-center gap-2">
+    <p-toast />
+    <p-confirmdialog />
 </div>
+</div>
+
