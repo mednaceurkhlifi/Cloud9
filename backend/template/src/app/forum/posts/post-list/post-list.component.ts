@@ -20,7 +20,6 @@ export class PostListComponent implements OnInit{
 
     constructor(private postController : PostControllerService){
         this.posts=[];
-
     }
     ngOnInit(): void {
         this.postController.getPosts().subscribe(data =>{

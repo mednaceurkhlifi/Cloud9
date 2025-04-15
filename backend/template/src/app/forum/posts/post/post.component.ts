@@ -6,18 +6,31 @@ import { PanelModule } from 'primeng/panel';
 import { Post, PostControllerService, Vote, VoteControllerService } from '../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
+import { CommentListComponent } from '../../comments/comment-list/comment-list.component';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog],
+  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent],
   standalone:true,
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
-  providers:[ConfirmationService,MessageService]
+  providers:[ConfirmationService,MessageService],
+  animations: [
+    trigger('fadeSlide', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(10px)' })),
+      ]),
+    ]),
+  ],
 
 })
 export class PostComponent implements OnInit{
@@ -28,6 +41,8 @@ export class PostComponent implements OnInit{
     @Input() postId?: number;
     finalPostId!:number;
     owner: boolean= false;
+    vote! :Vote
+    showComments: boolean = false;
     constructor(private postController : PostControllerService,private route : ActivatedRoute,private voteController: VoteControllerService,private userService: CurrUserServiceService,private router : Router,private confirmationService: ConfirmationService, private messageService: MessageService){
         this.votes=[];
         this.post= {};
@@ -63,7 +78,7 @@ export class PostComponent implements OnInit{
         this.items = [
             {
                 label: 'Edit',
-                icon: 'pi pi-search',
+                icon: 'pi pi-pencil',
                 command:()=>{
                     this.router.navigate([{ outlets: { create: ['post', this.post.id] } }], {
                         relativeTo: this.route
@@ -118,5 +133,101 @@ export class PostComponent implements OnInit{
                 this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
             },
         });
+    }
+    upVote(){
+        this.vote = {
+            voteType:"UPVOTE",
+            votable:this.post,
+            user:this.userService.getCurrUser()
+        };
+        let v = this.votes.find(e => e.user?.user_id == this.userService.getCurrUser().user_id);
+        if(v!=undefined && v.voteType=="UPVOTE"){
+           return;
+        }
+        else if(v!=undefined && v.voteType=="DOWNVOTE"){
+            this.voteNum+=2;
+            let oldVote : Vote ;
+            this.voteController.getVote(v.id!).subscribe(data =>{
+                oldVote=data;
+                oldVote.voteType="UPVOTE";
+                this.votes.forEach(e => {
+                    if(e.id==v.id){
+                        e.voteType="UPVOTE";
+                    }
+
+                });
+                this.voteController.updateVote(oldVote).subscribe({
+                    next:()=>{
+                        console.log(this.vote);
+                    },
+                    error: err =>{
+                        console.log(err);
+                    }
+
+                })
+            });
+
+        }else{
+            this.votes.push(this.vote);
+            this.voteNum++
+                this.voteController.createVote(this.vote).subscribe({
+                next:()=>{
+                    console.log(this.vote);
+                },
+                error: err =>{
+                    console.log(err);
+                }
+            });
+        }
+    }
+    downVote(){
+        this.vote = {
+            voteType:"DOWNVOTE",
+            votable:this.post,
+            user:this.userService.getCurrUser()
+        };
+        let v = this.votes.find(e => e.user?.user_id == this.userService.getCurrUser().user_id);
+        if(v!=undefined && v.voteType=="DOWNVOTE"){
+           return;
+        }
+        else if(v!=undefined && v.voteType=="UPVOTE"){
+            this.voteNum-=2;
+            this.votes.forEach(e => {
+                if(e.id==v.id){
+                    e.voteType="DOWNVOTE";
+                }
+
+            });
+            let oldVote : Vote ;
+            this.voteController.getVote(v.id!).subscribe(data =>{
+                oldVote=data;
+                oldVote.voteType="DOWNVOTE";
+                this.voteController.updateVote(oldVote).subscribe({
+                    next:()=>{
+                        console.log(this.vote);
+                    },
+                    error: err =>{
+                        console.log(err);
+                    }
+
+                })
+            });
+        }else{
+            this.votes.push(this.vote);
+            this.voteNum--
+                this.voteController.createVote(this.vote).subscribe({
+                next:()=>{
+                    console.log(this.vote);
+                },
+                error: err =>{
+                    console.log(err);
+                }
+            });
+
+        }
+
+    }
+    fade(){
+        this.showComments=!this.showComments;
     }
 }
