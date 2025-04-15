@@ -6,3 +6,5 @@
 <ng-template #loading>
   <p>Loading posts...</p>
 </ng-template>
+<button [routerLink]="[{ outlets: { create: ['post'] } }]">Create Post</button>
+<router-outlet name="create"></router-outlet>
