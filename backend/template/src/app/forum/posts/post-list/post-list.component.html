@@ -1,10 +1,13 @@
-<div *ngIf="posts.length > 0; else loading">
-    <div *ngFor="let post of posts">
-        <app-post [postId]="post.id"> </app-post>
+    <div *ngIf="loading == true">
+        <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
     </div>
-</div>
-<ng-template #loading>
-  <p>Loading posts...</p>
-</ng-template>
-<button [routerLink]="[{ outlets: { create: ['post'] } }]">Create Post</button>
-<router-outlet name="create"></router-outlet>
+    <div *ngIf="posts.length > 0 && empty==false">
+        <div *ngFor="let post of posts">
+            <app-post [postId]="post.id"> </app-post>
+        </div>
+    </div>
+    <div *ngIf="empty == true">
+        no posts created yet
+    </div>
+    <p-button icon="pi pi-plus" label="create" [routerLink]="[{ outlets: { create: ['post'] } }]" class="fixed top-0 z-50 right-10" ></p-button>
+    <router-outlet name="create"></router-outlet>

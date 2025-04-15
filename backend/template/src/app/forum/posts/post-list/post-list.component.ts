@@ -3,23 +3,32 @@ import { Post, PostControllerService } from '../../../api';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post/post.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-post-list',
-  imports: [RouterOutlet,RouterModule,CommonModule,PostComponent],
+  imports: [RouterOutlet,RouterModule,CommonModule,PostComponent,ButtonModule,ProgressSpinner],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss',
   standalone:true
 })
 export class PostListComponent implements OnInit{
-    posts: Post[]
+    posts: Post[];
+    empty : boolean = false;
+    loading: boolean = true;
+
     constructor(private postController : PostControllerService){
         this.posts=[];
+
     }
     ngOnInit(): void {
         this.postController.getPosts().subscribe(data =>{
             this.posts=data;
-            console.log(data);
+            if(data.length==0){
+                this.empty=true;
+            }
+            this.loading=false;
         })
     }
 
