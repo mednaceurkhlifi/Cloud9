@@ -30,7 +30,7 @@ public class User {
     private String first_name;
     private String last_name;
     private String full_name;
-    private LocalDate birth_date;
+    private LocalDateTime birth_date;
     private String image;
     private String address;
     private String password;

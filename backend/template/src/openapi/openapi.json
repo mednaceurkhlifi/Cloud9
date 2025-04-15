@@ -21,6 +21,84 @@
         }
     ],
     "paths": {
+        "/ws-msg/send-message/{target}/{targetId}/{sender_email}": {
+            "post": {
+                "tags": [
+                    "workspace-message-controller"
+                ],
+                "operationId": "sendMessage",
+                "parameters": [
+                    {
+                        "name": "targetId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "target",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "sender_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "$ref": "#/components/schemas/WorkspaceMessage"
+                                    },
+                                    "attachment_request": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/DocumentRequest"
+                                        }
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "message"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/workspace/add-workspace": {
             "post": {
                 "tags": [
@@ -177,6 +255,39 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/automate-create-project": {
+            "post": {
+                "tags": [
+                    "project-controller"
+                ],
+                "operationId": "automateProjectCreation",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProjectRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
                                 }
                             }
                         }
@@ -341,6 +452,66 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ProjectModule"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project-document/add-documents-project-automation/{project_id}/{doc_name}": {
+            "post": {
+                "tags": [
+                    "project-document-controller"
+                ],
+                "operationId": "addDocumentsToProjectAutomation",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "doc_name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "document": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "document"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
                                 }
                             }
                         }
@@ -793,6 +964,202 @@
                                     "items": {
                                         "$ref": "#/components/schemas/ProjectDocument"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ws-msg/get-workspace-messages/{workspaceId}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "workspace-message-controller"
+                ],
+                "operationId": "getWorkspaceMessages",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ws-msg/get-project-messages/{projectId}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "workspace-message-controller"
+                ],
+                "operationId": "getProjectMessages",
+                "parameters": [
+                    {
+                        "name": "projectId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ws-msg/get-module-messages/{moduleId}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "workspace-message-controller"
+                ],
+                "operationId": "getModuleMessages",
+                "parameters": [
+                    {
+                        "name": "moduleId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ws-msg/get-messages/{taskId}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "workspace-message-controller"
+                ],
+                "operationId": "getTaskMessages",
+                "parameters": [
+                    {
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MessageResponse"
                                 }
                             }
                         }
@@ -1626,45 +1993,6 @@
                     }
                 }
             },
-            "Workspace": {
-                "type": "object",
-                "properties": {
-                    "workspaceId": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "image": {
-                        "type": "string"
-                    },
-                    "organization": {
-                        "$ref": "#/components/schemas/Organization"
-                    },
-                    "projects": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Project"
-                        },
-                        "uniqueItems": true
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updatedAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "locked": {
-                        "type": "boolean"
-                    }
-                }
-            },
             "ProjectModule": {
                 "type": "object",
                 "properties": {
@@ -1798,7 +2126,7 @@
                     },
                     "birth_date": {
                         "type": "string",
-                        "format": "date"
+                        "format": "date-time"
                     },
                     "image": {
                         "type": "string"
@@ -1838,6 +2166,83 @@
                     }
                 }
             },
+            "Workspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "organization": {
+                        "$ref": "#/components/schemas/Organization"
+                    },
+                    "projects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Project"
+                        },
+                        "uniqueItems": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "locked": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "WorkspaceMessage": {
+                "type": "object",
+                "properties": {
+                    "messageId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "workspace": {
+                        "$ref": "#/components/schemas/Workspace"
+                    },
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
+                    },
+                    "module": {
+                        "$ref": "#/components/schemas/ProjectModule"
+                    },
+                    "task": {
+                        "$ref": "#/components/schemas/Task"
+                    },
+                    "attachments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
             "DocumentRequest": {
                 "type": "object",
                 "properties": {
@@ -1849,6 +2254,163 @@
                         "enum": [
                             "IMAGE",
                             "OTHER"
+                        ]
+                    }
+                }
+            },
+            "MessageDto": {
+                "type": "object",
+                "properties": {
+                    "sender": {
+                        "$ref": "#/components/schemas/UserDTO"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "attachments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "UserDTO": {
+                "type": "object",
+                "properties": {
+                    "full_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "MANAGER",
+                            "TEAM_MEMBER"
+                        ]
+                    }
+                }
+            },
+            "ModuleRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "tasks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TaskRequest"
+                        }
+                    }
+                }
+            },
+            "ProjectRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "workspace_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "ON_HOLD",
+                            "CANCELED",
+                            "UNDER_REVIEW",
+                            "FINISHED"
+                        ]
+                    },
+                    "modules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ModuleRequest"
+                        }
+                    }
+                }
+            },
+            "TaskRequest": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "TO_DO",
+                            "IN_PROGRESS",
+                            "BLOCKED",
+                            "REWORK_NEEDED",
+                            "DONE",
+                            "ARCHIVED"
                         ]
                     }
                 }
@@ -1895,27 +2457,6 @@
                     }
                 }
             },
-            "UserDTO": {
-                "type": "object",
-                "properties": {
-                    "full_name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "image": {
-                        "type": "string"
-                    },
-                    "role": {
-                        "type": "string",
-                        "enum": [
-                            "MANAGER",
-                            "TEAM_MEMBER"
-                        ]
-                    }
-                }
-            },
             "WorkspaceRequest": {
                 "type": "object",
                 "properties": {
@@ -1934,9 +2475,85 @@
                     }
                 }
             },
+            "MessageProjection": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "sender": {
+                        "$ref": "#/components/schemas/UserProjection"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "attachments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectDocument"
+                        }
+                    }
+                }
+            },
+            "MessageResponse": {
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MessageProjection"
+                        }
+                    },
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "UserProjection": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "full_name": {
+                        "type": "string"
+                    }
+                }
+            },
             "ProjectProjection": {
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
                     "description": {
                         "type": "string"
                     },
@@ -1969,20 +2586,13 @@
                         },
                         "uniqueItems": true
                     },
-                    "achievement": {
-                        "type": "number",
-                        "format": "float"
-                    },
                     "projectId": {
                         "type": "integer",
                         "format": "int64"
                     },
-                    "name": {
-                        "type": "string"
-                    },
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
+                    "achievement": {
+                        "type": "number",
+                        "format": "float"
                     }
                 }
             },
@@ -2019,25 +2629,25 @@
             "WorkspaceProjection": {
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "type": "string"
+                    },
                     "description": {
                         "type": "string"
                     },
                     "image": {
                         "type": "string"
                     },
-                    "workspaceId": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
                     },
+                    "workspaceId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
                     "isLocked": {
                         "type": "boolean"
-                    },
-                    "name": {
-                        "type": "string"
                     }
                 }
             },
@@ -2055,7 +2665,14 @@
             "TaskProjection": {
                 "type": "object",
                 "properties": {
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
                     "description": {
+                        "type": "string"
+                    },
+                    "title": {
                         "type": "string"
                     },
                     "status": {
@@ -2068,9 +2685,6 @@
                             "DONE",
                             "ARCHIVED"
                         ]
-                    },
-                    "title": {
-                        "type": "string"
                     },
                     "beginDate": {
                         "type": "string",
@@ -2090,10 +2704,6 @@
                     "taskId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
                     }
                 }
             },
@@ -2137,11 +2747,11 @@
                             "TEAM_MEMBER"
                         ]
                     },
-                    "user": {
-                        "$ref": "#/components/schemas/UserProjection"
-                    },
                     "project": {
                         "$ref": "#/components/schemas/ProjectProjection"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserProjection"
                     }
                 }
             },
@@ -2173,24 +2783,6 @@
                     },
                     "isLast": {
                         "type": "boolean"
-                    }
-                }
-            },
-            "UserProjection": {
-                "type": "object",
-                "properties": {
-                    "image": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "full_name": {
-                        "type": "string"
-                    },
-                    "userId": {
-                        "type": "integer",
-                        "format": "int64"
                     }
                 }
             },
@@ -2227,6 +2819,10 @@
             "ProjectModuleProjection": {
                 "type": "object",
                 "properties": {
+                    "priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
                     "description": {
                         "type": "string"
                     },
@@ -2258,10 +2854,6 @@
                     "moduleId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "priority": {
-                        "type": "integer",
-                        "format": "int32"
                     }
                 }
             }

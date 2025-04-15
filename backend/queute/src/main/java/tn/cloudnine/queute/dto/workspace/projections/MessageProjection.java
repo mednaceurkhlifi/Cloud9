@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MessageProjection {
-    ProjectUserProjection getUser();
+    UserProjection getSender();
     String getMessage();
     List<ProjectDocument> getAttachments();
     LocalDateTime getCreatedAt();

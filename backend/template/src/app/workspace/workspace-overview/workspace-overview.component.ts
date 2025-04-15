@@ -30,6 +30,7 @@ import { Paginator } from 'primeng/paginator';
 import { Dialog } from 'primeng/dialog';
 import { AiAutomationServiceService } from '../../AI/AI-Workflow-Automation/ai-automation-service.service';
 import { WorkFlowRequest } from '../../AI/WorkFlowRequest';
+import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
 
 @Component({
     selector: 'app-workspace-overview',
@@ -56,7 +57,8 @@ import { WorkFlowRequest } from '../../AI/WorkFlowRequest';
         ConfirmDialog,
         ProjectFormComponent,
         Paginator,
-        Dialog
+        Dialog,
+        ChatChannelComponent
     ],
     templateUrl: './workspace-overview.component.html',
     styleUrl: './workspace-overview.component.scss',
@@ -355,16 +357,16 @@ export class WorkspaceOverviewComponent implements OnInit {
         let request: WorkFlowRequest = {
             input: this.aiCreatePrForm.get('description')?.value,
             workspace_id: this.workspaceResponse.projection?.workspaceId
-        }
+        };
         this._aiAutoService.createProjectWithAi(request).subscribe({
             next: (response) => {
                 this.messageService.add({ severity: 'success', summary: 'Done', detail: 'Project created, enjoy the power of AI !' });
                 console.log(response);
                 this.router.navigate(['/workspace/project', response.projectId]);
-            } ,
+            },
             error: (err) => {
                 this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong please try again !' });
             }
-        })
+        });
     }
 }

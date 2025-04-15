@@ -1,26 +1,17 @@
-import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
 import { Injectable } from '@angular/core';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-    private stompClient: any;
+    connect(): any {
+        let socketClient: any;
+        const socket = new SockJS('http://localhost:8082/api/v1/ws');
+        socketClient = Stomp.over(socket);
 
-    connect() {
-        const socket = new SockJS('http://localhost:8080/api/v1/ws');
-        this.stompClient = Stomp.over(socket);
-        this.stompClient.connect({}, () => {
-            this.stompClient.subscribe('/topic/messages', (message: any) => {
-                console.log(JSON.parse(message.body)); // handle received msg
-            });
+        socketClient.connect({},() => {
+            console.log('Connected to WebSocket');
         });
-    }
-
-    sendMessage(sender: string, content: string) {
-        this.stompClient.send(
-            '/app/chat.send',
-            {},
-            JSON.stringify({ sender, content })
-        );
+        return socketClient;
     }
 }

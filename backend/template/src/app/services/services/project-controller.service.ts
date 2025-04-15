@@ -13,6 +13,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { addProjectToWorkspace } from '../fn/project-controller/add-project-to-workspace';
 import { AddProjectToWorkspace$Params } from '../fn/project-controller/add-project-to-workspace';
+import { automateProjectCreation } from '../fn/project-controller/automate-project-creation';
+import { AutomateProjectCreation$Params } from '../fn/project-controller/automate-project-creation';
 import { deleteProject } from '../fn/project-controller/delete-project';
 import { DeleteProject$Params } from '../fn/project-controller/delete-project';
 import { getProjectById } from '../fn/project-controller/get-project-by-id';
@@ -28,6 +30,39 @@ import { UpdateProject$Params } from '../fn/project-controller/update-project';
 export class ProjectControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `automateProjectCreation()` */
+  static readonly AutomateProjectCreationPath = '/project/automate-create-project';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `automateProjectCreation()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  automateProjectCreation$Response(params: AutomateProjectCreation$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: string;
+}>> {
+    return automateProjectCreation(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `automateProjectCreation$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  automateProjectCreation(params: AutomateProjectCreation$Params, context?: HttpContext): Observable<{
+[key: string]: string;
+}> {
+    return this.automateProjectCreation$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+[key: string]: string;
+}>): {
+[key: string]: string;
+} => r.body)
+    );
   }
 
   /** Path part for operation `addProjectToWorkspace()` */

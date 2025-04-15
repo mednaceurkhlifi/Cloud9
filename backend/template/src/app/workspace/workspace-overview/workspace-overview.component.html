@@ -101,7 +101,7 @@
 </p-fluid>
 <p-dialog header="Create project with AI" [modal]="true" [(visible)]="aiDialog" [style]="{ width: '50rem' }">
     <form *ngIf="!waitingForAiResponse" [formGroup]="aiCreatePrForm" (ngSubmit)="processAiCreatingProject()"
-    class="font-semibold flex-col gap-10 text-xl mb-4">
+          class="font-semibold flex-col gap-10 text-xl mb-4">
         <div class="flex flex-col gap-4 mt-5">
             <label for="description-pr" class="text-lg">Description <span style="color: red">*</span></label>
             <textarea pTextarea id="description-pr" rows="4" formControlName="description"
@@ -117,7 +117,8 @@
         </div>
     </form>
     <div *ngIf="waitingForAiResponse" class="flex items-center justify-center">
-        <iframe class="w-96 h-96" src="https://lottie.host/embed/72acc11e-1be3-4b24-87e9-a2846d86c5ef/fiRQfxHRHO.lottie"></iframe>
+        <iframe class="w-96 h-96"
+                src="https://lottie.host/embed/72acc11e-1be3-4b24-87e9-a2846d86c5ef/fiRQfxHRHO.lottie"></iframe>
     </div>
     <div *ngIf="waitingForAiResponse" class="ai-loader">
         <span class="animated-text">Just a moment! We're crafting your AI-powered magic...</span>
@@ -233,3 +234,8 @@
                   [workspace_id]="workspaceResponse.projection?.workspaceId"
                   (hideForm)="createProject = !createProject"
                   (projectCreated)="projectCreated()"></app-project-form>
+
+<app-chat-channel *ngIf="isWkFound"
+                  [workspace_id]="workspaceResponse.projection?.workspaceId!"
+></app-chat-channel>
+

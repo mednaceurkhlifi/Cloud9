@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.workspace.MessageDto;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.MessageResponse;
 import tn.cloudnine.queute.model.workspace.WorkspaceMessage;
@@ -20,15 +21,16 @@ public class WorkspaceMessageController {
 
     private final IWorkspaceMessageService service;
 
-    @PostMapping(value = "send-message/{target}/{targetId}", consumes = "multipart/form-data")
-    public ResponseEntity<WorkspaceMessage> sendMessage(
+    @PostMapping(value = "send-message/{target}/{targetId}/{sender_email}", consumes = "multipart/form-data")
+    public ResponseEntity<MessageDto> sendMessage(
             @PathVariable("targetId") Long targetId,
             @PathVariable("target") Long target,
+            @PathVariable("sender_email") String sender_email,
             @RequestPart("message")WorkspaceMessage message,
-            @RequestPart(value = "attachment_request") List<DocumentRequest> attachment_request,
-            @RequestPart(value = "attachments") List<MultipartFile> attachments
+            @RequestPart(value = "attachment_request", required = false) List<DocumentRequest> attachment_request,
+            @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
             ) {
-        return ResponseEntity.ok(service.sendMessage(target, targetId, message, attachment_request, attachments));
+        return ResponseEntity.ok(service.sendMessage(target, targetId, sender_email, message, attachment_request, attachments));
     }
 
     @GetMapping("get-workspace-messages/{workspaceId}/{size}/{page_no}")

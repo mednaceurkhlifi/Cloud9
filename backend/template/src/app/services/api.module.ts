@@ -6,6 +6,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { WorkspaceMessageControllerService } from './services/workspace-message-controller.service';
 import { WorkspaceControllerService } from './services/workspace-controller.service';
 import { TaskControllerService } from './services/task-controller.service';
 import { ProjectControllerService } from './services/project-controller.service';
@@ -21,6 +22,7 @@ import { ProjectDocumentControllerService } from './services/project-document-co
   exports: [],
   declarations: [],
   providers: [
+    WorkspaceMessageControllerService,
     WorkspaceControllerService,
     TaskControllerService,
     ProjectControllerService,

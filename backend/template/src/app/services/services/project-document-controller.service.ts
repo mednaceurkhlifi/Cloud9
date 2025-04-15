@@ -15,6 +15,8 @@ import { addDocumentsToModule } from '../fn/project-document-controller/add-docu
 import { AddDocumentsToModule$Params } from '../fn/project-document-controller/add-documents-to-module';
 import { addDocumentsToProject } from '../fn/project-document-controller/add-documents-to-project';
 import { AddDocumentsToProject$Params } from '../fn/project-document-controller/add-documents-to-project';
+import { addDocumentsToProjectAutomation } from '../fn/project-document-controller/add-documents-to-project-automation';
+import { AddDocumentsToProjectAutomation$Params } from '../fn/project-document-controller/add-documents-to-project-automation';
 import { addDocumentsToTask } from '../fn/project-document-controller/add-documents-to-task';
 import { AddDocumentsToTask$Params } from '../fn/project-document-controller/add-documents-to-task';
 import { deleteDocument } from '../fn/project-document-controller/delete-document';
@@ -30,6 +32,39 @@ import { DocumentRequest } from '../models/document-request';
 export class ProjectDocumentControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `addDocumentsToProjectAutomation()` */
+  static readonly AddDocumentsToProjectAutomationPath = '/project-document/add-documents-project-automation/{project_id}/{doc_name}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addDocumentsToProjectAutomation()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addDocumentsToProjectAutomation$Response(params: AddDocumentsToProjectAutomation$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: string;
+}>> {
+    return addDocumentsToProjectAutomation(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addDocumentsToProjectAutomation$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  addDocumentsToProjectAutomation(params: AddDocumentsToProjectAutomation$Params, context?: HttpContext): Observable<{
+[key: string]: string;
+}> {
+    return this.addDocumentsToProjectAutomation$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+[key: string]: string;
+}>): {
+[key: string]: string;
+} => r.body)
+    );
   }
 
   /** Path part for operation `addDocumentsToTask()` */
@@ -189,7 +224,6 @@ export class ProjectDocumentControllerService extends BaseService {
 } => r.body)
     );
   }
-
     /**** manually added methods ****/
     addDocumentsToTaskManual(task_id: number, documents_request: DocumentRequest[], documents: File[]): Observable<ProjectDocument[]> {
         const formData = new FormData();
@@ -220,4 +254,5 @@ export class ProjectDocumentControllerService extends BaseService {
 
         return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-module/${module_id}`, formData);
     }
+
 }

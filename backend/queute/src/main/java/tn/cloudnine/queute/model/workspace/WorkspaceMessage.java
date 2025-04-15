@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.model.workspace;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,6 +26,7 @@ public class WorkspaceMessage {
     private Long messageId;
 
     @ManyToOne
+    @JsonIgnore
     private User sender;
     @Column(columnDefinition = "TEXT")
     private String message;
