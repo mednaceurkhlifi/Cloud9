@@ -40,6 +40,11 @@ export const appRoutes: Routes = [
                 component:CreatePostComponent,
                 outlet:"create"
             },
+            {
+                path: 'view/:id',
+                component: PostComponent // <-- this is the full view, not outlet
+
+            }
 
         ]
 

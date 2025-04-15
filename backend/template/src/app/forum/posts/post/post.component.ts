@@ -80,9 +80,7 @@ export class PostComponent implements OnInit{
                 label: 'Edit',
                 icon: 'pi pi-pencil',
                 command:()=>{
-                    this.router.navigate([{ outlets: { create: ['post', this.post.id] } }], {
-                        relativeTo: this.route
-                    });
+                    this.router.navigate(["/posts",{ outlets: { create: ['post', this.post.id] } }]);
                 }
 
             },
@@ -228,6 +226,6 @@ export class PostComponent implements OnInit{
 
     }
     fade(){
-        this.showComments=!this.showComments;
+        this.router.navigate(['/post', this.post.id]);
     }
 }
