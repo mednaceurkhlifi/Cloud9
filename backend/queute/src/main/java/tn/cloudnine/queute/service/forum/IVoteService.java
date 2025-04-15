@@ -12,4 +12,5 @@ public interface IVoteService {
     public Vote delete(long id);
     public Vote findById(Long id);
     public List<Vote> findAll();
+    public Vote findByUserIdAndPostId(Long userId, Long postId);
 }
