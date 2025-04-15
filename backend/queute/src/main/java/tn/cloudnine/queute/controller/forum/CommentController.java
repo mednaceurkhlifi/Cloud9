@@ -25,12 +25,14 @@ public class CommentController {
     @DeleteMapping("delete-comment/{id}")
     public ResponseEntity<Comment> deleteComment(@PathVariable long id) {
         //TODO: check for comment existence
-        var comment = commentService.findById(id);
-        if(comment == null){
+        try{
+            var comment = commentService.findById(id);
+            commentService.delete(id);
+            return ResponseEntity.ok().body(comment);
+
+        }catch(Exception e){
             return ResponseEntity.notFound().build();
         }
-        commentService.delete(id);
-        return ResponseEntity.ok().body(comment);
     }
     @GetMapping("get-comments/{id}")
     public ResponseEntity<Comment> getComment(@PathVariable Long id) {
@@ -39,5 +41,9 @@ public class CommentController {
     @GetMapping("get-comments")
     public ResponseEntity<List<Comment>> getComments() {
         return ResponseEntity.ok().body(commentService.findAll());
+    }
+    @GetMapping("get-comments/post/{id}")
+    public ResponseEntity<List<Comment>> getCommentsPerPost(@PathVariable Long id) {
+        return ResponseEntity.ok().body(commentService.findByPostId(id));
     }
 }
