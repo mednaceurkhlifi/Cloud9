@@ -7,6 +7,8 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { PostComponent } from './app/forum/posts/post/post.component';
 import { PostListComponent } from './app/forum/posts/post-list/post-list.component';
 import { CreatePostComponent } from './app/forum/posts/create-post/create-post.component';
+import { CommentComponent } from './app/forum/comments/comment/comment.component';
+import { CommentListComponent } from './app/forum/comments/comment-list/comment-list.component';
 
 export const appRoutes: Routes = [
     {
@@ -21,6 +23,8 @@ export const appRoutes: Routes = [
     },
     { path: 'landing', component: Landing },
     { path: 'notfound', component: Notfound },
+    { path: 'comment/:id', component: CommentComponent },
+    { path: 'comments', component: CommentListComponent },
     { path: 'post/:id', component: PostComponent },
     {
         path: 'posts',
@@ -40,7 +44,6 @@ export const appRoutes: Routes = [
         ]
 
     },
-    { path: 'posts/create-post', component:CreatePostComponent },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
     { path: '**', redirectTo: '/notfound' }
 ];
