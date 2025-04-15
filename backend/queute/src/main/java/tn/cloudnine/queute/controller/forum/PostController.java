@@ -24,12 +24,14 @@ public class PostController {
     @DeleteMapping("delete-post/{id}")
     public ResponseEntity<Post> deletePost(@PathVariable long id) {
         //TODO: check for post existence
-        var post = postService.findById(id);
-        if(post == null){
+        try{
+            var post = postService.findById(id);
+            postService.delete(id);
+            return ResponseEntity.ok().body(post);
+
+        }catch(Exception e) {
             return ResponseEntity.notFound().build();
         }
-        postService.delete(id);
-        return ResponseEntity.ok().body(post);
     }
     @GetMapping("get-posts/{id}")
     public ResponseEntity<Post> getPost(@PathVariable Long id) {
