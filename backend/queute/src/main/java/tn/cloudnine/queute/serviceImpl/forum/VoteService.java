@@ -8,6 +8,7 @@ import tn.cloudnine.queute.repository.forum.VoteRepository;
 import tn.cloudnine.queute.service.forum.IVoteService;
 import tn.cloudnine.queute.service.user.IUserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,4 +56,13 @@ public class VoteService implements IVoteService {
     public List<Vote> findAll() {
         return voteRepository.findAll();
     }
+
+    @Override
+    public Vote findByUserIdAndPostId(Long userId, Long postId) {
+        var votes = voteRepository.findByVotable_Id(postId).orElse(new ArrayList<>());
+        Vote vote = votes.stream().filter(v -> v.getUser().getUser_id().equals(userId)).findFirst().orElse(null);
+        return vote;
+    }
+
+
 }
