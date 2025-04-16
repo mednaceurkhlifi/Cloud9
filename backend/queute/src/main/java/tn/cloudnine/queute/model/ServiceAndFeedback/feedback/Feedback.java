@@ -1,4 +1,4 @@
-package tn.cloudnine.queute.model.feedback;
+package tn.cloudnine.queute.model.ServiceAndFeedback;
 import jakarta.persistence.*;
 
 
@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.cloudnine.queute.model.services.Service;
+import tn.cloudnine.queute.model.ServiceAndFeedback.services.Service;
 
 import java.io.Serializable;
 
