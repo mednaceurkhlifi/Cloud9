@@ -8,9 +8,7 @@ import lombok.Setter;
 import tn.cloudnine.queute.enums.newsAndOffers.ArticleCategory;
 import tn.cloudnine.queute.enums.newsAndOffers.ArticleType;
 import tn.cloudnine.queute.model.newsAndOffers.offers.Offers;
-import tn.cloudnine.queute.model.organization.Organization;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 

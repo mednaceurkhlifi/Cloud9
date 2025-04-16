@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import tn.cloudnine.queute.model.services.Service;
+import tn.cloudnine.queute.model.ServiceAndFeedback.services.Services;
 import tn.cloudnine.queute.model.user.User;
 
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class Booking implements Serializable {
     @ManyToOne
     private User id_user;
     @ManyToOne
-    private Service id_service;
+    private Services id_service;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

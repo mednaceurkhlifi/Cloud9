@@ -1,18 +1,23 @@
-package tn.cloudnine.queute.model.organization;
+package tn.cloudnine.queute.model.ServiceAndFeedback.organization;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import tn.cloudnine.queute.model.workspace.Workspace;
+import org.springframework.stereotype.Component;
+import tn.cloudnine.queute.model.ServiceAndFeedback.office.Office;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
+@Component
 @Entity
 @Table(name = "organizations")
 @Getter
@@ -23,11 +28,15 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE organizations o SET o.is_deleted = true WHERE o.organization_id=? AND o.is_deleted = false ")
 public class Organization {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long organization_id;
 
+    @Column()
     private String name;
+
+    @Column()
     private String address;
 
     @Column(unique = true)
@@ -36,9 +45,13 @@ public class Organization {
     @Column(unique = true)
     private String email;
 
-    @OneToOne(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JsonManagedReference
-    private Workspace workspace;
+
+    private String image;
+
+
+    // @OneToOne(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+   // @JsonManagedReference
+    //private Workspace workspace;
 
     private boolean is_deleted;
 
@@ -48,4 +61,14 @@ public class Organization {
 
     @LastModifiedDate
     private LocalDateTime updated_at;
+
+
+    @LastModifiedBy
+    @Column(insertable = false)
+    private  Integer lastModifiedBy;
+
+    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JsonIgnore
+    private List<Office> offices;
+
 }

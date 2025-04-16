@@ -1,14 +1,13 @@
 package tn.cloudnine.queute.model.workspace;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import tn.cloudnine.queute.model.organization.Organization;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package tn.cloudnine.queute.dto.workspace.requests;
+package tn.cloudnine.queute.dto.requests;
 
 import lombok.Builder;
 import lombok.Getter;
