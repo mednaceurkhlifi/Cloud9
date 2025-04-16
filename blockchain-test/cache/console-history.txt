@@ -1,0 +1,37 @@
+console.log("Booking verified:", verified_contract)
+const verified_contract = await contract.verifyBooking("d54240e7-9161-4013-a697-1bd39149e0b8");
+const verified = await contract.verifyBooking("REF123");
+const contract = await BookingContract.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const BookingContract = await ethers.getContractFactory("BookingContract");
+console.log("Booking verified:", verified);
+const verified = await contract.verifyBooking("22d51499-edf9-4498-a826-6e8b4fc94171")
+console.log("Booking verified:", verified);
+const contract = await BookingContract.attach("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512")
+const BookingContract = await ethers.getContractFactory("BookingContract");
+const contract = await BookingContract.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const BookingContract = await ethers.getContractFactory("BookingContract");
+console.log("Booking verified:", verified)
+const verified = await contract.verifyBooking("d6480b0d-a98e-4e79-971e-a203942353c0")
+const contract = await BookingContract.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const BookingContract = await ethers.getContractFactory("BookingContract");
+console.log("Booking verified:", verified_2)
+console.log("Booking verified:", verified82)
+const verified_2 = await contract.verifyBooking("62ac5cae-b77b-4d7b-a6d0-951a61ea1ccc")
+const verified = await contract.verifyBooking("62ac5cae-b77b-4d7b-a6d0-951a61ea1ccc")
+console.log("Booking verified:", verified)
+const verified = await contract.verifyBooking("a82388e1-400c-415e-a2d8-4bd09905d72b")
+const contract = await BookingContract.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const BookingContract = await ethers.getContractFactory("BookingContract")
+console.log("Is booking verified:", verified)
+const verified = await contract.verifyBooking("0d18bd84-4dcf-4bf8-9216-4a1730cbc210")
+const contract = await BookingContract.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+const BookingContract = await ethers.getContractFactory("BookingContract")
+const BookingContract = await ethers.getContractFactory("BookingContract");
+console.log("Booking verified:", verified);
+const verified = await contract.verifyBooking("1");
+const contract = await BookingContract.attach("0x1234567890123456789012345678901234567890");
+const BookingContract = await ethers.getContractFactory("BookingContract");
+console.log("Booking verified:", verified);
+const_REFERENCE>");
+ookingContract.attach("<CONTRACT_ADDRESS>");
+const BookingContract = await ethers.getContractFaconst contract = await B
