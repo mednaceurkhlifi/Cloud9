@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class Post extends Votable {
     private String title;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id",nullable = true)
     private ImageEntity image;
     @OneToMany(mappedBy = "votable", cascade = CascadeType.ALL, orphanRemoval = true)
