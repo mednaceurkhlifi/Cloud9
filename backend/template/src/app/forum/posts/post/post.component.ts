@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { PanelModule } from 'primeng/panel';
 import { Post, PostControllerService, Vote, VoteControllerService } from '../../../api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -15,7 +15,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent],
+  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet],
   standalone:true,
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',

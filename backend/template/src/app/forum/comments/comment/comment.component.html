@@ -25,7 +25,7 @@
             <p-button *ngIf="owner" icon="pi pi-pencil" severity="secondary" rounded text (click)="edit()" class="my-0"></p-button>
         </ng-template>
         <div *ngIf="!editMode">
-            <p class="m-0">{{ comment.content }}</p>
+            <p *ngIf="comment!=undefined"  class="m-0">{{ comment.content }}</p>
         </div>
         <div *ngIf="editMode" class="flex flex-col gap-2">
             <textarea [(ngModel)]="editableText" rows="3"

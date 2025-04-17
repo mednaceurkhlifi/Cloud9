@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -9,10 +9,11 @@ import { InputText, InputTextModule } from 'primeng/inputtext';
 import { Textarea, TextareaModule } from 'primeng/textarea';
 import { Post, PostControllerService } from '../../../api';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
+import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-create-post',
-  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel],
+  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel,FileUploadModule],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss'
 })
@@ -22,6 +23,7 @@ export class CreatePostComponent implements OnInit{
     header : string ="Create post"
     id! :string |null;
     post! :Post ;
+    selectedFile! : File;
     constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute){}
     ngOnInit(): void {
         this.id = this.route.snapshot.paramMap.get("id");
@@ -56,7 +58,7 @@ export class CreatePostComponent implements OnInit{
                 date:undefined
             };
             if(this.id==null){
-                this.postController.createPost(this.post).subscribe({
+                this.postController.createPost(this.post,this.selectedFile!).subscribe({
                     next: (res)=>{
                         console.log("post created",res);
                         this.onClose();
@@ -85,5 +87,12 @@ export class CreatePostComponent implements OnInit{
     }
     onHide(){
         this.onClose();
+    }
+    onFileSelect(event :any){
+        const file = event.files?.[0];
+        if(file){
+            console.log(file);
+            this.selectedFile=file;
+        }
     }
 }

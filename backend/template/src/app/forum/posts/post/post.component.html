@@ -1,4 +1,4 @@
-<div class="card container">
+<div class="card ">
     <p-panel [toggleable]="true">
         <ng-template #header>
             <div class="flex items-center gap-2">
@@ -28,13 +28,17 @@
             <p-button *ngIf="owner" icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
             <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
         </ng-template>
-        <p class="m-0">
-            {{ post.content }}
-        </p>
+            <div>
+                <p class="m-0">
+                {{ post.content }}
+                </p>
+                <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url"/>
+            </div>
     </p-panel>
 <div class="card flex justify-center " style="height:0">
     <p-toast />
     <p-confirmdialog />
 </div>
 </div>
+<router-outlet name="edit"></router-outlet>
 

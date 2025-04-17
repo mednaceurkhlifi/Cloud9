@@ -9,5 +9,6 @@
     <div *ngIf="empty == true">
         no posts created yet
     </div>
-    <p-button icon="pi pi-plus" label="create" [routerLink]="[{ outlets: { create: ['post'] } }]" class="fixed top-0 z-50 right-10" ></p-button>
+    <p-button icon="pi pi-plus" label="create" [routerLink]="[{ outlets: { create: ['post'] } }]" class="fixed top-20 z-50 right-10" ></p-button>
     <router-outlet name="create"></router-outlet>
+

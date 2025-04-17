@@ -16,6 +16,45 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
+            { path: 'post/:id',
+                component: PostComponent ,
+                children:[
+                    {
+                        path:"post/:id",
+                        component:CreatePostComponent,
+                        outlet:"edit"
+                    },
+                    {
+                        path: 'view/:id',
+                        component: PostComponent // <-- this is the full view, not outlet
+
+                    }
+
+                ]
+            },
+            {
+                path: 'posts',
+                component: PostListComponent ,
+                children:[
+                    {
+                        path:"post",
+                        component:CreatePostComponent,
+                        outlet:"create"
+                    },
+                    {
+                        path:"post/:id",
+                        component:CreatePostComponent,
+                        outlet:"create"
+                    },
+                    {
+                        path: 'view/:id',
+                        component: PostComponent // <-- this is the full view, not outlet
+
+                    }
+
+                ]
+
+            },
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }

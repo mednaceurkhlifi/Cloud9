@@ -30,7 +30,9 @@
                 Content is required.
             </small>
         </div>
-
+        <div class="flex flex-col w-full">
+            <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" customUpload="true"  maxFileSize="1000000" (uploadHandler)="onFileSelect($event)" [auto]="true" chooseLabel="Browse" />
+        </div>
         <div class="flex justify-end gap-3 pt-4">
             <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="onClose()"></button>
             <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-success" [disabled]="postForm.invalid"></button>
