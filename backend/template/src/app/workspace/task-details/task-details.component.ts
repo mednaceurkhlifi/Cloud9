@@ -20,11 +20,12 @@ import { TableModule } from 'primeng/table';
 import { DocumentsViewComponent } from '../documents-view/documents-view.component';
 import { ProjectDocument } from '../../services/models/project-document';
 import { User } from '../../services/models/user';
+import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
 
 @Component({
     selector: 'app-task-details',
     standalone: true,
-    imports: [ConfirmDialog, Toast, Button, Avatar, AvatarGroup, CommonModule, DatePipe, Dialog, ModuleFormComponent, ProgressBar, Tag, TaskFormComponent, TeamViewComponent, TableModule, DocumentsViewComponent],
+    imports: [ConfirmDialog, Toast, Button, Avatar, AvatarGroup, CommonModule, DatePipe, Dialog, ModuleFormComponent, ProgressBar, Tag, TaskFormComponent, TeamViewComponent, TableModule, DocumentsViewComponent, ChatChannelComponent],
     templateUrl: './task-details.component.html',
     styleUrl: './task-details.component.scss',
     providers: [ConfirmationService, MessageService]
@@ -162,8 +163,8 @@ export class TaskDetailsComponent implements OnInit {
     }
 
     userDeleted($event: String) {
-        if(this.task.members) {
-            let index = this.task.members.findIndex(u => u.email == $event);
+        if (this.task.members) {
+            let index = this.task.members.findIndex((u) => u.email == $event);
             if (index > -1) {
                 this.task.members!.splice(index, 1);
             }

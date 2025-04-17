@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
+import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
@@ -12,6 +13,7 @@ import tn.cloudnine.queute.service.workspace.ITaskService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("task")
@@ -99,5 +101,12 @@ public class TaskController {
         return ResponseEntity.ok(
                 Map.of("status", "success", "message", "User removed successfully.")
         );
+    }
+
+    @GetMapping("get-user-tasks/{user_email}")
+    public ResponseEntity<Set<Task>> getTasksByUserEmail(
+            @PathVariable("user_email") String user_email
+    ) {
+        return ResponseEntity.ok(service.getTasksByUserEmail(user_email));
     }
 }

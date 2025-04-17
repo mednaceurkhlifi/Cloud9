@@ -25,6 +25,8 @@ import { getTaskByProject } from '../fn/task-controller/get-task-by-project';
 import { GetTaskByProject$Params } from '../fn/task-controller/get-task-by-project';
 import { getTasksByModule } from '../fn/task-controller/get-tasks-by-module';
 import { GetTasksByModule$Params } from '../fn/task-controller/get-tasks-by-module';
+import { getTasksByUserEmail } from '../fn/task-controller/get-tasks-by-user-email';
+import { GetTasksByUserEmail$Params } from '../fn/task-controller/get-tasks-by-user-email';
 import { removeUserFromTask } from '../fn/task-controller/remove-user-from-task';
 import { RemoveUserFromTask$Params } from '../fn/task-controller/remove-user-from-task';
 import { Task } from '../models/task';
@@ -169,6 +171,31 @@ export class TaskControllerService extends BaseService {
   assignUserToTask(params: AssignUserToTask$Params, context?: HttpContext): Observable<UserDto> {
     return this.assignUserToTask$Response(params, context).pipe(
       map((r: StrictHttpResponse<UserDto>): UserDto => r.body)
+    );
+  }
+
+  /** Path part for operation `getTasksByUserEmail()` */
+  static readonly GetTasksByUserEmailPath = '/task/get-user-tasks/{user_email}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getTasksByUserEmail()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTasksByUserEmail$Response(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Task>>> {
+    return getTasksByUserEmail(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getTasksByUserEmail$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTasksByUserEmail(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<Array<Task>> {
+    return this.getTasksByUserEmail$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<Task>>): Array<Task> => r.body)
     );
   }
 

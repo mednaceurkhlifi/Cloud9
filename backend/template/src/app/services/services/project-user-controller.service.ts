@@ -21,6 +21,8 @@ import { getProjects } from '../fn/project-user-controller/get-projects';
 import { GetProjects$Params } from '../fn/project-user-controller/get-projects';
 import { getProjectTeams } from '../fn/project-user-controller/get-project-teams';
 import { GetProjectTeams$Params } from '../fn/project-user-controller/get-project-teams';
+import { getUserProjectsByEmail } from '../fn/project-user-controller/get-user-projects-by-email';
+import { GetUserProjectsByEmail$Params } from '../fn/project-user-controller/get-user-projects-by-email';
 import { ProjectUserProjection } from '../models/project-user-projection';
 import { ProjectUserResponse } from '../models/project-user-response';
 import { UserDto } from '../models/user-dto';
@@ -103,6 +105,31 @@ export class ProjectUserControllerService extends BaseService {
   getProjects(params: GetProjects$Params, context?: HttpContext): Observable<ProjectUserResponse> {
     return this.getProjects$Response(params, context).pipe(
       map((r: StrictHttpResponse<ProjectUserResponse>): ProjectUserResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getUserProjectsByEmail()` */
+  static readonly GetUserProjectsByEmailPath = '/project-user/get-projects/{user_email}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUserProjectsByEmail()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserProjectsByEmail$Response(params: GetUserProjectsByEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProjectUserProjection>>> {
+    return getUserProjectsByEmail(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUserProjectsByEmail$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserProjectsByEmail(params: GetUserProjectsByEmail$Params, context?: HttpContext): Observable<Array<ProjectUserProjection>> {
+    return this.getUserProjectsByEmail$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<ProjectUserProjection>>): Array<ProjectUserProjection> => r.body)
     );
   }
 

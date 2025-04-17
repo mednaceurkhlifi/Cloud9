@@ -21,6 +21,7 @@ import java.util.Set;
 public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> {
     long countByProjectProjectIdAndRole(Long projectId, ProjectRole role);
     Page<ProjectUserProjection> findByUserUserId(Long id, Pageable pageable);
+    Set<ProjectUserProjection> findByUserEmail(String email);
     Set<ProjectUserProjection> findByProjectProjectId(Long id);
     Optional<ProjectUser> findById(ProjectUserId id);
 

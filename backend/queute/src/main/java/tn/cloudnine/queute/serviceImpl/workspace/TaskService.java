@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
@@ -181,6 +182,14 @@ public class TaskService implements ITaskService {
                 .filter(u -> u.getEmail().equals(userEmail))
                 .findFirst().ifPresent(user -> task.getMembers().remove(user));
         repository.save(task);
+    }
+
+    @Override
+    public Set<Task> getTasksByUserEmail(String userEmail) {
+        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(
+                () -> new IllegalArgumentException("User not found with email : " + userEmail)
+        );
+        return repository.findTasksByUserEmail(user.getEmail());
     }
 
     /**

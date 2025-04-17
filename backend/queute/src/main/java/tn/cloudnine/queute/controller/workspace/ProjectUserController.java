@@ -54,6 +54,13 @@ public class ProjectUserController {
         return ResponseEntity.ok(service.getProjects(user_id, size, page_no));
     }
 
+    @GetMapping("get-projects/{user_email}")
+    public ResponseEntity<Set<ProjectUserProjection>> getUserProjectsByEmail(
+            @PathVariable("user_email") String user_email
+    ) {
+        return ResponseEntity.ok(service.getUserProjectsByEmail(user_email));
+    }
+
     @GetMapping("get-project-team/{project_id}")
     public ResponseEntity<Set<ProjectUserProjection>> getProjectTeams(
             @PathVariable("project_id") Long project_id

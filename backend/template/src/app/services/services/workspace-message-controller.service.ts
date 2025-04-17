@@ -23,8 +23,8 @@ import { MessageDto } from '../models/message-dto';
 import { MessageResponse } from '../models/message-response';
 import { sendMessage } from '../fn/workspace-message-controller/send-message';
 import { SendMessage$Params } from '../fn/workspace-message-controller/send-message';
-import { DocumentRequest } from '../models/document-request';
 import { WorkspaceMessage } from '../models/workspace-message';
+import { DocumentRequest } from '../models/document-request';
 
 @Injectable({ providedIn: 'root' })
 export class WorkspaceMessageControllerService extends BaseService {
@@ -157,7 +157,7 @@ export class WorkspaceMessageControllerService extends BaseService {
     );
   }
     /**** manually added methods ****/
-    sendMessageToTarget(target: number, targetId: number, user_email: string,  workspaceMsg: WorkspaceMessage ,attachment_request: DocumentRequest[], attachments: File[]): Observable<MessageDto> {
+    sendMessageToTarget(target: number, targetId: number, user_email: string,  workspaceMsg: WorkspaceMessage ,attachment_request: DocumentRequest[], attachments: File[]): Observable<WorkspaceMessage> {
         const formData = new FormData();
         formData.append('message', new Blob([JSON.stringify(workspaceMsg)], { type: 'application/json' }));
         formData.append('attachment_request', new Blob([JSON.stringify(attachment_request)], { type: 'application/json' }));
@@ -165,6 +165,6 @@ export class WorkspaceMessageControllerService extends BaseService {
             formData.append('attachments', att);
         }
 
-        return this.http.post<MessageDto>(`http://localhost:8082/api/v1/ws-msg/send-message/${target}/${targetId}/${user_email}`, formData);
+        return this.http.post<WorkspaceMessage>(`http://localhost:8082/api/v1/ws-msg/send-message/${target}/${targetId}/${user_email}`, formData);
     }
 }

@@ -17,7 +17,6 @@ import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import { Toast } from 'primeng/toast';
 import { Avatar } from 'primeng/avatar';
-import { MessageService } from 'primeng/api';
 import { MessageDto } from '../../../services/models/message-dto';
 
 @Component({
@@ -25,8 +24,7 @@ import { MessageDto } from '../../../services/models/message-dto';
     standalone: true,
     imports: [InputText, FloatLabel, Textarea, Button, FileUpload, NgForOf, NgIf, FormsModule, Message, ReactiveFormsModule, CommonModule, Toast, Avatar],
     templateUrl: './chat-channel.component.html',
-    styleUrl: './chat-channel.component.scss',
-    providers: [MessageService]
+    styleUrl: './chat-channel.component.scss'
 })
 export class ChatChannelComponent implements OnInit {
     msgForm!: FormGroup;
@@ -36,7 +34,9 @@ export class ChatChannelComponent implements OnInit {
     user_email!: string | null;
     target: number = 0;
     targetName: string = 'workspace';
-    messageResponse!: MessageResponse;
+    messageResponse: MessageResponse = {
+        totalElements: 0
+    };
     @Input() workspace_id: number = 0;
     @Input() project_id: number = 0;
     @Input() task_id: number = 0;
@@ -51,8 +51,7 @@ export class ChatChannelComponent implements OnInit {
     constructor(
         private _messageService: WorkspaceMessageControllerService,
         private _tokenService: TokenService,
-        private _chatService: ChatService,
-        private messageService: MessageService
+        private _chatService: ChatService
     ) {}
 
     ngOnInit() {
@@ -125,23 +124,16 @@ export class ChatChannelComponent implements OnInit {
                     error: (err) => {}
                 });
         }
-        // this.socketClient = this._chatService.connect();
         const socket = new SockJS('http://localhost:8082/api/v1/ws');
         this.socketClient = Stomp.over(socket);
 
         this.socketClient.connect({}, () => {
             console.log('Connected to WebSocket');
             const topic = `/user/${this.targetId}/${this.getTargetName()}`;
-            console.log(topic);
             this.socketClient.subscribe(topic, (message: any) => {
                 this.comingMessage = JSON.parse(message.body);
-                if(this.comingMessage.sender?.email != this.user_email) {
-                    if (!this.visible) {
-                        this.messageService.add({ key: 'confirm', sticky: true, severity: 'success', summary: this.comingMessage.message });
-                        this.visible = true;
-                        this.messageResponse.messages?.push(this.comingMessage);
-                    }
-                }
+                if(this.comingMessage.sender?.email != this.user_email)
+                    this.messageResponse.messages?.push(this.comingMessage);
             });
         });
     }
@@ -197,13 +189,5 @@ export class ChatChannelComponent implements OnInit {
                 }
             });
         }
-    }
-
-    onConfirm() {
-
-    }
-
-    onReject() {
-        this.visible = false;
     }
 }

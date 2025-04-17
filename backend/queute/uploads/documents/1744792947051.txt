@@ -1,0 +1,26 @@
+**Cahier des charges : Système de gestion d'inventaire basé sur le web**
+
+**1. Titre du projet :** Système de gestion d'inventaire basé sur le web
+
+**2. Objectif du projet :** Développer un système de gestion d'inventaire web pour les petites entreprises de vente au détail.  Ce système permettra une gestion efficace des produits, du stock, des fournisseurs et offrira des outils de reporting performants. Il intégrera un système de gestion des utilisateurs avec des rôles et des droits d'accès.
+
+**3. Description fonctionnelle :** Le système permettra la gestion complète du cycle de vie des produits, du suivi du stock, et de la relation avec les fournisseurs.  Il offrira des fonctionnalités de reporting pour analyser les données d'inventaire, de ventes et autres indicateurs clés.  Le système sera accessible via un navigateur web et permettra un accès multi-utilisateurs avec des niveaux de droits différents.
+
+**4. Modules et leurs objectifs :**
+
+* **Module : Gestion des produits :**  Permettre l’ajout, la modification et la suppression de produits, ainsi que la gestion des informations relatives à chaque produit (description, prix, etc.).
+* **Module : Suivi du stock :**  Suivre les niveaux de stock en temps réel, gérer les entrées et sorties de stock, et générer des alertes pour les produits en faible quantité.
+* **Module : Gestion des fournisseurs :**  Permettre l’ajout, la modification et la suppression des informations relatives aux fournisseurs (coordonnées, historique des commandes, etc.).
+* **Module : Reporting :** Générer des rapports sur les niveaux d'inventaire, les ventes, et autres indicateurs clés, permettant une analyse approfondie des données.
+* **Module : Gestion des utilisateurs :** Implémenter un système de gestion des utilisateurs avec des rôles (administrateur, gestionnaire, employé) et un contrôle d'accès basé sur ces rôles.
+
+**5. Tâches par module :**  Les tâches spécifiques pour chaque module seront définies dans un document annexe plus détaillé.  Ce document inclura une planification plus fine, les livrables attendus et les responsabilités associées.
+
+**6. Dates importantes :**
+
+* **Date de début :** 27 juillet 2024
+* **Date de fin prévue :** 27 septembre 2024
+
+**7. Statut initial :** Le projet est en phase de démarrage (NOT_STARTED).
+
+**8. Contraintes ou remarques :**  Des contraintes techniques ou fonctionnelles supplémentaires pourraient émerger lors de la phase de développement. Une communication régulière sera maintenue pour adapter le cahier des charges si nécessaire.  La sécurité des données est une priorité absolue et devra être intégrée à toutes les étapes du développement.  La scalabilité du système devra être prise en compte afin de permettre une future croissance du nombre d'utilisateurs et de produits.

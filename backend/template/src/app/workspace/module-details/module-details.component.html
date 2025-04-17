@@ -145,4 +145,8 @@
         <p-paginator (onPageChange)="onPageChangeTask($event)"  [first]="page_task * size_task" [rows]="size_task" [totalRecords]="taskResponse.totalElements!!"
                      [rowsPerPageOptions]="[10, 20, 30]" [showFirstLastIcon]="false"></p-paginator>
     </div>
+
+    <app-chat-channel
+        [module_id]="module.moduleId!"
+    ></app-chat-channel>
 </div>

@@ -70,6 +70,12 @@ public class ProjectUserService implements IProjectUserService {
     }
 
     @Override
+    public Set<ProjectUserProjection> getUserProjectsByEmail(String userEmail) {
+        User user = getUserByEmail(userEmail);
+        return repository.findByUserEmail(user.getEmail());
+    }
+
+    @Override
     public ProjectUserResponse getProjects(Long userId, Integer size, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, size);
         Page<ProjectUserProjection> page = repository.findByUserUserId(userId, pageable);

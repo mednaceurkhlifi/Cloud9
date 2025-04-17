@@ -17,4 +17,6 @@ public interface IProjectUserService {
     void deleteProjectUser(Long projectId, String userEmail);
 
     Set<ProjectUserProjection> getProjectTeams(Long projectId);
+
+    Set<ProjectUserProjection> getUserProjectsByEmail(String userEmail);
 }

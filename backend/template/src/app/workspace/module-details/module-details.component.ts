@@ -21,11 +21,12 @@ import { ModuleFormComponent } from '../module-form/module-form.component';
 import { ProjectModule } from '../../services/models/project-module';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { Task } from '../../services/models/task';
+import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
 
 @Component({
     selector: 'app-module-details',
     standalone: true,
-    imports: [CommonModule, Button, ProgressBar, Tag, Avatar, AvatarGroup, Dialog, Paginator, TableModule, ConfirmDialog, Toast, ModuleFormComponent, TaskFormComponent],
+    imports: [CommonModule, Button, ProgressBar, Tag, Avatar, AvatarGroup, Dialog, Paginator, TableModule, ConfirmDialog, Toast, ModuleFormComponent, TaskFormComponent, ChatChannelComponent],
     templateUrl: './module-details.component.html',
     styleUrl: './module-details.component.scss',
     providers: [ConfirmationService, MessageService]

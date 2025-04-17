@@ -2,7 +2,7 @@
     <div class="header-chat">
         <div class="channel-info">
             <img src="workspace/images/default_workspace.jpg" alt="workspace image">
-            <span>Workspace name</span>
+            <span>Chat group</span>
         </div>
         <div class="participants">
             <span>122 Participants</span>
@@ -15,7 +15,8 @@
                     <div *ngIf="msg.sender?.email !== user_email" class="sender">
                         <span>{{msg.sender?.full_name}}</span>
                     </div>
-                    <img *ngIf="msg.sender?.email !== user_email" src="default_user.jpg" alt="user image">
+                    <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image != 'default_user.jpg' " src="http://localhost:8082/api/v1/project-document/images/{{msg.sender?.image}}" alt="user image">
+                    <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image == 'default_user.jpg'" src="default_user.jpg" alt="user image">
                     <div class="message-content">
                         <p>{{msg.message}}</p>
                         <span>{{ msg.createdAt | date: 'medium'}}</span>
@@ -57,16 +58,3 @@
     </div>
 
 </div>
-<p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
-    <ng-template let-message #message>
-        <div class="flex flex-col items-start flex-auto">
-            <div class="flex items-center gap-2">
-                <p-avatar *ngIf="this.comingMessage.sender?.image == 'default_user.jpg'" image="default_user.jpg" shape="circle" />
-                <p-avatar *ngIf="this.comingMessage.sender?.image != 'default_user.jpg'" image="http://localhost:8082/api/v1/project-document/images/{{this.comingMessage.sender?.image}}" shape="circle" />
-                <span class="font-bold">{{this.comingMessage.sender?.full_name}}</span>
-            </div>
-            <div class="font-medium text-lg my-4">{{ message.summary }}</div>
-            <p-button severity="success" size="small" label="Reply" (click)="onConfirm()" />
-        </div>
-    </ng-template>
-</p-toast>

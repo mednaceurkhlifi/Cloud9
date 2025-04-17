@@ -1,0 +1,36 @@
+**Cahier des charges : Projet d'application mobile**
+
+**1. Titre du projet :** Développement d'une application mobile
+
+**2. Objectif du projet :** Créer une application mobile complète, incluant un module frontend et un module backend fonctionnels et performants.  L'application sera opérationnelle et prête à être déployée à la date butoir.
+
+**3. Description fonctionnelle :** Le projet vise à développer une application mobile fonctionnelle et conviviale, offrant une expérience utilisateur optimale.  L'application permettra aux utilisateurs (description des fonctionnalités utilisateurs à ajouter ici, si disponible dans les données sources).  Le backend assurera la gestion des données et la communication avec le frontend.
+
+**4. Modules et leurs objectifs :**
+
+* **Module Frontend :** Développer l'interface utilisateur et les composants de l'application mobile.  L'objectif est de créer une interface intuitive et attrayante, respectant les standards de design mobile et garantissant une expérience utilisateur fluide.
+
+* **Module Backend :** Développer l'infrastructure backend et les APIs nécessaires à l'application mobile. L'objectif est de fournir une architecture robuste, scalable et sécurisée, capable de gérer efficacement les données et les requêtes de l'application.
+
+
+**5. Tâches par module :**
+
+* **Module Frontend :**
+    * **Design UI :** Concevoir l'interface utilisateur de l'application mobile (Date de début : 08/03/2024, Date de fin : 22/03/2024, Statut : À faire).
+    * **Build Components :** Développer les composants de l'interface utilisateur (Date de début : 22/03/2024, Date de fin : 08/05/2024, Statut : À faire).
+
+* **Module Backend :**
+    * **Database Setup :** Configurer la base de données (Date de début : 08/03/2024, Date de fin : 08/04/2024, Statut : À faire).
+    * **API Development :** Développer les APIs de l'application (Date de début : 08/04/2024, Date de fin : 08/06/2024, Statut : À faire).
+
+
+**6. Dates importantes :**
+
+* **Début du projet :** 08/03/2024
+* **Echéance du module Frontend :** 08/05/2024
+* **Echéance du projet :** 08/06/2024
+
+
+**7. Statut initial :** Le projet est actuellement en phase de démarrage (NOT_STARTED).
+
+**8. Contraintes ou remarques :**  Des contraintes techniques ou organisationnelles spécifiques doivent être précisées ici (ex: technologies à utiliser, ressources disponibles, etc.).  L'absence d'informations détaillées dans la description initiale du projet nécessite une clarification supplémentaire sur les fonctionnalités de l'application et les technologies à employer.  Un plan de communication et de gestion des risques devra être établi.

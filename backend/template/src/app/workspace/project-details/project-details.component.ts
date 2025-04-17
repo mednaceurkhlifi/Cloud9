@@ -34,6 +34,7 @@ import { TeamViewComponent } from '../team-view/team-view.component';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Toast } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
 
 @Component({
     selector: 'app-project-details',
@@ -60,7 +61,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
         AddMemberFormComponent,
         TeamViewComponent,
         ConfirmDialog,
-        Toast
+        Toast,
+        ChatChannelComponent
     ],
     templateUrl: './project-details.component.html',
     styleUrl: './project-details.component.scss',
@@ -84,6 +86,7 @@ export class ProjectDetailsComponent implements OnInit {
     isCreatingManager: boolean = false;
     isCreatingMember: boolean = false;
     isOnUpdate: boolean = false;
+    projectId!: any;
 
     constructor(
         private route: ActivatedRoute,
@@ -97,14 +100,14 @@ export class ProjectDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        const projectId = this.route.snapshot.paramMap.get('project_id');
+        this.projectId = this.route.snapshot.paramMap.get('project_id');
         this.size_task = 10;
         this.page_task = 0;
         this.size_module = 10;
         this.page_module = 0;
 
-        if (projectId) {
-            this.getProject(parseInt(projectId));
+        if (this.projectId) {
+            this.getProject(parseInt(this.projectId));
         }
     }
 
