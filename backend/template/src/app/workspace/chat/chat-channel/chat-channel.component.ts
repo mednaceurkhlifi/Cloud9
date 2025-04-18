@@ -12,7 +12,7 @@ import { TokenService } from '../util/token.service';
 import { Message } from 'primeng/message';
 import { WorkspaceMessage } from '../../../services/models/workspace-message';
 import { MessageResponse } from '../../../services/models/message-response';
-import { ChatService } from '../../../socket/ChatService';
+import { ChatService } from '../../socket/ChatService';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import { Toast } from 'primeng/toast';
