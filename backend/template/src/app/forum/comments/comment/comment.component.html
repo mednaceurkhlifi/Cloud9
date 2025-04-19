@@ -3,7 +3,7 @@
         <ng-template #header>
             <div class="flex items-center gap-2">
                 <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-                    <span *ngIf="comment!= undefined && comment.user!=undefined" class="font-bold">{{ comment.user.firs_name }}</span>
+                    <span *ngIf="comment!= undefined && comment.userId!=undefined" class="font-bold">{{ comment.author}}</span>
             </div>
         </ng-template>
         <ng-template #footer>

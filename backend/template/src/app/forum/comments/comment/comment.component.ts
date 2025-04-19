@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Comment, CommentControllerService, Vote, VoteControllerService } from '../../../api';
+import { Comment, CommentControllerService, CommentDTO, User, Vote, VoteControllerService, VoteDTO } from '../../../api';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
@@ -20,14 +20,15 @@ import { FormsModule } from '@angular/forms';
   providers:[ConfirmationService,MessageService]
 })
 export class CommentComponent  implements OnInit{
-    comment! : Comment
-    votes!: Vote[];
+    comment! : CommentDTO
+    votes!: VoteDTO[];
     @Input() commentId?: number;
     finalCommentId!:number
     voteNum:number
     vote!: Vote
     owner : boolean = false;
     items : MenuItem[]=[];
+    author! : User
     @Output() deleted= new EventEmitter<number>();
     editMode=false;
     editableText="";
@@ -58,7 +59,7 @@ export class CommentComponent  implements OnInit{
 
         this.commentController.getComment(this.finalCommentId).subscribe(data => {
             this.comment=data;
-            if(this.comment.user?.user_id==this.userService.getCurrUser().user_id)
+            if(this.comment.userId==this.userService.getCurrUser().user_id)
                 this.owner= true;
         })
         this.voteController.getVotesPerComment(this.finalCommentId).subscribe(data => {
@@ -73,97 +74,94 @@ export class CommentComponent  implements OnInit{
         })
     }
     upVote(){
+        const currentUser = this.userService.getCurrUser();
+        const currentUserId = String(currentUser.user_id);
 
-        this.vote = {
-            voteType:"UPVOTE",
-            votable:this.comment,
-            user:this.userService.getCurrUser()
-        };
-        let v = this.votes.find(e => e.user?.user_id == this.userService.getCurrUser().user_id);
-        if(v!=undefined && v.voteType=="UPVOTE"){
-           return;
-        }
-        else if(v!=undefined && v.voteType=="DOWNVOTE"){
-            this.voteNum+=2;
-            let oldVote : Vote ;
-            this.voteController.getVote(v.id!).subscribe(data =>{
-                oldVote=data;
-                oldVote.voteType="UPVOTE";
-                this.votes.forEach(e => {
-                    if(e.id==v.id){
-                        e.voteType="UPVOTE";
-                    }
+        const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
 
+        if (existingVote) {
+            if (existingVote.voteType === "UPVOTE") {
+                return;
+            }
+
+            if (existingVote.voteType === "DOWNVOTE") {
+                this.voteNum += 2;
+
+                this.voteController.getVote(existingVote.id!).subscribe(originalVote => {
+                    originalVote.voteType = "UPVOTE";
+
+                    this.voteController.updateVote(originalVote).subscribe({
+                        next: () => {
+                            existingVote.voteType = "UPVOTE";
+                            console.log("Vote changed to UPVOTE");
+                        },
+                        error: err => console.error("Error updating vote:", err)
+                    });
                 });
-                this.voteController.updateVote(oldVote).subscribe({
-                    next:()=>{
-                        console.log(this.vote);
-                    },
-                    error: err =>{
-                        console.log(err);
-                    }
 
-                })
-            });
-
-        }else{
-            this.votes.push(this.vote);
-            this.voteNum++
-                this.voteController.createVote(this.vote).subscribe({
-                next:()=>{
-                    console.log(this.vote);
-                },
-                error: err =>{
-                    console.log(err);
-                }
-            });
+                return;
+            }
         }
+
+        const newVote: Vote = {
+            voteType: "UPVOTE",
+            votable: this.comment, // or this.comment
+            user: currentUser
+        };
+
+        this.voteNum++;
+        this.voteController.createVote(newVote).subscribe({
+            next: (createdVote) => {
+                console.log("New UPVOTE created:", createdVote);
+                this.votes.push({ ...createdVote, userId: parseInt(currentUserId), voteType: "UPVOTE" }); // add to local list
+            },
+            error: err => console.error("Error creating vote:", err)
+        });
     }
     downVote(){
-        this.vote = {
-            voteType:"DOWNVOTE",
-            votable:this.comment,
-            user:this.userService.getCurrUser()
+        const currentUser = this.userService.getCurrUser();
+        const currentUserId = String(currentUser.user_id);
+
+        const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
+
+        if (existingVote) {
+            if (existingVote.voteType === "DOWNVOTE") {
+                return;
+            }
+
+            if (existingVote.voteType === "UPVOTE") {
+                this.voteNum -= 2;
+
+                this.voteController.getVote(existingVote.id!).subscribe(originalVote => {
+                    originalVote.voteType = "DOWNVOTE";
+
+                    this.voteController.updateVote(originalVote).subscribe({
+                        next: () => {
+                            existingVote.voteType = "DOWNVOTE";
+                            console.log("Vote changed to DOWNVOTE");
+                        },
+                        error: err => console.error("Error updating vote:", err)
+                    });
+                });
+
+                return;
+            }
+        }
+
+        const newVote: Vote = {
+            voteType: "DOWNVOTE",
+            votable: this.comment, // or this.comment
+            user: currentUser
         };
-        let v = this.votes.find(e => e.user?.user_id == this.userService.getCurrUser().user_id);
-        if(v!=undefined && v.voteType=="DOWNVOTE"){
-           return;
-        }
-        else if(v!=undefined && v.voteType=="UPVOTE"){
-            this.voteNum-=2;
-            this.votes.forEach(e => {
-                if(e.id==v.id){
-                    e.voteType="DOWNVOTE";
-                }
 
-            });
-            let oldVote : Vote ;
-            this.voteController.getVote(v.id!).subscribe(data =>{
-                oldVote=data;
-                oldVote.voteType="DOWNVOTE";
-                this.voteController.updateVote(oldVote).subscribe({
-                    next:()=>{
-                        console.log(this.vote);
-                    },
-                    error: err =>{
-                        console.log(err);
-                    }
-
-                })
-            });
-        }else{
-            this.votes.push(this.vote);
-            this.voteNum--
-                this.voteController.createVote(this.vote).subscribe({
-                next:()=>{
-                    console.log(this.vote);
-                },
-                error: err =>{
-                    console.log(err);
-                }
-            });
-
-        }
+        this.voteNum++;
+        this.voteController.createVote(newVote).subscribe({
+            next: (createdVote) => {
+                console.log("New DOWNVOTE created:", createdVote);
+                this.votes.push({ ...createdVote, userId: parseInt(currentUserId), voteType: "DOWNVOTE" }); // add to local list
+            },
+            error: err => console.error("Error creating vote:", err)
+        });
 
     }
     edit(){

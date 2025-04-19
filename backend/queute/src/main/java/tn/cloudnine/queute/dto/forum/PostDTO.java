@@ -1,6 +1,7 @@
 package tn.cloudnine.queute.dto.forum;
 
 import lombok.Data;
+import tn.cloudnine.queute.model.forum.ImageEntity;
 import tn.cloudnine.queute.model.forum.Post;
 
 import java.util.ArrayList;
@@ -14,14 +15,22 @@ public class PostDTO {
     private Long userId;
     private List<CommentDTO> comments;
     private List<VoteDTO> votes;
-    PostDTO(Post post) {
+    private ImageEntity image;
+    public PostDTO(Post post) {
         this.id = post.getId();
         this.Title = post.getTitle();
         this.content = post.getContent();
         this.userId=post.getUser().getUser_id();
+        if(post.getImage() != null) {
+            this.image=post.getImage();
+        }
         this.comments=new ArrayList<>();
-        post.getComments().forEach(c->this.comments.add(new CommentDTO(c)));
+        if(post.getComments() != null){
+            post.getComments().forEach(c->this.comments.add(new CommentDTO(c)));
+        }
         this.votes=new ArrayList<>();
-        post.getVotes().forEach(c->this.votes.add(new VoteDTO(c)));
+        if(post.getVotes() !=null){
+            post.getVotes().forEach(c->this.votes.add(new VoteDTO(c)));
+        }
     }
 }
