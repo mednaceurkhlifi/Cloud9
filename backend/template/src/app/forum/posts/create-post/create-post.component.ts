@@ -71,8 +71,11 @@ export class CreatePostComponent implements OnInit{
             }
             else{
                 this.post.id=parseInt(this.id);
+                this.postController.getPost(this.post.id).subscribe(data =>{
+                    this.post.image=data.image;
+                })
 
-                this.postController.updatePost(this.post).subscribe({
+                this.postController.updatePost(this.post,this.selectedFile).subscribe({
                     next: (res)=>{
                         console.log("post created",res);
                         this.onClose();
