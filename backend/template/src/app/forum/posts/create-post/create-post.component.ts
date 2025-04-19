@@ -10,12 +10,16 @@ import { Textarea, TextareaModule } from 'primeng/textarea';
 import { Post, PostControllerService } from '../../../api';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
 import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
+import "highlight.js"
+
+import {MarkdownModule, MarkdownService, provideMarkdown} from "ngx-markdown"
 
 @Component({
   selector: 'app-create-post',
-  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel,FileUploadModule],
+  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel,FileUploadModule,MarkdownModule],
   templateUrl: './create-post.component.html',
-  styleUrl: './create-post.component.scss'
+  styleUrl: './create-post.component.scss',
+  providers:[provideMarkdown()]
 })
 export class CreatePostComponent implements OnInit{
     postForm!: FormGroup;
@@ -24,7 +28,7 @@ export class CreatePostComponent implements OnInit{
     id! :string |null;
     post! :Post ;
     selectedFile! : File;
-    constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute){}
+    constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute,private markdownService:MarkdownService){}
     ngOnInit(): void {
         this.id = this.route.snapshot.paramMap.get("id");
         this.postForm=this.formBuilder.group({

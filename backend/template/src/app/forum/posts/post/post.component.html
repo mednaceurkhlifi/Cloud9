@@ -21,7 +21,7 @@
                 </div>
             </div>
         <div class="flex flex-col gap-2 my-2" @fadeSlide >
-            <app-comment-list *ngIf="post.id!=undefined" [postId]="post.id"/>
+            <app-comment-list *ngIf="post.id!=undefined && routePost" [postId]="post.id"/>
         </div>
         </ng-template>
         <ng-template #icons >
@@ -29,9 +29,7 @@
             <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
         </ng-template>
             <div>
-                <p class="m-0">
-                {{ post.content }}
-                </p>
+                <markdown emoji [start]="5" [data]="post.content"></markdown>
                 <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url"/>
             </div>
     </p-panel>

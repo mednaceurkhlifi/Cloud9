@@ -12,14 +12,15 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
 import { CommentListComponent } from '../../comments/comment-list/comment-list.component';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { MarkdownModule, MarkdownService, provideMarkdown } from 'ngx-markdown';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet],
+  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet,MarkdownModule],
   standalone:true,
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
-  providers:[ConfirmationService,MessageService],
+  providers:[ConfirmationService,MessageService,provideMarkdown()],
   animations: [
     trigger('fadeSlide', [
       transition(':enter', [
@@ -42,15 +43,24 @@ export class PostComponent implements OnInit{
     finalPostId!:number;
     owner: boolean= false;
     vote! :Vote
+    routePost : boolean = false;
     showComments: boolean = false;
-    constructor(private postController : PostControllerService,private route : ActivatedRoute,private voteController: VoteControllerService,private userService: CurrUserServiceService,private router : Router,private confirmationService: ConfirmationService, private messageService: MessageService){
+    constructor(private postController : PostControllerService,
+                private route : ActivatedRoute,
+                private voteController: VoteControllerService,
+                private userService: CurrUserServiceService,
+                private router : Router,
+                private confirmationService: ConfirmationService,
+                private messageService: MessageService,
+                private markDownService :MarkdownService){
         this.votes=[];
         this.post= {};
         this.voteNum=0;
     }
     ngOnInit() {
-        let routeId=this.route.snapshot.paramMap.get("id");
+         let routeId=this.route.snapshot.paramMap.get("id");
         if(routeId!=null){
+            this.routePost=true;
             this.finalPostId=parseInt(routeId);
         }else{
             if(this.postId!=undefined)

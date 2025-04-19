@@ -14,22 +14,26 @@
                     Title is required.
                 </small>
             </div>
+            <div class="flex flex-col w-full gap-4">
+                <p-floatLabel >
+                    <textarea
+                        id="content"
+                        rows="6"
+                        pTextarea
+                        formControlName="content"
+                        class="p-inputtext-lg resize-none w-full"
+                        markdown
+                        ></textarea>
+                    <label for="content">Content</label>
+                </p-floatLabel>
 
-        <div class="flex flex-col w-full">
-            <p-floatLabel>
-                <textarea
-                    id="content"
-                    rows="6"
-                    pTextarea
-                    formControlName="content"
-                    class="p-inputtext-lg resize-none w-full"
-                    ></textarea>
-                <label for="content">Content</label>
-            </p-floatLabel>
-            <small *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="text-red-500">
-                Content is required.
-            </small>
-        </div>
+                <small *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="text-red-500">
+                    Content is required.
+                </small>
+                <div class="border p-4 rounded bg-gray-100">
+                    <markdown emoji [data]="postForm.get('content')?.value || ''"></markdown>
+                </div>
+            </div>
         <div class="flex flex-col w-full">
             <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" customUpload="true"  maxFileSize="1000000" (uploadHandler)="onFileSelect($event)" [auto]="true" chooseLabel="Browse" />
         </div>

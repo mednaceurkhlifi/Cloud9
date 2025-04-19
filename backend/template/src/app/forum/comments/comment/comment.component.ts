@@ -11,13 +11,14 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
+import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 
 @Component({
   selector: 'app-comment',
-  imports: [ButtonModule,CommonModule,AvatarModule,PanelModule,MenuModule,ToastModule,ConfirmDialogModule,FormsModule],
+  imports: [ButtonModule,CommonModule,AvatarModule,PanelModule,MenuModule,ToastModule,ConfirmDialogModule,FormsModule,MarkdownModule],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss',
-  providers:[ConfirmationService,MessageService]
+  providers:[ConfirmationService,MessageService,provideMarkdown()]
 })
 export class CommentComponent  implements OnInit{
     comment! : CommentDTO

@@ -25,7 +25,7 @@
             <p-button *ngIf="owner" icon="pi pi-pencil" severity="secondary" rounded text (click)="edit()" class="my-0"></p-button>
         </ng-template>
         <div *ngIf="!editMode">
-            <p *ngIf="comment!=undefined"  class="m-0">{{ comment.content }}</p>
+            <markdown emoji *ngIf="comment!=undefined"  class="m-0" [data]="comment.content"></markdown>
         </div>
         <div *ngIf="editMode" class="flex flex-col gap-2">
             <textarea [(ngModel)]="editableText" rows="3"
@@ -42,21 +42,3 @@
             <p-confirmdialog />
     </div>
 </div>
-<!--
-    <div class="card flex flex-col gap-2 " style="max-width:50%;margin-inline:auto;">
-    <div class="flex items-center gap-2">
-    <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-    <span *ngIf="comment!= undefined && comment.user!=undefined" class="font-bold">{{ comment.user.firs_name }}</span>
-    </div>
-    <p> {{ comment.content }}</p>
-    <div class="flex items-center gap-2">
-    <p-button icon="pi pi-arrow-up" severity="success" rounded text (click)="upVote()"></p-button>
-
-        <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum }}</span>
-        <ng-template #noVotes>
-            <span  class="font-bold">0</span>
-        </ng-template>
-        <p-button icon="pi pi-arrow-down" severity="danger" rounded text (click)="downVote()"></p-button>
-    </div>
-</div>
--->
