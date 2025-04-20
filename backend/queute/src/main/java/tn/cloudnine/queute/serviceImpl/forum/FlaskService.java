@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import tn.cloudnine.queute.dto.forum.SentimentResponse;
+import tn.cloudnine.queute.dto.forum.ToxicityReponse;
 import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.Post;
 import tn.cloudnine.queute.model.forum.Votable;
@@ -58,6 +59,19 @@ public class FlaskService implements IFlaskService {
 
     @Override
     public boolean isToxic(Votable votable) {
-        return false;
+        var ret =webclient.post()
+                .uri("/summarize")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("text",votable.getContent()))
+                .retrieve()
+                .bodyToMono(ToxicityReponse.class)
+                .block();
+        if(ret != null){
+            if(ret.getIdentity_attack()<0.2 && ret.getInsult()<0.4 && ret.getToxicity()<0.6 && ret.getObscene()<0.55 && ret.getSevere_toxicity()<0.4 && ret.getThreat()<0.55){
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 }

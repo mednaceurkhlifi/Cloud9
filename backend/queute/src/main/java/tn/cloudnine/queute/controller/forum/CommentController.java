@@ -18,13 +18,19 @@ public class CommentController {
     private final CommentService commentService;
     private final IFlaskService flaskService;
     @PostMapping("create-comment")
-    public ResponseEntity<CommentDTO> createComment(@RequestBody Comment comment) {
+    public ResponseEntity<Object> createComment(@RequestBody Comment comment) {
+        if(flaskService.isToxic(comment)) {
+            return ResponseEntity.badRequest().body("Failed to create due to toxicity");
+        }
         comment.setDate(new Date());
         comment.setSentimentType(flaskService.sentimentAnalysis(comment));
         return ResponseEntity.ok().body(new CommentDTO(commentService.create(comment)));
     }
     @PutMapping("update-comment")
-    public ResponseEntity<CommentDTO> updateComment(@RequestBody Comment comment) {
+    public ResponseEntity<Object> updateComment(@RequestBody Comment comment) {
+        if(flaskService.isToxic(comment)) {
+            return ResponseEntity.badRequest().body("Failed to create due to toxicity");
+        }
         comment.setSentimentType(flaskService.sentimentAnalysis(comment));
         return ResponseEntity.ok().body(new CommentDTO(commentService.update(comment)));
     }

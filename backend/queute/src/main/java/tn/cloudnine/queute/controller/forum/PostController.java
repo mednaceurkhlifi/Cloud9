@@ -30,7 +30,10 @@ public class PostController {
     public final FileUploaderImpl fu;
     public final IFlaskService flaskService;
     @PostMapping(value="create-post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostDTO> createPost(@RequestPart("post") Post post, @RequestPart(value="file",required = false)MultipartFile file) throws IOException {
+    public ResponseEntity<Object> createPost(@RequestPart("post") Post post, @RequestPart(value="file",required = false)MultipartFile file) throws IOException {
+        if(flaskService.isToxic(post)) {
+            return ResponseEntity.badRequest().body("Failed to create due to toxicity");
+        }
         if(file!=null){
             String fileName = fu.saveImage(file);
             ImageEntity image = new ImageEntity();
@@ -43,7 +46,10 @@ public class PostController {
         return ResponseEntity.ok().body(new PostDTO(postService.create(post)));
     }
     @PutMapping(value="update-post",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostDTO> updatePost(@RequestPart("post") Post post,@RequestPart(value="file",required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<Object> updatePost(@RequestPart("post") Post post,@RequestPart(value="file",required = false) MultipartFile file) throws IOException {
+        if(flaskService.isToxic(post)) {
+            return ResponseEntity.badRequest().body("Failed to update due to toxicity");
+        }
         if(file!=null){
             String fileName = fu.saveImage(file);
             ImageEntity image = new ImageEntity();
