@@ -16,7 +16,21 @@ public class FlaskService implements IFlaskService {
     private final WebClient webclient = WebClient.create("http://localhost:5000");
     @Override
     public String Summarizer(Post post) {
-        return "";
+        StringBuilder result = new StringBuilder();
+        result.append(post.getTitle()).append(post.getContent());
+        if(post.getComments()!=null && post.getComments().size()>0) {
+            post.getComments().forEach(comment -> {
+                result.append(comment.getContent());
+            });
+        }
+        var ret =webclient.post()
+                .uri("/summarize")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("text",result.toString()))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return ret;
     }
 
     @Override

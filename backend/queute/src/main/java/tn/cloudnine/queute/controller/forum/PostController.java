@@ -82,4 +82,10 @@ public class PostController {
 
         return ResponseEntity.ok().body(posts.stream().map(e-> new PostDTO(e)).toList());
     }
+    @GetMapping("get-posts/summary/{id}")
+    public ResponseEntity<String> getPostSummary(@PathVariable Long id) {
+        Post post=postService.findById(id);
+
+        return ResponseEntity.ok().body(flaskService.Summarizer(post));
+    }
 }
