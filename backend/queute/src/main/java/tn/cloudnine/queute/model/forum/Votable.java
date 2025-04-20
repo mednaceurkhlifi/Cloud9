@@ -2,6 +2,7 @@ package tn.cloudnine.queute.model.forum;
 
 import jakarta.persistence.*;
 import lombok.*;
+import tn.cloudnine.queute.enums.forum.SentimentType;
 
 import java.util.Date;
 @Entity
@@ -13,5 +14,6 @@ public class Votable {
     private Long id;
     private String content;
     private Date date;
+    private SentimentType sentimentType;;
 
 }
