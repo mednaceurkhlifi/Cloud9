@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.dto.forum.CommentDTO;
 import tn.cloudnine.queute.model.forum.Comment;
+import tn.cloudnine.queute.service.forum.IFlaskService;
 import tn.cloudnine.queute.serviceImpl.forum.CommentService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -14,13 +16,16 @@ import java.util.List;
 @RequestMapping("comment")
 public class CommentController {
     private final CommentService commentService;
-
+    private final IFlaskService flaskService;
     @PostMapping("create-comment")
     public ResponseEntity<CommentDTO> createComment(@RequestBody Comment comment) {
+        comment.setDate(new Date());
+        comment.setSentimentType(flaskService.sentimentAnalysis(comment));
         return ResponseEntity.ok().body(new CommentDTO(commentService.create(comment)));
     }
     @PutMapping("update-comment")
     public ResponseEntity<CommentDTO> updateComment(@RequestBody Comment comment) {
+        comment.setSentimentType(flaskService.sentimentAnalysis(comment));
         return ResponseEntity.ok().body(new CommentDTO(commentService.update(comment)));
     }
     @DeleteMapping("delete-comment/{id}")

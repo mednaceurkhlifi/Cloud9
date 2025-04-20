@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.forum.PostDTO;
 import tn.cloudnine.queute.model.forum.ImageEntity;
 import tn.cloudnine.queute.model.forum.Post;
+import tn.cloudnine.queute.service.forum.IFlaskService;
 import tn.cloudnine.queute.service.forum.IPostService;
 import tn.cloudnine.queute.utils.FileUploaderImpl;
 
@@ -27,6 +28,7 @@ import java.util.UUID;
 public class PostController {
     public final IPostService postService;
     public final FileUploaderImpl fu;
+    public final IFlaskService flaskService;
     @PostMapping(value="create-post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostDTO> createPost(@RequestPart("post") Post post, @RequestPart(value="file",required = false)MultipartFile file) throws IOException {
         if(file!=null){
@@ -36,6 +38,7 @@ public class PostController {
             image.setUrl("/uploads/images/"+fileName);
             post.setImage(image);
         }
+        post.setSentimentType(flaskService.sentimentAnalysis(post));
         post.setDate(new Date());
         return ResponseEntity.ok().body(new PostDTO(postService.create(post)));
     }
@@ -51,6 +54,7 @@ public class PostController {
             }
             post.setImage(image);
         }
+        post.setSentimentType(flaskService.sentimentAnalysis(post));
         return ResponseEntity.ok().body(new PostDTO(postService.update(post)));
     }
     @DeleteMapping("delete-post/{id}")
