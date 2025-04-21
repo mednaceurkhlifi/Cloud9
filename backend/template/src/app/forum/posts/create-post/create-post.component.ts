@@ -13,10 +13,12 @@ import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
 import "highlight.js"
 
 import {MarkdownModule, MarkdownService, provideMarkdown} from "ngx-markdown"
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-create-post',
-  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel,FileUploadModule,MarkdownModule],
+  imports: [CommonModule,TextareaModule,InputTextModule,DialogModule,ButtonModule,ReactiveFormsModule,FloatLabel,FileUploadModule,MarkdownModule,ToastModule],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.scss',
   providers:[provideMarkdown()]
@@ -28,7 +30,7 @@ export class CreatePostComponent implements OnInit{
     id! :string |null;
     post! :Post ;
     selectedFile! : File;
-    constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute,private markdownService:MarkdownService){}
+    constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute,private markdownService:MarkdownService,private messageService: MessageService){}
     ngOnInit(): void {
         this.id = this.route.snapshot.paramMap.get("id");
         this.postForm=this.formBuilder.group({
@@ -64,11 +66,13 @@ export class CreatePostComponent implements OnInit{
             if(this.id==null){
                 this.postController.createPost(this.post,this.selectedFile!).subscribe({
                     next: (res)=>{
-                        console.log("post created",res);
                         this.onClose();
                     },
                     error:(err)=>{
-                        console.error(err);
+                        this.postForm.setValue({
+                            title:this.postForm.get("title")?.value,
+                            content: "Failed to create due to toxicity of the content of the post"
+                        });
                     }
 
                 })
@@ -85,7 +89,10 @@ export class CreatePostComponent implements OnInit{
                         this.onClose();
                     },
                     error:(err)=>{
-                        console.error(err);
+                        this.postForm.setValue({
+                            title:this.postForm.get("title")?.value,
+                            content: "Failed to create due to toxicity of the content of the post"
+                        });
                     }
 
                 })

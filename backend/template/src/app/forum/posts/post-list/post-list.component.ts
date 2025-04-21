@@ -5,13 +5,16 @@ import { PostComponent } from '../post/post.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-post-list',
-  imports: [RouterOutlet,RouterModule,CommonModule,PostComponent,ButtonModule,ProgressSpinner],
+  imports: [RouterOutlet,RouterModule,CommonModule,PostComponent,ButtonModule,ProgressSpinner,ToastModule],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss',
-  standalone:true
+  standalone:true,
+  providers:[MessageService]
 })
 export class PostListComponent implements OnInit{
     posts: Post[];

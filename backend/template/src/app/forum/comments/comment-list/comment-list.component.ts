@@ -44,14 +44,14 @@ export class CommentListComponent implements OnInit{
             this.commentController.createComment(newComment).subscribe({
                 next:(createdComment)=>{
                     this.comments.push(createdComment);
+                    this.newCommentText = '';
+                    this.empty = false;
                 },
-                error(err) {
-                    console.error(err);
+                error:(err)=> {
+                    this.newCommentText="Failed to create comment due to toxicity"
                 },
 
             })
-            this.newCommentText = '';
-            this.empty = false;
         });
     }
     onCommentDeleted(deletedId:number){

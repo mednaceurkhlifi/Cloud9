@@ -15,7 +15,17 @@ export interface Comment {
     id?: number;
     content?: string;
     date?: string;
+    sentimentType?: Comment.SentimentTypeEnum;
     post?: Post;
     user?: User;
 }
+export namespace Comment {
+    export type SentimentTypeEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
+    export const SentimentTypeEnum = {
+        Positive: 'POSITIVE' as SentimentTypeEnum,
+        Neutral: 'NEUTRAL' as SentimentTypeEnum,
+        Negative: 'NEGATIVE' as SentimentTypeEnum
+    };
+}
+
 

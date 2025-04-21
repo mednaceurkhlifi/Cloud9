@@ -13,5 +13,15 @@ export interface Votable {
     id?: number;
     content?: string;
     date?: string;
+    sentimentType?: Votable.SentimentTypeEnum;
 }
+export namespace Votable {
+    export type SentimentTypeEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
+    export const SentimentTypeEnum = {
+        Positive: 'POSITIVE' as SentimentTypeEnum,
+        Neutral: 'NEUTRAL' as SentimentTypeEnum,
+        Negative: 'NEGATIVE' as SentimentTypeEnum
+    };
+}
+
 

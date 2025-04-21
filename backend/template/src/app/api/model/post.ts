@@ -15,8 +15,18 @@ export interface Post {
     id?: number;
     content?: string;
     date?: string;
+    sentimentType?: Post.SentimentTypeEnum;
     title?: string;
     image?: ImageEntity;
     user?: User;
 }
+export namespace Post {
+    export type SentimentTypeEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
+    export const SentimentTypeEnum = {
+        Positive: 'POSITIVE' as SentimentTypeEnum,
+        Neutral: 'NEUTRAL' as SentimentTypeEnum,
+        Negative: 'NEGATIVE' as SentimentTypeEnum
+    };
+}
+
 
