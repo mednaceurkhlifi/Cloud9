@@ -28,6 +28,7 @@ public class PostService implements IPostService {
         oldPost.setContent(post.getContent());
         oldPost.setDate(post.getDate());
         oldPost.setImage(post.getImage());
+        oldPost.setSentimentType(post.getSentimentType());
         return postRepository.save(oldPost);
     }
 

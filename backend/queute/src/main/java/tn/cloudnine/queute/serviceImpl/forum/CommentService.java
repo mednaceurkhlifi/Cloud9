@@ -29,6 +29,7 @@ public class CommentService implements ICommentService {
         Comment oldComment = findById(comment.getId());
         oldComment.setDate(comment.getDate());
         oldComment.setContent(comment.getContent());
+        oldComment.setSentimentType(comment.getSentimentType());
         return commentRepository.save(oldComment);
     }
 

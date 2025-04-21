@@ -1,6 +1,7 @@
 package tn.cloudnine.queute.dto.forum;
 
 import lombok.Data;
+import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.ImageEntity;
 import tn.cloudnine.queute.model.forum.Post;
 
@@ -16,11 +17,13 @@ public class PostDTO {
     private List<CommentDTO> comments;
     private List<VoteDTO> votes;
     private ImageEntity image;
+    private SentimentType sentiment;
     public PostDTO(Post post) {
         this.id = post.getId();
         this.Title = post.getTitle();
         this.content = post.getContent();
         this.userId=post.getUser().getUser_id();
+        sentiment=post.getSentimentType();
         if(post.getImage() != null) {
             this.image=post.getImage();
         }
