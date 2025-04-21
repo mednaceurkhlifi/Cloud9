@@ -60,7 +60,7 @@ public class FlaskService implements IFlaskService {
     @Override
     public boolean isToxic(Votable votable) {
         var ret =webclient.post()
-                .uri("/summarize")
+                .uri("/analyze")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(Map.of("text",votable.getContent()))
                 .retrieve()
