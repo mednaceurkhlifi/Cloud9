@@ -30,8 +30,12 @@ export class CreatePostComponent implements OnInit{
     id! :string |null;
     post! :Post ;
     selectedFile! : File;
+    frontOffice: boolean = false;
     constructor(private formBuilder:FormBuilder,private router: Router,private postController : PostControllerService, private userService : CurrUserServiceService,private route : ActivatedRoute,private markdownService:MarkdownService,private messageService: MessageService){}
     ngOnInit(): void {
+
+        let url = this.router.url;
+        this.frontOffice = url.includes("postList")
         this.id = this.route.snapshot.paramMap.get("id");
         this.postForm=this.formBuilder.group({
             title:['',Validators.required],
@@ -49,9 +53,17 @@ export class CreatePostComponent implements OnInit{
         }
     }
     onClose(){
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/posts']);
-        });}
+        if(this.frontOffice){
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.router.navigate(['/postList']);
+            });
+        }
+        else{
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                this.router.navigate(['/posts']);
+            });
+        }
+    }
     onSave(){
         if(this.postForm.valid){
             const title = this.postForm.get("title")?.value;

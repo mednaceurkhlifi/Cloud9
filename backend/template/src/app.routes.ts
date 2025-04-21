@@ -7,8 +7,6 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { PostComponent } from './app/forum/posts/post/post.component';
 import { PostListComponent } from './app/forum/posts/post-list/post-list.component';
 import { CreatePostComponent } from './app/forum/posts/create-post/create-post.component';
-import { CommentComponent } from './app/forum/comments/comment/comment.component';
-import { CommentListComponent } from './app/forum/comments/comment-list/comment-list.component';
 
 export const appRoutes: Routes = [
     {
@@ -33,9 +31,7 @@ export const appRoutes: Routes = [
                     },
                     {
                         path: 'view/:id',
-                        component: PostComponent // <-- this is the full view, not outlet
-
-                    }
+                        component: PostComponent                     }
 
                 ]
 
@@ -45,39 +41,9 @@ export const appRoutes: Routes = [
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
     },
-    { path: 'landing', component: Landing ,
-        children: [
-            { path: '', component: Dashboard },
-            { path: 'post/:id',component: PostComponent},
-            {
-                path: 'posts',
-                component: PostListComponent ,
-                children:[
-                    {
-                        path:"post",
-                        component:CreatePostComponent,
-                        outlet:"create"
-                    },
-                    {
-                        path:"post/:id",
-                        component:CreatePostComponent,
-                        outlet:"create"
-                    },
-                    {
-                        path: 'view/:id',
-                        component: PostComponent // <-- this is the full view, not outlet
-
-                    }
-
-                ]
-
-            },
-        ],
-    },
-    { path: 'notfound', component: Notfound },
-    { path: 'post/:id', component: PostComponent },
+    { path: 'landing', component: Landing },
     {
-        path: 'posts',
+        path: 'postList',
         component: PostListComponent ,
         children:[
             {
@@ -92,13 +58,15 @@ export const appRoutes: Routes = [
             },
             {
                 path: 'view/:id',
-                component: PostComponent // <-- this is the full view, not outlet
+                component: PostComponent
 
             }
 
         ]
 
     },
+    { path: 'postInfo/:id', component: PostComponent },
+    { path: 'notfound', component: Notfound },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
-    { path: '**', redirectTo: '/notfound' }
+        { path: '**', redirectTo: '/notfound' }
 ];

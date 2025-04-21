@@ -14,10 +14,12 @@ import { CommentListComponent } from '../../comments/comment-list/comment-list.c
 import { animate, style, transition, trigger } from '@angular/animations';
 import { MarkdownModule, MarkdownService, provideMarkdown } from 'ngx-markdown';
 import { TagModule } from 'primeng/tag';
+import { TopbarWidget } from '../../../pages/landing/components/topbarwidget.component';
+import { FooterWidget } from '../../../pages/landing/components/footerwidget';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet,MarkdownModule,TagModule],
+  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet,MarkdownModule,TagModule,TopbarWidget,FooterWidget],
   standalone:true,
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
@@ -41,11 +43,13 @@ export class PostComponent implements OnInit{
     votes : VoteDTO[];
     voteNum: number;
     @Input() postId?: number;
+    @Input() frontOffice? : boolean;
     finalPostId!:number;
     owner: boolean= false;
     vote! :Vote
     routePost : boolean = false;
     showComments: boolean = false;
+    showInfo : boolean = false;
     constructor(private postController : PostControllerService,
                 private route : ActivatedRoute,
                 private voteController: VoteControllerService,
@@ -59,7 +63,9 @@ export class PostComponent implements OnInit{
         this.voteNum=0;
     }
     ngOnInit() {
-         let routeId=this.route.snapshot.paramMap.get("id");
+        let url = this.router.url;
+        this.showInfo=url.includes("postInfo");
+        let routeId=this.route.snapshot.paramMap.get("id");
         if(routeId!=null){
             this.routePost=true;
             this.finalPostId=parseInt(routeId);
@@ -236,7 +242,12 @@ export class PostComponent implements OnInit{
 
     }
     fade(){
-        this.router.navigate(['/post', this.post.id]);
+        console.log(this.frontOffice);
+        if(this.frontOffice){
+            this.router.navigate(['/postInfo', this.post.id]);
+        }else{
+            this.router.navigate(['/post', this.post.id]);
+        }
     }
     getSentimentEmoji(sentiment: string): string {
         switch (sentiment?.toLowerCase()) {

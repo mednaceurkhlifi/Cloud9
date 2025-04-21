@@ -1,48 +1,54 @@
-<div class="card ">
-    <p-panel [toggleable]="true">
-        <ng-template #header>
-            <div class="flex items-center gap-2">
-                <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-                <span class="font-bold">{{ post.title }}</span>
-                <p-tag
-                    *ngIf="post.sentiment"
-                    [value]="getSentimentEmoji(post.sentiment)"
-                    [severity]="getSentimentSeverity(post.sentiment)"
-                    class="ml-2"
-                    />
-            </div>
-        </ng-template>
-        <ng-template #footer>
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-2">
-                    <p-button icon="pi pi-arrow-up" severity="success" rounded text (click)="upVote()"></p-button>
+<div class="bg-surface-0 dark:bg-surface-900">
+    <div id="home" class="landing-wrapper overflow-hidden">
+        <topbar-widget *ngIf="showInfo" class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
+        <div class="card ">
+            <p-panel [toggleable]="true">
+                <ng-template #header>
+                    <div class="flex items-center gap-2">
+                        <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
+                            <span class="font-bold">{{ post.title }}</span>
+                            <p-tag
+                                *ngIf="post.sentiment"
+                                [value]="getSentimentEmoji(post.sentiment)"
+                                [severity]="getSentimentSeverity(post.sentiment)"
+                                class="ml-2"
+                                />
+                    </div>
+                </ng-template>
+                <ng-template #footer>
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <p-button icon="pi pi-arrow-up" severity="success" rounded text (click)="upVote()"></p-button>
 
-                    <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum }}</span>
-                    <ng-template #noVotes>
-                        <span  class="font-bold">0</span>
-                    </ng-template>
-                    <p-button icon="pi pi-arrow-down" severity="danger" rounded text (click)="downVote()"></p-button>
-                    <p-button icon="pi pi-comment" severity="secondary" rounded text (click)="fade()"></p-button>
-                    <p-button icon="pi pi-bookmark" severity="secondary" rounded text ></p-button>
-                </div>
+                            <span *ngIf="votes != undefined; else noVotes" class="font-bold">{{ voteNum }}</span>
+                            <ng-template #noVotes>
+                                <span  class="font-bold">0</span>
+                            </ng-template>
+                            <p-button icon="pi pi-arrow-down" severity="danger" rounded text (click)="downVote()"></p-button>
+                            <p-button icon="pi pi-comment" severity="secondary" rounded text (click)="fade()"></p-button>
+                            <p-button icon="pi pi-bookmark" severity="secondary" rounded text ></p-button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 my-2" @fadeSlide >
+                        <app-comment-list *ngIf="post.id!=undefined && routePost" [postId]="post.id"/>
+                    </div>
+                </ng-template>
+                <ng-template #icons >
+                    <p-button *ngIf="owner" icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
+                        <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
+                </ng-template>
+                    <div>
+                        <markdown emoji [start]="5" [data]="post.content"></markdown>
+                        <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url"/>
+                    </div>
+            </p-panel>
+            <div class="card flex justify-center " style="height:0">
+                <p-toast />
+                    <p-confirmdialog />
             </div>
-        <div class="flex flex-col gap-2 my-2" @fadeSlide >
-            <app-comment-list *ngIf="post.id!=undefined && routePost" [postId]="post.id"/>
         </div>
-        </ng-template>
-        <ng-template #icons >
-            <p-button *ngIf="owner" icon="pi pi-cog" severity="secondary" rounded text (click)="menu.toggle($event)" />
-            <p-menu #menu id="config_menu" [model]="items" [popup]="true" />
-        </ng-template>
-            <div>
-                <markdown emoji [start]="5" [data]="post.content"></markdown>
-                <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url"/>
-            </div>
-    </p-panel>
-<div class="card flex justify-center " style="height:0">
-    <p-toast />
-    <p-confirmdialog />
-</div>
+        <footer-widget *ngIf="showInfo"/>
+    </div>
 </div>
 <router-outlet name="edit"></router-outlet>
 
