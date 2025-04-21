@@ -12,10 +12,11 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
+import { Tag, TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-comment',
-  imports: [ButtonModule,CommonModule,AvatarModule,PanelModule,MenuModule,ToastModule,ConfirmDialogModule,FormsModule,MarkdownModule],
+  imports: [ButtonModule,CommonModule,AvatarModule,PanelModule,MenuModule,ToastModule,ConfirmDialogModule,FormsModule,MarkdownModule,TagModule],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss',
   providers:[ConfirmationService,MessageService,provideMarkdown()]
@@ -206,4 +207,30 @@ export class CommentComponent  implements OnInit{
             },
         });
     }
+        getSentimentEmoji(sentiment: string): string {
+        switch (sentiment?.toLowerCase()) {
+            case 'positive':
+                return '😊 Positive';
+            case 'neutral':
+                return '😐 Neutral';
+            case 'negative':
+                return '😡 Negative';
+            default:
+                return '❓ Unknown';
+        }
+    }
+
+    getSentimentSeverity(sentiment: string): 'success' | 'info' | 'danger' | undefined {
+        switch (sentiment?.toLowerCase()) {
+            case 'positive':
+                return 'success';
+            case 'neutral':
+                return 'info';
+            case 'negative':
+                return 'danger';
+            default:
+                return undefined;
+        }
+    }
+
 }

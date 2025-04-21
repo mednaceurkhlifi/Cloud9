@@ -4,6 +4,12 @@
             <div class="flex items-center gap-2">
                 <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
                     <span *ngIf="comment!= undefined && comment.userId!=undefined" class="font-bold">{{ comment.author}}</span>
+                <p-tag
+                    *ngIf="comment.sentiment"
+                    [value]="getSentimentEmoji(comment.sentiment)"
+                    [severity]="getSentimentSeverity(comment.sentiment)"
+                    class="ml-2"
+                    />
             </div>
         </ng-template>
         <ng-template #footer>

@@ -16,6 +16,16 @@ export interface CommentDTO {
     userId?: number;
     content?: string;
     author?: string;
+    sentiment?: CommentDTO.SentimentEnum;
     votes?: Array<VoteDTO>;
 }
+export namespace CommentDTO {
+    export type SentimentEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
+    export const SentimentEnum = {
+        Positive: 'POSITIVE' as SentimentEnum,
+        Neutral: 'NEUTRAL' as SentimentEnum,
+        Negative: 'NEGATIVE' as SentimentEnum
+    };
+}
+
 

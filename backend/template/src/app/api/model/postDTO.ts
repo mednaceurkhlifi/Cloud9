@@ -19,6 +19,16 @@ export interface PostDTO {
     comments?: Array<CommentDTO>;
     votes?: Array<VoteDTO>;
     image?: ImageEntity;
+    sentiment?: PostDTO.SentimentEnum;
     title?: string;
 }
+export namespace PostDTO {
+    export type SentimentEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
+    export const SentimentEnum = {
+        Positive: 'POSITIVE' as SentimentEnum,
+        Neutral: 'NEUTRAL' as SentimentEnum,
+        Negative: 'NEGATIVE' as SentimentEnum
+    };
+}
+
 

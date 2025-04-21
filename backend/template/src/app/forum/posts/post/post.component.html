@@ -4,6 +4,12 @@
             <div class="flex items-center gap-2">
                 <p-avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
                 <span class="font-bold">{{ post.title }}</span>
+                <p-tag
+                    *ngIf="post.sentiment"
+                    [value]="getSentimentEmoji(post.sentiment)"
+                    [severity]="getSentimentSeverity(post.sentiment)"
+                    class="ml-2"
+                    />
             </div>
         </ng-template>
         <ng-template #footer>

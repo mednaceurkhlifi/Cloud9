@@ -13,10 +13,11 @@ import { CurrUserServiceService } from '../../../user/service/curr-user-service.
 import { CommentListComponent } from '../../comments/comment-list/comment-list.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { MarkdownModule, MarkdownService, provideMarkdown } from 'ngx-markdown';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet,MarkdownModule],
+  imports: [CommonModule,PanelModule, AvatarModule, ButtonModule, MenuModule,ToastModule,ConfirmDialog,CommentListComponent,RouterOutlet,MarkdownModule,TagModule],
   standalone:true,
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
@@ -237,4 +238,30 @@ export class PostComponent implements OnInit{
     fade(){
         this.router.navigate(['/post', this.post.id]);
     }
+    getSentimentEmoji(sentiment: string): string {
+        switch (sentiment?.toLowerCase()) {
+            case 'positive':
+                return '😊 Positive';
+            case 'neutral':
+                return '😐 Neutral';
+            case 'negative':
+                return '😡 Negative';
+            default:
+                return '❓ Unknown';
+        }
+    }
+
+    getSentimentSeverity(sentiment: string): 'success' | 'info' | 'danger' | undefined {
+        switch (sentiment?.toLowerCase()) {
+            case 'positive':
+                return 'success';
+            case 'neutral':
+                return 'info';
+            case 'negative':
+                return 'danger';
+            default:
+                return undefined;
+        }
+    }
+
 }
