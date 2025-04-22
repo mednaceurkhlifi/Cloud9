@@ -175,7 +175,7 @@ export class AppTopbar implements OnInit {
                     this.projects = response;
                 }
             });
-        this._taskService.getTasksByUserEmail({ user_email: this.user_email! }).subscribe({
+        this._taskService.getAllTasksByUserEmail({ user_email: this.user_email! }).subscribe({
             next: (response) => {
                 this.tasks = response;
             },

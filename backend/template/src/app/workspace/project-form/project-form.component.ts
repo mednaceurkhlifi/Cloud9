@@ -15,7 +15,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumber } from 'primeng/inputnumber';
 import { Tag } from 'primeng/tag';
 import { Select } from 'primeng/select';
-import { validateProjectDates } from '../util/validators/ValidateProjectDates';
+import {  validateDateRange } from '../util/validators/date-range-validator';
 
 @Component({
     selector: 'app-project-form',
@@ -79,7 +79,7 @@ export class ProjectFormComponent implements OnInit {
                 deadlineDate: new FormControl(null, [Validators.required]),
                 deadlineTime: new FormControl(null, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
     }
 
@@ -98,7 +98,7 @@ export class ProjectFormComponent implements OnInit {
                 deadlineDate: new FormControl(deadline, [Validators.required]),
                 deadlineTime: new FormControl(deadline, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
     }
 

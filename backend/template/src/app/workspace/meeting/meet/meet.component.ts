@@ -41,6 +41,7 @@ export class MeetComponent implements AfterViewInit{
         private route: ActivatedRoute
     ) {
     }
+
     ngAfterViewInit() {
         const roomID = this.route.snapshot.paramMap.get('room_id') || '1';
         const userID = this.route.snapshot.paramMap.get('user_id') || '1';

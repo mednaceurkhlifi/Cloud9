@@ -10,6 +10,7 @@ import tn.cloudnine.queute.enums.workspace.TaskStatus;
 import tn.cloudnine.queute.model.user.User;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
 
@@ -57,4 +59,11 @@ public class Task {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public String getFormattedDateTime() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        return deadline.format(dateFormatter) + " à " + deadline.format(timeFormatter);
+    }
 }

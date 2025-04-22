@@ -9,7 +9,6 @@ import { ProjectControllerService } from '../../services/services/project-contro
 import { Project } from '../../services/models/project';
 import { ModuleControllerService } from '../../services/services/module-controller.service';
 import { TaskControllerService } from '../../services/services/task-controller.service';
-import { ProjectDocumentControllerService } from '../../services/services/project-document-controller.service';
 import { TaskResponse } from '../../services/models/task-response';
 import { ModuleResponse } from '../../services/models/module-response';
 import { Paginator } from 'primeng/paginator';
@@ -24,10 +23,8 @@ import { DocumentsViewComponent } from '../documents-view/documents-view.compone
 import { ProjectUserControllerService } from '../../services/services/project-user-controller.service';
 import { ProjectUserProjection } from '../../services/models/project-user-projection';
 import { Message } from 'primeng/message';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { validateProjectDates } from '../util/validators/ValidateProjectDates';
+import { ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { ProjectUser } from '../../services/models/project-user';
 import { UserDto } from '../../services/models/user-dto';
 import { AddMemberFormComponent } from '../add-member-form/add-member-form.component';
 import { TeamViewComponent } from '../team-view/team-view.component';

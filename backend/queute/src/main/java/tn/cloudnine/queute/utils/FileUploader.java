@@ -2,6 +2,7 @@ package tn.cloudnine.queute.utils;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
@@ -19,7 +20,7 @@ import java.io.IOException;
 
 import static java.io.File.separator;
 
-@Service
+@Component
 public class FileUploader implements IFileUploader{
 
     @Value("${file.upload.path}")

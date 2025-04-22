@@ -17,6 +17,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
 public class ProjectModule {
 

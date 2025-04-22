@@ -11,6 +11,7 @@ import tn.cloudnine.queute.enums.workspace.TaskStatus;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.model.workspace.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +28,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("SELECT t FROM Task t JOIN t.members m WHERE m.email = :email")
     Set<Task> findTasksByUserEmail(@Param("email") String email);
 
+    @Query("SELECT t FROM Task t JOIN t.members m WHERE m.email = :email")
+    Page<TaskProjection> findTasksByUserEmail(@Param("email") String email, Pageable pageable);
+
     @Query("SELECT t FROM Task t JOIN t.members m WHERE t.taskId = :taskId AND m.email = :email")
     Optional<Task> findTasksByIdAndUserEmail(@Param("taskId") Long taskId, @Param("email") String email);
 
@@ -38,4 +42,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     long countByModulesAndStatus(@Param("moduleIds") Set<Long> moduleIds, @Param("status") TaskStatus status);
     @Query("SELECT COUNT(t) FROM Task t WHERE t.module.moduleId IN :moduleIds AND t.status != :status")
     long countByModulesAndStatusNotEquals(@Param("moduleIds") Set<Long> moduleIds, @Param("status") TaskStatus status);
+
+    @Query("SELECT t FROM Task t WHERE t.deadline >= :startOfDay AND t.deadline < :endOfDay AND t.status != :status")
+    Set<Task> findTasksWithDeadline(@Param("startOfDay") LocalDateTime startOfDay,
+                                             @Param("endOfDay") LocalDateTime endOfDay, @Param("status") TaskStatus status);
+
 }

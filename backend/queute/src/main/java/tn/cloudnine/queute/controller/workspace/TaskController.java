@@ -103,10 +103,19 @@ public class TaskController {
         );
     }
 
-    @GetMapping("get-user-tasks/{user_email}")
-    public ResponseEntity<Set<Task>> getTasksByUserEmail(
+    @GetMapping("get-user-tasks/{user_email}/{size}/{page_no}")
+    public ResponseEntity<TaskResponse> getTasksByUserEmail(
+            @PathVariable("user_email") String user_email,
+            @PathVariable("size") Integer size,
+            @PathVariable("page_no") Integer page_no
+    ) {
+        return ResponseEntity.ok(service.getTasksByUserEmail(user_email, size, page_no));
+    }
+
+    @GetMapping("get-user-all-tasks/{user_email}")
+    public ResponseEntity<Set<Task>> getAllTasksByUserEmail(
             @PathVariable("user_email") String user_email
     ) {
-        return ResponseEntity.ok(service.getTasksByUserEmail(user_email));
+        return ResponseEntity.ok(service.getAllTasksByUserEmail(user_email));
     }
 }

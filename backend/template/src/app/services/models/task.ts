@@ -12,6 +12,7 @@ export interface Task {
   deadline?: string;
   description?: string;
   documents?: Array<ProjectDocument>;
+  formattedDateTime?: string;
   members?: Array<User>;
   module?: ProjectModule;
   priority?: number;

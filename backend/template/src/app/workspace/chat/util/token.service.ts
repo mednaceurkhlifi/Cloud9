@@ -12,4 +12,8 @@ export class TokenService {
     get email(): string | null {
         return this.isLocalStorageAvailable() ? localStorage.getItem('user_email') : null;
     }
+
+    get userId(): string | null {
+        return this.isLocalStorageAvailable() ? localStorage.getItem('user_id') : null;
+    }
 }

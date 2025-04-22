@@ -9,7 +9,7 @@ import { Textarea } from 'primeng/textarea';
 import { DatePicker } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { InputNumber } from 'primeng/inputnumber';
-import { validateProjectDates } from '../util/validators/ValidateProjectDates';
+import {  validateDateRange } from '../util/validators/date-range-validator';
 import { CommonModule } from '@angular/common';
 import { InputText } from 'primeng/inputtext';
 
@@ -55,7 +55,7 @@ export class ModuleFormComponent implements OnInit {
                 deadlineDate: new FormControl(null, [Validators.required]),
                 deadlineTime: new FormControl(null, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
         this.moduleForm.get('priority')?.valueChanges.subscribe((value) => {
             this.updatePriorityLabel(value);
@@ -76,7 +76,7 @@ export class ModuleFormComponent implements OnInit {
                 deadlineDate: new FormControl(deadline, [Validators.required]),
                 deadlineTime: new FormControl(deadline, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
         this.moduleForm.get('priority')?.valueChanges.subscribe((value) => {
             this.updatePriorityLabel(value);

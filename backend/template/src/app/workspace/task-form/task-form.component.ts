@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task } from '../../services/models/task';
 import { TaskControllerService } from '../../services/services/task-controller.service';
-import { validateProjectDates } from '../util/validators/ValidateProjectDates';
+import { validateDateRange } from '../util/validators/date-range-validator';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 import { Fluid } from 'primeng/fluid';
@@ -68,7 +68,7 @@ export class TaskFormComponent implements OnInit {
                 deadlineTime: new FormControl(null, [Validators.required]),
                 taskStatus: new FormControl(null, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
         this.taskForm.get('priority')?.valueChanges.subscribe((value) => {
             this.updatePriorityLabel(value);
@@ -90,7 +90,7 @@ export class TaskFormComponent implements OnInit {
                 deadlineTime: new FormControl(deadline, [Validators.required]),
                 taskStatus: new FormControl(this.task.status, [Validators.required])
             },
-            { validators: validateProjectDates() }
+            { validators: validateDateRange('beginDateDate', 'beginDateTime', 'deadlineDate', 'deadlineTime') }
         );
         this.taskForm.get('priority')?.valueChanges.subscribe((value) => {
             this.updatePriorityLabel(value);

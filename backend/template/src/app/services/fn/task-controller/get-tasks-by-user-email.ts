@@ -8,16 +8,20 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { Task } from '../../models/task';
+import { TaskResponse } from '../../models/task-response';
 
 export interface GetTasksByUserEmail$Params {
   user_email: string;
+  size: number;
+  page_no: number;
 }
 
-export function getTasksByUserEmail(http: HttpClient, rootUrl: string, params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Task>>> {
+export function getTasksByUserEmail(http: HttpClient, rootUrl: string, params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<TaskResponse>> {
   const rb = new RequestBuilder(rootUrl, getTasksByUserEmail.PATH, 'get');
   if (params) {
     rb.path('user_email', params.user_email, {});
+    rb.path('size', params.size, {});
+    rb.path('page_no', params.page_no, {});
   }
 
   return http.request(
@@ -25,9 +29,9 @@ export function getTasksByUserEmail(http: HttpClient, rootUrl: string, params: G
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Task>>;
+      return r as StrictHttpResponse<TaskResponse>;
     })
   );
 }
 
-getTasksByUserEmail.PATH = '/task/get-user-tasks/{user_email}';
+getTasksByUserEmail.PATH = '/task/get-user-tasks/{user_email}/{size}/{page_no}';

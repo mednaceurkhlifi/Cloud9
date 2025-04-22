@@ -8,6 +8,7 @@ import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -30,5 +31,8 @@ public interface ITaskService {
 
     void removeUserFromTask(Long taskId, String userEmail);
 
-    Set<Task> getTasksByUserEmail(String userEmail);
+    TaskResponse getTasksByUserEmail(String userEmail, Integer size, Integer page_no);
+    Set<Task> findTasksWithDeadline();
+
+    Set<Task> getAllTasksByUserEmail(String userEmail);
 }

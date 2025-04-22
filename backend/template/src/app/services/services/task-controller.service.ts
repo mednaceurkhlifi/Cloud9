@@ -19,6 +19,8 @@ import { assignUserToTask } from '../fn/task-controller/assign-user-to-task';
 import { AssignUserToTask$Params } from '../fn/task-controller/assign-user-to-task';
 import { deleteTask } from '../fn/task-controller/delete-task';
 import { DeleteTask$Params } from '../fn/task-controller/delete-task';
+import { getAllTasksByUserEmail } from '../fn/task-controller/get-all-tasks-by-user-email';
+import { GetAllTasksByUserEmail$Params } from '../fn/task-controller/get-all-tasks-by-user-email';
 import { getTaskById } from '../fn/task-controller/get-task-by-id';
 import { GetTaskById$Params } from '../fn/task-controller/get-task-by-id';
 import { getTaskByProject } from '../fn/task-controller/get-task-by-project';
@@ -175,7 +177,7 @@ export class TaskControllerService extends BaseService {
   }
 
   /** Path part for operation `getTasksByUserEmail()` */
-  static readonly GetTasksByUserEmailPath = '/task/get-user-tasks/{user_email}';
+  static readonly GetTasksByUserEmailPath = '/task/get-user-tasks/{user_email}/{size}/{page_no}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -183,7 +185,7 @@ export class TaskControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getTasksByUserEmail$Response(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Task>>> {
+  getTasksByUserEmail$Response(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<TaskResponse>> {
     return getTasksByUserEmail(this.http, this.rootUrl, params, context);
   }
 
@@ -193,8 +195,33 @@ export class TaskControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getTasksByUserEmail(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<Array<Task>> {
+  getTasksByUserEmail(params: GetTasksByUserEmail$Params, context?: HttpContext): Observable<TaskResponse> {
     return this.getTasksByUserEmail$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TaskResponse>): TaskResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllTasksByUserEmail()` */
+  static readonly GetAllTasksByUserEmailPath = '/task/get-user-all-tasks/{user_email}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllTasksByUserEmail()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllTasksByUserEmail$Response(params: GetAllTasksByUserEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Task>>> {
+    return getAllTasksByUserEmail(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllTasksByUserEmail$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllTasksByUserEmail(params: GetAllTasksByUserEmail$Params, context?: HttpContext): Observable<Array<Task>> {
+    return this.getAllTasksByUserEmail$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<Task>>): Array<Task> => r.body)
     );
   }

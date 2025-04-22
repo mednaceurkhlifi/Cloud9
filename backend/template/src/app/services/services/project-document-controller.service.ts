@@ -254,5 +254,4 @@ export class ProjectDocumentControllerService extends BaseService {
 
         return this.http.patch<ProjectDocument[]>(`http://localhost:8082/api/v1/project-document/add-documents-module/${module_id}`, formData);
     }
-
 }

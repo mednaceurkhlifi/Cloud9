@@ -26,6 +26,8 @@ import tn.cloudnine.queute.utils.IFileUploader;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -185,11 +187,32 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Set<Task> getTasksByUserEmail(String userEmail) {
+    public TaskResponse getTasksByUserEmail(String userEmail, Integer size, Integer page_no) {
+        Pageable pageable = PageRequest.of(page_no, size);
         User user = userRepository.findByEmailEquals(userEmail).orElseThrow(
                 () -> new IllegalArgumentException("User not found with email : " + userEmail)
         );
-        return repository.findTasksByUserEmail(user.getEmail());
+        Page<TaskProjection> tasks = repository.findTasksByUserEmail(user.getEmail(), pageable);
+        return new TaskResponse(
+                tasks.toList(), tasks.getNumber(),
+                tasks.getSize(), tasks.getTotalElements(),
+                tasks.getTotalPages(), tasks.isLast()
+        );
+    }
+
+    @Override
+    public Set<Task> findTasksWithDeadline() {
+        LocalDateTime startOfTomorrow = LocalDate.now().plusDays(1).atStartOfDay();
+        LocalDateTime endOfTomorrow = startOfTomorrow.plusDays(1);
+        return repository.findTasksWithDeadline(startOfTomorrow, endOfTomorrow, DONE);
+    }
+
+    @Override
+    public Set<Task> getAllTasksByUserEmail(String userEmail) {
+        User user = userRepository.findByEmailEquals(userEmail).orElseThrow(
+                () -> new IllegalArgumentException("User not found with email : " + userEmail)
+        );
+        return repository.findTasksByUserEmail(userEmail);
     }
 
     /**

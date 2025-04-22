@@ -13,6 +13,7 @@ import { ProjectControllerService } from './services/project-controller.service'
 import { ProjectUserControllerService } from './services/project-user-controller.service';
 import { ModuleControllerService } from './services/module-controller.service';
 import { ProjectDocumentControllerService } from './services/project-document-controller.service';
+import { MeetingControllerService } from './services/meeting-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -29,6 +30,7 @@ import { ProjectDocumentControllerService } from './services/project-document-co
     ProjectUserControllerService,
     ModuleControllerService,
     ProjectDocumentControllerService,
+    MeetingControllerService,
     ApiConfiguration
   ],
 })

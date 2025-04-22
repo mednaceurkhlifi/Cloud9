@@ -9,3 +9,4 @@ export { ProjectControllerService } from './services/project-controller.service'
 export { ProjectUserControllerService } from './services/project-user-controller.service';
 export { ModuleControllerService } from './services/module-controller.service';
 export { ProjectDocumentControllerService } from './services/project-document-controller.service';
+export { MeetingControllerService } from './services/meeting-controller.service';

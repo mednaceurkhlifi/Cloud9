@@ -519,6 +519,36 @@
                 }
             }
         },
+        "/meeting/create-new-meeting": {
+            "post": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "createNewMeeting",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Meeting"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeetingProjection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/workspace/update-workspace/{workspace_id}": {
             "patch": {
                 "tags": [
@@ -971,6 +1001,51 @@
                 }
             }
         },
+        "/meeting/invite-to-meeting/{meeting_id}": {
+            "patch": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "inviteToMeeting",
+                "parameters": [
+                    {
+                        "name": "meeting_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "uniqueItems": true
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeetingProjection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/ws-msg/get-workspace-messages/{workspaceId}/{size}/{page_no}": {
             "get": {
                 "tags": [
@@ -1216,12 +1291,60 @@
                 }
             }
         },
-        "/task/get-user-tasks/{user_email}": {
+        "/task/get-user-tasks/{user_email}/{size}/{page_no}": {
             "get": {
                 "tags": [
                     "task-controller"
                 ],
                 "operationId": "getTasksByUserEmail",
+                "parameters": [
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/get-user-all-tasks/{user_email}": {
+            "get": {
+                "tags": [
+                    "task-controller"
+                ],
+                "operationId": "getAllTasksByUserEmail",
                 "parameters": [
                     {
                         "name": "user_email",
@@ -1719,6 +1842,133 @@
                 }
             }
         },
+        "/meeting/get-user-meetings/{user_email}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "getUserMeetings",
+                "parameters": [
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeetingResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/meeting/get-meeting/{meeting_id}": {
+            "get": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "getMeetingById",
+                "parameters": [
+                    {
+                        "name": "meeting_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeetingProjection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/meeting/get-invited-meetings/{user_email}/{size}/{page_no}": {
+            "get": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "getInvitedMeetings",
+                "parameters": [
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeetingResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/workspace/delete-workspace/{workspace_id}": {
             "delete": {
                 "tags": [
@@ -1919,6 +2169,40 @@
                         "schema": {
                             "type": "integer",
                             "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/meeting/delete-meeting/{meeting_id}": {
+            "delete": {
+                "tags": [
+                    "meeting-controller"
+                ],
+                "operationId": "deleteMeeting",
+                "parameters": [
+                    {
+                        "name": "meeting_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2173,6 +2457,9 @@
                     "updatedAt": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "formattedDateTime": {
+                        "type": "string"
                     }
                 }
             },
@@ -2525,6 +2812,108 @@
                     }
                 }
             },
+            "Meeting": {
+                "type": "object",
+                "properties": {
+                    "meetingId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        },
+                        "uniqueItems": true
+                    },
+                    "admin": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "formattedDate": {
+                        "type": "string"
+                    },
+                    "formattedTime": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MeetingProjection": {
+                "type": "object",
+                "properties": {
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserProjection"
+                        },
+                        "uniqueItems": true
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "$ref": "#/components/schemas/UserProjection"
+                    },
+                    "meetingId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "beginDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "endDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "UserProjection": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "full_name": {
+                        "type": "string"
+                    }
+                }
+            },
             "WorkspaceRequest": {
                 "type": "object",
                 "properties": {
@@ -2549,6 +2938,9 @@
                     "message": {
                         "type": "string"
                     },
+                    "sender": {
+                        "$ref": "#/components/schemas/UserProjection"
+                    },
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -2558,9 +2950,6 @@
                         "items": {
                             "$ref": "#/components/schemas/ProjectDocument"
                         }
-                    },
-                    "sender": {
-                        "$ref": "#/components/schemas/UserProjection"
                     }
                 }
             },
@@ -2594,24 +2983,6 @@
                     }
                 }
             },
-            "UserProjection": {
-                "type": "object",
-                "properties": {
-                    "image": {
-                        "type": "string"
-                    },
-                    "userId": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "full_name": {
-                        "type": "string"
-                    }
-                }
-            },
             "ProjectProjection": {
                 "type": "object",
                 "properties": {
@@ -2624,6 +2995,17 @@
                     },
                     "description": {
                         "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "ON_HOLD",
+                            "CANCELED",
+                            "UNDER_REVIEW",
+                            "FINISHED"
+                        ]
                     },
                     "image": {
                         "type": "string"
@@ -2643,24 +3025,13 @@
                         },
                         "uniqueItems": true
                     },
-                    "projectId": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
                     "achievement": {
                         "type": "number",
                         "format": "float"
                     },
-                    "status": {
-                        "type": "string",
-                        "enum": [
-                            "NOT_STARTED",
-                            "IN_PROGRESS",
-                            "ON_HOLD",
-                            "CANCELED",
-                            "UNDER_REVIEW",
-                            "FINISHED"
-                        ]
+                    "projectId": {
+                        "type": "integer",
+                        "format": "int64"
                     }
                 }
             },
@@ -2740,6 +3111,20 @@
                     "description": {
                         "type": "string"
                     },
+                    "title": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "TO_DO",
+                            "IN_PROGRESS",
+                            "BLOCKED",
+                            "REWORK_NEEDED",
+                            "DONE",
+                            "ARCHIVED"
+                        ]
+                    },
                     "deadline": {
                         "type": "string",
                         "format": "date-time"
@@ -2754,20 +3139,6 @@
                             "$ref": "#/components/schemas/ProjectDocument"
                         },
                         "uniqueItems": true
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "status": {
-                        "type": "string",
-                        "enum": [
-                            "TO_DO",
-                            "IN_PROGRESS",
-                            "BLOCKED",
-                            "REWORK_NEEDED",
-                            "DONE",
-                            "ARCHIVED"
-                        ]
                     },
                     "taskId": {
                         "type": "integer",
@@ -2894,6 +3265,9 @@
                     "description": {
                         "type": "string"
                     },
+                    "title": {
+                        "type": "string"
+                    },
                     "deadline": {
                         "type": "string",
                         "format": "date-time"
@@ -2919,9 +3293,36 @@
                     "moduleId": {
                         "type": "integer",
                         "format": "int64"
+                    }
+                }
+            },
+            "MeetingResponse": {
+                "type": "object",
+                "properties": {
+                    "meetings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MeetingProjection"
+                        }
                     },
-                    "title": {
-                        "type": "string"
+                    "pageNo": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "isLast": {
+                        "type": "boolean"
                     }
                 }
             }

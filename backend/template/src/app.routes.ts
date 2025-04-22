@@ -10,6 +10,7 @@ import { ProjectDetailsComponent } from './app/workspace/project-details/project
 import { ModuleDetailsComponent } from './app/workspace/module-details/module-details.component';
 import { TaskDetailsComponent } from './app/workspace/task-details/task-details.component';
 import { MeetComponent } from './app/workspace/meeting/meet/meet.component';
+import { ProfileComponent } from './app/workspace/profile/profile.component';
 
 export const appRoutes: Routes = [
     {
@@ -29,7 +30,10 @@ export const appRoutes: Routes = [
             { path: '', component: WorkspaceOverviewComponent },
             { path: 'project/:project_id', component: ProjectDetailsComponent },
             { path: 'module/:module_id', component: ModuleDetailsComponent },
-            { path: 'task/:task_id', component: TaskDetailsComponent }
+            { path: 'task/:task_id', component: TaskDetailsComponent },
+            {
+                path: 'profile', component: ProfileComponent
+            }
         ]
     },
     {
