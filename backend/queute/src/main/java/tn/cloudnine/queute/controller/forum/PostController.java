@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.forum.PostCountDTO;
 import tn.cloudnine.queute.dto.forum.PostDTO;
 import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.ImageEntity;
@@ -97,18 +98,22 @@ public class PostController {
         return ResponseEntity.ok().body(flaskService.Summarizer(post));
     }
 
-    @GetMapping("get-posts/positive")
+    @GetMapping("stats/positive-posts")
     public ResponseEntity<List<PostDTO>> getPostivePosts() {
         return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.POSITIVE).stream().map(e -> new PostDTO(e)).toList());
     }
 
-    @GetMapping("get-posts/negative")
+    @GetMapping("stats/negative-posts")
     public ResponseEntity<List<PostDTO>> getNegativePosts() {
         return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.NEGATIVE).stream().map(e -> new PostDTO(e)).toList());
     }
 
-    @GetMapping("get-posts/neutral")
+    @GetMapping("stats/neutral-posts")
     public ResponseEntity<List<PostDTO>> getNeutralPosts() {
         return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.NEUTRAL).stream().map(e -> new PostDTO(e)).toList());
+    }
+    @GetMapping("stats/posts-over-time")
+    public ResponseEntity<List<PostCountDTO>> getPostCountsOverTime() {
+        return ResponseEntity.ok(postService.countPostsByDate());
     }
 }

@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.service.forum;
 
+import tn.cloudnine.queute.dto.forum.PostCountDTO;
 import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.Post;
 
@@ -12,4 +13,5 @@ public interface IPostService {
     public Post findById(Long id);
     public List<Post> findAll();
     public List<Post> findBySentimentType(SentimentType sentimentType);
+    public List<PostCountDTO> countPostsByDate();
 }

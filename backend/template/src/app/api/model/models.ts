@@ -3,6 +3,7 @@ export * from './commentDTO';
 export * from './imageEntity';
 export * from './organization';
 export * from './post';
+export * from './postCountDTO';
 export * from './postDTO';
 export * from './user';
 export * from './votable';

@@ -7,6 +7,7 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { PostComponent } from './app/forum/posts/post/post.component';
 import { PostListComponent } from './app/forum/posts/post-list/post-list.component';
 import { CreatePostComponent } from './app/forum/posts/create-post/create-post.component';
+import { DashboardComponent } from './app/forum/dashboard/dashboard.component';
 
 export const appRoutes: Routes = [
     {
@@ -16,6 +17,7 @@ export const appRoutes: Routes = [
             { path: '', component: Dashboard },
             //forum
             { path: 'post/:id',component: PostComponent},
+            { path: 'formDashboard',component: DashboardComponent},
             {
                 path: 'posts',
                 component: PostListComponent ,
