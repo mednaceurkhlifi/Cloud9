@@ -64,7 +64,7 @@ export class PostComponent implements OnInit{
     }
     ngOnInit() {
         let url = this.router.url;
-        this.showInfo=(url.includes("postInfo")|| url.includes("postList"));
+        this.showInfo=(url.includes("postInfo"));
         let routeId=this.route.snapshot.paramMap.get("id");
         if(routeId!=null){
             this.routePost=true;
@@ -97,7 +97,12 @@ export class PostComponent implements OnInit{
                 label: 'Edit',
                 icon: 'pi pi-pencil',
                 command:()=>{
-                    this.router.navigate(["/posts",{ outlets: { create: ['post', this.post.id] } }]);
+                    if(this.frontOffice || this.showInfo){
+                        this.router.navigate(["/postList",{ outlets: { create: ['post', this.post.id] } }]);
+                    }
+                    else{
+                        this.router.navigate(["/posts",{ outlets: { create: ['post', this.post.id] } }]);
+                    }
                 }
 
             },
@@ -134,7 +139,7 @@ export class PostComponent implements OnInit{
                         next: () => {
                             this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Post deleted' });
 
-                            if(this.showInfo){
+                            if(this.frontOffice){
                                 this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                                     this.router.navigate(['/postList']);
                                 });
@@ -147,7 +152,7 @@ export class PostComponent implements OnInit{
                         },
                         error: err => {
                             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete post' });
-                            if(this.showInfo){
+                            if(this.frontOffice){
                                 this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                                     this.router.navigate(['/postList']);
                                 });

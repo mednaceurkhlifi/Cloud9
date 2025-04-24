@@ -39,6 +39,7 @@ export class PostListComponent implements OnInit{
             if(data.length==0){
                 this.empty=true;
             }
+            this.posts.sort((a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime());
             this.loading=false;
         })
     }

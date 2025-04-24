@@ -20,6 +20,7 @@ export interface PostDTO {
     votes?: Array<VoteDTO>;
     image?: ImageEntity;
     sentiment?: PostDTO.SentimentEnum;
+    date?: string;
     title?: string;
 }
 export namespace PostDTO {
