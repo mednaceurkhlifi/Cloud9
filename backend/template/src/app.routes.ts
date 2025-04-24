@@ -14,6 +14,7 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
+            //forum
             { path: 'post/:id',component: PostComponent},
             {
                 path: 'posts',
@@ -36,12 +37,14 @@ export const appRoutes: Routes = [
                 ]
 
             },
+
+            //end forum
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
-            { path: 'documentation', component: Documentation },
+                { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
     },
-    { path: 'landing', component: Landing },
+    //forum
     {
         path: 'postList',
         component: PostListComponent ,
@@ -66,7 +69,9 @@ export const appRoutes: Routes = [
 
     },
     { path: 'postInfo/:id', component: PostComponent },
+    //end forum
     { path: 'notfound', component: Notfound },
+    { path: 'landing', component: Landing },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
         { path: '**', redirectTo: '/notfound' }
 ];

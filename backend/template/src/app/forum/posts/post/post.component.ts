@@ -64,7 +64,7 @@ export class PostComponent implements OnInit{
     }
     ngOnInit() {
         let url = this.router.url;
-        this.showInfo=url.includes("postInfo");
+        this.showInfo=(url.includes("postInfo")|| url.includes("postList"));
         let routeId=this.route.snapshot.paramMap.get("id");
         if(routeId!=null){
             this.routePost=true;
@@ -134,12 +134,29 @@ export class PostComponent implements OnInit{
                         next: () => {
                             this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Post deleted' });
 
-                            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                this.router.navigate(['/posts']);
-                            });
+                            if(this.showInfo){
+                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                    this.router.navigate(['/postList']);
+                                });
+                            }
+                            else{
+                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                    this.router.navigate(['/posts']);
+                                });
+                            }
                         },
                         error: err => {
                             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete post' });
+                            if(this.showInfo){
+                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                    this.router.navigate(['/postList']);
+                                });
+                            }
+                            else{
+                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                    this.router.navigate(['/posts']);
+                                });
+                            }
                             console.error('Delete error:', err);
                         }
                     });}

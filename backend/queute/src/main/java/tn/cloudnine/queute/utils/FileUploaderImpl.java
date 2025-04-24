@@ -11,8 +11,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-public class FileUploaderImpl implements IFileUploader {
-    @Override
+public class FileUploaderImpl {
     public String saveImage(@Nonnull MultipartFile sourceFile) {
         try{
             String fileName = UUID.randomUUID() + "_" + sourceFile.getOriginalFilename();
@@ -28,7 +27,6 @@ public class FileUploaderImpl implements IFileUploader {
         return "";
     }
 
-    @Override
     public boolean deleteFile(String filePath) {
         try{
             String uploadsDir = Paths.get("").toAbsolutePath().toString() + filePath;
