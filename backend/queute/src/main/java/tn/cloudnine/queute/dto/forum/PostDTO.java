@@ -6,6 +6,7 @@ import tn.cloudnine.queute.model.forum.ImageEntity;
 import tn.cloudnine.queute.model.forum.Post;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -18,12 +19,14 @@ public class PostDTO {
     private List<VoteDTO> votes;
     private ImageEntity image;
     private SentimentType sentiment;
+    private Date date;
     public PostDTO(Post post) {
         this.id = post.getId();
         this.Title = post.getTitle();
         this.content = post.getContent();
         this.userId=post.getUser().getUser_id();
         sentiment=post.getSentimentType();
+        date=post.getDate();
         if(post.getImage() != null) {
             this.image=post.getImage();
         }

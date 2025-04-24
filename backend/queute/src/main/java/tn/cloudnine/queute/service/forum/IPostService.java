@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.service.forum;
 
+import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.Post;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface IPostService {
     public Post delete(long id);
     public Post findById(Long id);
     public List<Post> findAll();
+    public List<Post> findBySentimentType(SentimentType sentimentType);
 }

@@ -3,6 +3,7 @@ package tn.cloudnine.queute.serviceImpl.forum;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.Post;
 import tn.cloudnine.queute.repository.forum.PostRepository;
 import tn.cloudnine.queute.service.forum.IPostService;
@@ -54,5 +55,8 @@ public class PostService implements IPostService {
     @Override
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+    public List<Post> findBySentimentType(SentimentType sentimentType) {
+        return postRepository.getPostsBySentimentType(sentimentType);
     }
 }

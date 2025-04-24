@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.forum.PostDTO;
+import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.ImageEntity;
 import tn.cloudnine.queute.model.forum.Post;
 import tn.cloudnine.queute.service.forum.IFlaskService;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -93,5 +95,20 @@ public class PostController {
         Post post=postService.findById(id);
 
         return ResponseEntity.ok().body(flaskService.Summarizer(post));
+    }
+
+    @GetMapping("get-posts/positive")
+    public ResponseEntity<List<PostDTO>> getPostivePosts() {
+        return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.POSITIVE).stream().map(e -> new PostDTO(e)).toList());
+    }
+
+    @GetMapping("get-posts/negative")
+    public ResponseEntity<List<PostDTO>> getNegativePosts() {
+        return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.NEGATIVE).stream().map(e -> new PostDTO(e)).toList());
+    }
+
+    @GetMapping("get-posts/neutral")
+    public ResponseEntity<List<PostDTO>> getNeutralPosts() {
+        return ResponseEntity.ok().body(postService.findBySentimentType(SentimentType.NEUTRAL).stream().map(e -> new PostDTO(e)).toList());
     }
 }
