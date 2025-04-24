@@ -4,11 +4,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.cloudnine.queute.dto.forum.PostCountDTO;
+import tn.cloudnine.queute.dto.forum.PostDTO;
 import tn.cloudnine.queute.enums.forum.SentimentType;
 import tn.cloudnine.queute.model.forum.Post;
 import tn.cloudnine.queute.repository.forum.PostRepository;
 import tn.cloudnine.queute.service.forum.IPostService;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -82,5 +84,16 @@ public class PostService implements IPostService {
                 .collect(Collectors.toList());
         return monthlyPostCounts;
     }
+    public PostDTO findTopPostBetween(LocalDateTime start, LocalDateTime end) {
+        List<Post> allPosts = postRepository.findAll();
 
+        return new PostDTO(allPosts.stream()
+                .filter(post -> {
+                    LocalDateTime postDate = post.getDate().toInstant()
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    return !postDate.isBefore(start) && !postDate.isAfter(end);
+                })
+                .max(Comparator.comparingInt(Post::getUpvotes)) // or comments size, etc.
+                .orElse(null));
+    }
 }

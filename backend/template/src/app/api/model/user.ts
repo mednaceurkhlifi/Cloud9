@@ -24,7 +24,7 @@ export interface User {
     email?: string;
     created_at?: string;
     updated_at?: string;
-    is_deleted?: boolean;
     is_locked?: boolean;
+    is_deleted?: boolean;
 }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.domain.Auditable;
+import tn.cloudnine.queute.enums.forum.VoteType;
 import tn.cloudnine.queute.model.user.User;
 
 import java.util.Date;
@@ -27,5 +28,8 @@ public class Post extends Votable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    public int getUpvotes() {
+        long ret= votes.stream().filter(v-> v.getVoteType() == VoteType.UPVOTE).count()    ;
+        return (int) ret;
+    }
 }

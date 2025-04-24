@@ -17,7 +17,7 @@ export const appRoutes: Routes = [
             { path: '', component: Dashboard },
             //forum
             { path: 'post/:id',component: PostComponent},
-            { path: 'formDashboard',component: DashboardComponent},
+            { path: 'forumDashboard',component: DashboardComponent},
             {
                 path: 'posts',
                 component: PostListComponent ,

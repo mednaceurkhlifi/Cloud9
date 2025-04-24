@@ -18,6 +18,7 @@ model/imageEntity.ts
 model/models.ts
 model/organization.ts
 model/post.ts
+model/postCountDTO.ts
 model/postDTO.ts
 model/user.ts
 model/votable.ts

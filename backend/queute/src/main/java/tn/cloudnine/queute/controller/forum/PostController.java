@@ -2,6 +2,7 @@ package tn.cloudnine.queute.controller.forum;
 
 import jakarta.servlet.ServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -115,5 +116,13 @@ public class PostController {
     @GetMapping("stats/posts-over-time")
     public ResponseEntity<List<PostCountDTO>> getPostCountsOverTime() {
         return ResponseEntity.ok(postService.countPostsByDate());
+    }
+    @GetMapping("/stats/topPost")
+    public ResponseEntity<PostDTO> getTopPost(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
+    ) {
+        PostDTO topPost = postService.findTopPostBetween(start, end);
+        return ResponseEntity.ok(topPost);
     }
 }

@@ -19,6 +19,7 @@ export interface Post {
     title?: string;
     image?: ImageEntity;
     user?: User;
+    upvotes?: number;
 }
 export namespace Post {
     export type SentimentTypeEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
