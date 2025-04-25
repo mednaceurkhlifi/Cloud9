@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Comment, CommentControllerService, CommentDTO, User, Vote, VoteControllerService, VoteDTO } from '../../../api';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
@@ -13,6 +12,7 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 import { Tag, TagModule } from 'primeng/tag';
+import { CommentControllerService, CommentDTO, User, Vote, VoteControllerService, VoteDTO } from '../../api';
 
 @Component({
   selector: 'app-comment',

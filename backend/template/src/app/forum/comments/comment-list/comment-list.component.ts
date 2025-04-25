@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Comment, CommentControllerService, Post, PostControllerService } from '../../../api';
 import { CommentComponent } from '../comment/comment.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
+import { Comment, CommentControllerService, Post, PostControllerService } from '../../api';
 
 @Component({
   selector: 'app-comment-list',

@@ -5,7 +5,7 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
-import { Configuration, ConfigurationParameters } from './app/api';
+import { Configuration, ConfigurationParameters } from './app/forum/api';
 const openApiConfig: ConfigurationParameters = {
   basePath: 'http://localhost:8082/api/v1',
 };

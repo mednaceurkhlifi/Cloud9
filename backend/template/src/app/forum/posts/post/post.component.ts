@@ -3,7 +3,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { PanelModule } from 'primeng/panel';
-import { Post, PostControllerService, PostDTO, Vote, VoteControllerService, VoteDTO } from '../../../api';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
@@ -16,6 +15,7 @@ import { MarkdownModule, MarkdownService, provideMarkdown } from 'ngx-markdown';
 import { TagModule } from 'primeng/tag';
 import { TopbarWidget } from '../../../pages/landing/components/topbarwidget.component';
 import { FooterWidget } from '../../../pages/landing/components/footerwidget';
+import { PostControllerService, PostDTO, Vote, VoteControllerService, VoteDTO } from '../../api';
 
 @Component({
   selector: 'app-post',

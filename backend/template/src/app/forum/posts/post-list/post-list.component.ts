@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Post, PostControllerService, PostDTO } from '../../../api';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post/post.component';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
@@ -11,6 +10,7 @@ import { FooterWidget } from '../../../pages/landing/components/footerwidget';
 import { TopbarWidget } from '../../../pages/landing/components/topbarwidget.component';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
+import { PostControllerService, PostDTO } from '../../api';
 
 @Component({
   selector: 'app-post-list',

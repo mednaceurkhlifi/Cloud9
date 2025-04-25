@@ -7,7 +7,6 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { Textarea, TextareaModule } from 'primeng/textarea';
-import { Post, PostControllerService } from '../../../api';
 import { CurrUserServiceService } from '../../../user/service/curr-user-service.service';
 import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
 import "highlight.js"
@@ -15,6 +14,7 @@ import "highlight.js"
 import {MarkdownModule, MarkdownService, provideMarkdown} from "ngx-markdown"
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Post, PostControllerService } from '../../api';
 
 @Component({
   selector: 'app-create-post',
