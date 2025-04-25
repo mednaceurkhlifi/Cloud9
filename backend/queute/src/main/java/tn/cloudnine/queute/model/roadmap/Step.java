@@ -25,4 +25,15 @@ public class Step {
     private String stepDescription ;
     private String requiredPapers ;
 
+    @Override
+    public String toString() {
+        return "Step{" +
+                "id=" + id +
+                ", stepOrder=" + stepOrder +
+                ", isStrict=" + isStrict +
+                ", stepName='" + stepName + '\'' +
+                ", stepDescription='" + stepDescription + '\'' +
+                ", requiredPapers='" + requiredPapers + '\'' +
+                '}';
+    }
 }

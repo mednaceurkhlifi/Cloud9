@@ -50,4 +50,26 @@ public class User {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", birthDate=" + birthDate +
+                ", image='" + image + '\'' +
+                ", address='" + address + '\'' +
+                ", password='" + password + '\'' +
+                ", resetPwdCode='" + resetPwdCode + '\'' +
+                ", resetPwdDate=" + resetPwdDate +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", isLocked=" + isLocked +
+                ", isDeleted=" + isDeleted +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

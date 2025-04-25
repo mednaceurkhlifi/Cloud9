@@ -1,0 +1,262 @@
+<div class="bg-surface-0 dark:bg-surface-900">
+    <div id="home" class="landing-wrapper overflow-hidden">
+        
+        <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static" />
+        
+        <div class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20" style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, #efe1af 0%, #c3dcfa 100%)">
+            <div class="flex flex-col justify-center items-center text-center px-4 py-4 md:py-0">
+                <div class="text-gray-900 mb-2 text-3xl font-semibold">Road Maps</div>
+                <span class="text-gray-600 text-2xl">our step-by-step guide to getting things done.</span>
+                <p class="text-gray-900 sm:line-height-2 md:line-height-4 text-2xl mt-6" style="max-width: 800px">
+                    “From applying for a passport to registering a business, Road Maps break down complex paperwork into simple, actionable steps. Discover what to do, where to go, and which organizations to visit—no guesswork, no wasted time. Start your journey with clarity and confidence.”
+                </p>
+                
+            </div>
+        </div>
+        <button pButton  type="button" label="Add RoadMap " icon="pi pi-plus" class="p-button-rounded p-button-info" 
+        style="position: fixed; top: 10rem; right: 2rem; z-index: 1000;" (click)="showAddDialog()">
+    </button>
+      
+           <!--  original features
+            <div id="features" class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20"> -->
+               
+
+        <div id="features" class="  mt-8 mx-0 l">
+            <div class="col-span-12 text-center mt-20 mb-6">
+                    <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Road Map List</div>
+                </div>
+            <div class="flex col-2 py-10 px-10">
+                
+                <p-card class="basis-1/4" [style]="{width: '25rem', overflow: 'hidden' }">
+                    <ng-template #header class="pt-3">
+                      
+                        <div class="flex flex-col gap-2 mt-5 pl-5 pr-5">
+                            <label for="username">Search</label>
+                            <input pInputText id="search-area" aria-describedby="searrch-area" pSize="large" />
+                            <small id="search-area">Please enter a brief summary or key points of your research</small>
+                        </div>
+                    </ng-template>
+                    <ng-template #title> filter by organistation</ng-template>
+                  
+                    
+                    <ng-template #footer>
+                        <div class="flex gap-4 mt-1">
+                            <p-button label="show only my" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full"  />
+                            
+                        </div>
+                    </ng-template>
+                </p-card>
+               
+
+            <div class="grid grid-cols-12 basis-3/4 justify-center">
+
+
+                @for (roadMap of roadMapList; track $index) {
+                        <!-- original card -->
+                    <!-- <p-card class="  pointer-cursor col-span-12 md:col-span-12 lg:col-span-4 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0 ml-3 mr-3" [style]="{ overflow: 'hidden' }">  -->
+                  <p-card class="pointer-cursor col-span-12 md:col-span-12 lg:col-span-4 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0 ml-3 mr-3" [style]="{ overflow: 'hidden' }" (click)="showDetail(roadMap)" >
+                     
+                     <ng-template #header>
+                        <img alt="Card" class="w-full h-[90px] " src="assets/road-map-assets/1.jpg" />
+                    </ng-template>
+                    
+                        <h2>Creator : {{roadMap.creator.firstName}} </h2>
+                    
+                    <span  class=" h-[80px] text-surface-600 dark:text-surface-200 block overflow-y-auto max-h-[100px] pr-1 ">
+                        {{roadMap.description}}
+                       </span>
+                    <ng-template #footer> 
+                        <div class="flex flex-col-3 mt-5" >
+                            <p-button class="mr-1 ml-1 col-span-12  " severity="info"   [label]="roadMap.nbrApprove.toString()" styleClass="font-bold" [rounded]="true"  icon="pi pi-thumbs-up" (click)="approve(roadMap.id);$event.stopPropagation()"  /> 
+                            <p-button class="mr-1 ml-1 col-span-12" severity="danger"  [label]="roadMap.nbrDisapproval.toString()" styleClass="font-bold" [rounded]="true"  icon="pi pi-thumbs-down" (click)="disapprove(roadMap.id);$event.stopPropagation()" />
+                            <p-button class="mr-1 ml-1 col-span-12  " severity="success" label="follow" icon="pi pi-heart-fill"  [rounded]="true"    />
+                               
+                        </div>
+                    </ng-template> 
+
+                
+                </p-card>
+                <!-- <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
+                    <ng-template #header>
+                        <img alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" />
+                    </ng-template>
+                    <ng-template #title> Advanced Card </ng-template>
+                    <ng-template #subtitle> Card subtitle </ng-template>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                        quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+                    </p>
+                    <ng-template #footer>
+                        <div class="flex gap-4 mt-1">
+                            <p-button label="Cancel" severity="secondary" class="w-full" [outlined]="true" styleClass="w-full" />
+                            <p-button label="Save" class="w-full" styleClass="w-full" />
+                        </div>
+                    </ng-template>
+                </p-card> -->
+                
+            }
+
+                 
+
+              
+    
+          </div>
+        </div>
+    </div>
+
+        <footer-widget />
+    </div>
+</div>
+
+<!-- Detail dialog -->
+<p-dialog [(visible)]="detailVisible" [style]="{ width: '600px' }" header="Road Map Detail" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <img class="h-[120px] p-[2px] rounded-[10px]" src="assets/road-map-assets/1.jpg">
+            <div>
+                <label  class="block font-bold mb-3">title :</label>
+               <span>{{selectedRoadMap.title}}</span>
+            </div>
+            <div>
+                <label  class="block font-bold mb-3">creator :</label>
+               <span>{{selectedRoadMap.creator.firstName}} {{selectedRoadMap.creator.lastName}}</span>
+            </div>
+            <div>
+                <label for="description" class="block font-bold mb-3">Description</label>
+                <span>{{selectedRoadMap.description}}</span>
+                
+            </div>
+
+            
+
+            
+            <!-- <div class="flex flex-col gap-6">
+            <span>hello</span>
+            </div> -->
+            
+            <p-accordion value="0">
+                @for (step of selectedRoadMap.steps ; track $index) {
+                <p-accordion-panel [value]=$index>
+                    <p-accordion-header ><p class=" font-bold font-base "> {{step.stepName}} </p> </p-accordion-header>
+                    <p-accordion-content>
+                        <label for="detail-description"  class="font-bold" > Description</label>
+                        <p id="detail-description" class="m-0">
+                          {{step.stepDescription}}  
+                        </p>
+                        <p-divider/>
+                        <label for="detail-required-paper" class="font-bold"> required paper</label>
+                        <p id="detail-required-paper" class="m-0">
+                          {{step.requiredPapers}}  
+                        </p>
+                    </p-accordion-content>
+                </p-accordion-panel>
+            }
+            </p-accordion>
+
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <div   class="p-buttonset">
+            <p-button  icon="pi pi-thumbs-up-fill" rounded="true" severity="info" class="m-2" />
+            <p-button  icon="pi pi-thumbs-down-fill" rounded="true" severity="danger" />
+            
+        </div>
+        <!-- <p-button label="Cancel" icon="pi pi-times" text (click)="hideDetail()" /> -->
+        <p-button label="follow" icon="pi pi-heart-fill"  />
+    </ng-template>
+</p-dialog>
+
+
+
+<!-- Add RoadMap Dialog -->
+<p-dialog [(visible)]="addVisible" [style]="{ width: '800px' }"  header="Add Road Map" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>   
+                 <label for="title" class="block font-bold mb-3">Title</label>
+                 <input type="text" pInputText id="title" [(ngModel)]="crudRoadMap.title" pSize="large" required autofocus fluid />
+             </div>
+            <div  [style]="{'border-color': 'gray'}" >
+               <p-card>
+                    <label for="description" class="block font-bold mb-3">Description</label>
+                    <textarea pTextarea id="description" textarea.border.color="red" [(ngModel)]="crudRoadMap.description" rows="5" cols="30" style="resize: none" class="h-full w-full " pSize="large"></textarea>
+                 
+                </p-card>
+            </div>
+
+            <div>
+                 <h4 class="font-sans text-slate-400 ">
+                    Steps :
+                 </h4> 
+            </div>
+
+            <div>
+               <!--  @for (i of generateRange(stepsCount); track i) { -->
+                    @for (crudstep of crudRoadMap.steps ; track $index) {
+                    <div class="mt-3">
+                    <p-card >
+                    <div class="flex flex-col">
+                       <p class="font-sans text-xl font-bold" >step N°:{{$index+1}}</p>
+                        <div class="flex flex-cols-3">
+                            <div class="basis-2/3">
+                                <label for="step-name" class="block font-bold mb-3">step name</label>
+                                <input type="text" pInputText id="step-name"  [(ngModel)]="crudstep.stepName" pSize="large" required autofocus fluid />
+                            </div>
+                            <div class="basis-1/3 relative">
+                                
+                                <label for="is-strict" class="block font-bold ">strict order</label>   
+                                <p-toggleswitch  id="is-strict" class=" flex justify-center items-center " [(ngModel)]="crudstep.isStrict" />
+                                
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <p-card>
+                            <label for="step-description" class="block font-bold mb-3">Description</label>
+                            <textarea pTextarea id="step-description"  [(ngModel)]="crudstep.stepDescription" rows="5" cols="30" style="resize: none" class="h-full w-full " pSize="large"></textarea>
+                            </p-card>
+                        </div>
+
+                        <div class="mt-3">
+                            <p-card>
+                            <label for="required-paper" class="block font-bold mb-3">required paper</label>
+                            <textarea pTextarea id="required-paper"  [(ngModel)]="crudstep.requiredPapers" rows="5" cols="30" style="resize: none" class="h-full w-full " pSize="large"></textarea>
+                            </p-card>
+                        </div>
+
+                    </div>
+                        
+                    </p-card>
+                    </div>
+                  }
+
+                
+
+                <div class=" justify-between flex mt-3 mb-3">
+                    <div class=" basis-full flex justify-center items-center" >
+                            <p-button icon="pi pi-plus-circle " class="ml-1 mr-1" severity="secondary" [rounded]="true" (click)="addStep()" ></p-button>
+                            <p-button icon="pi pi-minus-circle " [hidden]="stepsCount<=0" class="ml-1 mr-1" severity="danger" [rounded]="true" (click)="deleteStep()" ></p-button>
+                        </div>
+                </div>
+            </div>
+
+            
+
+            
+            <!-- <div class="flex flex-col gap-6">
+            <span>hello</span>
+            </div> -->
+            
+            
+
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-togglebutton [(ngModel)]="enhance"   [onIcon]="'pi pi-lightbulb'"onLabel="enhance active" offLabel="enhance with ai" offIcon="pi pi-lightbulb" [onIcon]="'pi pi-lightbulb'" offIcon="pi pi-lightbulb" styleClass="w-36"/>
+        <p-button label="ADD" icon="pi pi-plus-circle" (click)="saveRoadMap()" />
+    </ng-template>
+</p-dialog>

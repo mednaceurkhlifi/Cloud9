@@ -86,11 +86,14 @@ public class IRoadMapService implements RoadMapService {
 
     public boolean approveRoadMap(Long id, boolean approved, User user){
         RoadMapApproval roadMapApproval = new RoadMapApproval();
+        System.out.println(user);
         Optional<RoadMap>roadMap_opt = this.roadMapRepository.findById(id);
+        System.out.println(roadMap_opt.get());
         if(roadMap_opt.isEmpty())
             return false;
 
-        if(roadMap_opt.get().getApprovals().stream().anyMatch(e->e.getUser().getUserId()== user.getUserId())){
+        if(roadMap_opt.get().getApprovals().stream().anyMatch(e->e.getUser().getUserId() == user.getUserId())){
+            
             return false ;
         }
         else{
@@ -103,7 +106,7 @@ public class IRoadMapService implements RoadMapService {
             }
 
         }
-
+        roadMapApproval.setUser(user);
         roadMapApproval.setApproved(approved);
         roadMapApproval.setDate(LocalDateTime.now());
         roadMap_opt.get().getApprovals().add(roadMapApproval);
