@@ -93,7 +93,7 @@ public class IRoadMapService implements RoadMapService {
             return false;
 
         if(roadMap_opt.get().getApprovals().stream().anyMatch(e->e.getUser().getUserId() == user.getUserId())){
-            
+
             return false ;
         }
         else{
