@@ -1,0 +1,43 @@
+
+<p-stepper [value]="1" class="basis-[50rem]" [linear]="true">
+    <p-step-list>
+        <p-step [value]="1" >Create Article</p-step>
+        <p-step [value]="2">Article Details</p-step>
+    </p-step-list>
+    <p-step-panels>
+        <p-step-panel [value]="1">
+            <ng-template #content let-activateCallback="activateCallback">
+                <div [@slideInOut]="{
+                    value: currentStep,
+                    params: {
+                      enterFrom: previousStep < currentStep ? '100%' : '-100%',
+                      leaveTo: previousStep < currentStep ? '-100%' : '100%'
+                    }
+                  }">
+                    <app-editor [givenBackNews]="news" (event)="persistDetails($event)"></app-editor>
+                    <div class="flex justify-end">
+                    <p-button label="Next" icon="pi pi-arrow-right" iconPos="right" (onClick)="goNext(2,activateCallback)" />
+                    </div>
+                </div>
+            </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="2">
+            <ng-template #content let-activateCallback="activateCallback">
+                <div [@slideInOut]="{
+                    value: currentStep,
+                    params: {
+                      enterFrom: previousStep < currentStep ? '100%' : '-100%',
+                      leaveTo: previousStep < currentStep ? '-100%' : '100%'
+                    }
+                  }">
+                    <app-editor-news-details  (event)="gotBackNews($event)"  [news]="news"></app-editor-news-details>
+                    <div class="flex pt-6 justify-start">
+                        <p-button label="Back" severity="secondary" icon="pi pi-arrow-left" (onClick)="goBack(1,activateCallback)" />
+                    </div>
+                </div>
+            </ng-template>
+        </p-step-panel>
+    </p-step-panels>
+</p-stepper>
+

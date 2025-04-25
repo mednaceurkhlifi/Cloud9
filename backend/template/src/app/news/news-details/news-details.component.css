@@ -1,0 +1,5 @@
+::ng-deep .responsive-image {
+    max-width: 400px !important;
+    transition: width 0.3s ease !important;
+    cursor: pointer !important;
+  }
