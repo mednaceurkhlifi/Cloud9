@@ -33,6 +33,8 @@ public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "organization_id")
+
+    //organizationId bch nbadelha zeda fil front
     private Long id;
 
     @Column()
@@ -78,6 +80,9 @@ public class Organization {
     private List<Feedback> feedbacks;
 
     private float averageRate;
+
+
+    ////////////////////liste users avec role/////////////////////
 
 
 }
