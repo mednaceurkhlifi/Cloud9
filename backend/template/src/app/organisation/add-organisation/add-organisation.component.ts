@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
-import { OrganisationControllerService } from '../../../api/services/services';
+import { FeedbackControllerService, OrganisationControllerService } from '../../../api/services/services';
 import { Organization } from '../../../api/services/models/organization';
 
 import { TableModule } from 'primeng/table';
@@ -15,6 +15,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
+import { Feedback } from '../../../api/services/models/feedback';
+import { NotificationService } from '../../socket/NotificationService';
 
 @Component({
   selector: 'app-add-organisation',
@@ -38,6 +40,8 @@ import { ToastModule } from 'primeng/toast';
   providers: [MessageService]
 })
 export class AddOrganisationComponent implements OnInit {
+
+
   organizations: Organization[] = [];
   allOrganizations: Organization[] = [];
   selectedOrganizations: Organization[] = [];
@@ -52,13 +56,30 @@ export class AddOrganisationComponent implements OnInit {
   
   searchText: string = '';
 
+  feedbackDialog = false;
+  feedbacks: Feedback[] = [];
+  organizationIdForFeedbacks: number | undefined;
+  notifications: string[] = [];
+
+
+notificationDialogVisible: boolean = false;
   constructor(
     private service: OrganisationControllerService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private feedbackService: FeedbackControllerService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.loadOrganizations();
+    this.notificationService.getNotifications().subscribe((msg) => {
+      this.notifications.push(msg);
+      this.notificationDialogVisible = true;
+    });
+  }
+  clearNotifications() {
+    this.notifications = [];
+    this.notificationDialogVisible = false;
   }
 
   initOrganization(): Organization {
@@ -70,7 +91,13 @@ export class AddOrganisationComponent implements OnInit {
       is_deleted: false,
       image: ''
     };
+    
   }
+
+    ouvrerNotificationDialog() {
+      this.notificationDialogVisible = true;
+    }
+
 
   loadOrganizations(): void {
     this.service.getAllOrganisations().subscribe({
@@ -155,10 +182,10 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
         requestBody.imageFile = imageFile;
       }
 
-      if (this.organization.organization_id) {
+      if (this.organization.id) {
         // Mise à jour
         this.service.updateOrganisation({
-          id: this.organization.organization_id,
+          id: this.organization.id,
           body: requestBody
         }).subscribe({
           next: () => {
@@ -235,11 +262,11 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
   }
 
   deleteOrganization(org: Organization): void {
-    if (!org.organization_id) return;
+    if (!org.id) return;
 
-    this.service.deleteOrganisation({ id: org.organization_id }).subscribe({
+    this.service.deleteOrganisation({ id: org.id }).subscribe({
       next: () => {
-        this.organizations = this.organizations.filter(o => o.organization_id !== org.organization_id);
+        this.organizations = this.organizations.filter(o => o.id !== org.id);
         this.messageService.add({ severity: 'success', summary: 'Supprimée', detail: 'Organisation supprimée.' });
       },
       error: () => {
@@ -250,5 +277,60 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
   get activeOrganizations(): Organization[] {
     return this.organizations.filter(org => !org.is_deleted);
   }
+
+viewFeedbacks(organisationId: number): void {
+  this.organizationIdForFeedbacks = organisationId; // Stocker l'ID de l'organisation
+  this.feedbackService.getFeedbacksByOrganization({ organisationId }).subscribe({
+    next: (data) => {
+      // Filtrer les feedbacks où isRead === false
+      this.feedbacks = data.filter(feedback => !feedback.read);
+      this.feedbackDialog = true;
+    },
+    error: () => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load feedbacks.' });
+    }
+  });
+}
+  closeFeedbackDialog(): void {
+    this.feedbackDialog = false;
+    this.feedbacks = [];
+  }
+
+  respondToFeedback(feedbackId: number | undefined, response: string): void {
+    if (!feedbackId) {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Invalid feedback ID.' });
+      return;
+    }
   
+    if (!response || response.trim() === '') {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Response cannot be empty.' });
+      return;
+    }
+  
+    this.feedbackService.respondToFeedback({ feedbackId, body: response }).subscribe({
+      next: (res) => {
+        console.log('API Response:', res); // Affichez la réponse brute
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Response Sent',
+          detail: res['message'] || 'Response sent successfully' // Extract a string property or provide a fallback
+        });
+        this.closeFeedbackDialog() 
+      },
+      error: (err) => {
+        console.error('API Error:', err); // Vérifiez l'erreur ici
+        if (err.status === 200 && typeof err.error === 'string') {
+          // Si le statut est 200 mais que le parsing JSON a échoué, utilisez la réponse brute
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Response Sent',
+            detail: err.error // Affichez la réponse brute
+          });
+          this.closeFeedbackDialog()
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to submit response.' });
+        }
+      }
+    });
+  }
 }

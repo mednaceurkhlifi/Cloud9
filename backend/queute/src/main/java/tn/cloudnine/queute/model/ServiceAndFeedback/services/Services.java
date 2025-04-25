@@ -51,9 +51,6 @@ public class Services implements Serializable {
     @Column(insertable = false)
     private  Integer lastModifiedBy;
     @JsonIgnore
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
-    private List<Feedback> feedbacks; // Relation avec Feedback
-    @JsonIgnore
     @ManyToOne
     private Office office; // Relation avec Office
 

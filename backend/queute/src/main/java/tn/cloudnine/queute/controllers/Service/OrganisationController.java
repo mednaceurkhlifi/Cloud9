@@ -1,26 +1,22 @@
 package tn.cloudnine.queute.controllers.Service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
+
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
-import tn.cloudnine.queute.repository.serviceRepo.OrganizationRepository;
+import tn.cloudnine.queute.serviceImpl.FeedbackService;
 import tn.cloudnine.queute.serviceImpl.OrganisationService;
 import org.springframework.core.io.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
 import tn.cloudnine.queute.utils.IFileUploader;
-import org.springframework.web.multipart.MultipartFile;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/organisations")
@@ -30,7 +26,8 @@ public class OrganisationController {
 
     @Autowired
     private OrganisationService organisationService;
-
+    @Autowired
+    private FeedbackService feedbackService;
     // Récupérer toutes les organisations
     @GetMapping
     public List<Organization> getAllOrganisations() {
@@ -58,9 +55,6 @@ public class OrganisationController {
     }
 
 
-    // Récupérer une organisation par ID
-
-
 
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Organization> updateOrganisation(
@@ -86,12 +80,30 @@ public class OrganisationController {
     // Supprimer une organisation par ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrganisation(@PathVariable Long id) {
-        if (organisationService.existsById(id)) {  // Vérifiez si l'organisation existe
+        if (organisationService.existsById(id)) {
             organisationService.deleteOrganisation(id);
-            return ResponseEntity.noContent().build();  // 204 No Content
+            return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build();  // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{organizationId}/average-rate")
+    public Double getAverageRate(@PathVariable Long organizationId) {
+        return feedbackService.getAverageRateByOrganizationId(organizationId);
+    }
+
+    @GetMapping("/global")
+    public Map<String, Object> getGlobalStatistics() {
+        return organisationService.getGlobalStatistics();
+    }
+
+    @GetMapping("/offices-count")
+    public Map<Long, Integer> getOfficesCountByOrganization() {
+        return organisationService.getOfficesCountByOrganization();
+    }
+
+
+
 
 }

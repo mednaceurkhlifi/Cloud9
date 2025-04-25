@@ -17,6 +17,8 @@ import { deleteOrganisation } from '../fn/organisation-controller/delete-organis
 import { DeleteOrganisation$Params } from '../fn/organisation-controller/delete-organisation';
 import { getAllOrganisations } from '../fn/organisation-controller/get-all-organisations';
 import { GetAllOrganisations$Params } from '../fn/organisation-controller/get-all-organisations';
+import { getAverageRate } from '../fn/organisation-controller/get-average-rate';
+import { GetAverageRate$Params } from '../fn/organisation-controller/get-average-rate';
 import { getImage } from '../fn/organisation-controller/get-image';
 import { GetImage$Params } from '../fn/organisation-controller/get-image';
 import { getOrganisationById } from '../fn/organisation-controller/get-organisation-by-id';
@@ -153,6 +155,31 @@ export class OrganisationControllerService extends BaseService {
   updateOrganisation(params: UpdateOrganisation$Params, context?: HttpContext): Observable<Organization> {
     return this.updateOrganisation$Response(params, context).pipe(
       map((r: StrictHttpResponse<Organization>): Organization => r.body)
+    );
+  }
+
+  /** Path part for operation `getAverageRate()` */
+  static readonly GetAverageRatePath = '/organisations/{organizationId}/average-rate';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAverageRate()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAverageRate$Response(params: GetAverageRate$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+    return getAverageRate(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAverageRate$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAverageRate(params: GetAverageRate$Params, context?: HttpContext): Observable<number> {
+    return this.getAverageRate$Response(params, context).pipe(
+      map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 

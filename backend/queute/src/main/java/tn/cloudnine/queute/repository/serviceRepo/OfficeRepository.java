@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface OfficeRepository extends JpaRepository<Office, Long> {
    // List<Office> findByOrganisation_id(Long organisationId);
-   @Query("SELECT o FROM Office o WHERE o.organisation.organization_id = :organisationId")
+   @Query("SELECT o FROM Office o WHERE o.organisation.id = :organisationId")
    List<Office> findByOrganisationId(@Param("organisationId") Long organisationId);
 }

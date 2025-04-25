@@ -1,22 +1,38 @@
 <p-toolbar styleClass="mb-6">
   <ng-template #start>
     <p-button label="New Organization" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
-    <ng-template #end>
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
-        <input
-          type="text"
-          pInputText
-          placeholder="Search..."
-          [(ngModel)]="searchText"
-          (input)="filterOrganizations()"
-          style="width: 300px;"
-        />
-      </span>
-    </ng-template>
+  </ng-template>
 
+  <ng-template #end>
+    <p-button label="Notifications" icon="pi pi-bell" severity="info" (click)="notificationDialogVisible = true" />
   </ng-template>
 </p-toolbar>
+
+
+ <!--Notif-->
+<p-dialog 
+  header="Notifications" 
+  [(visible)]="notificationDialogVisible"
+  position="right"
+  [modal]="false"
+  [style]="{ width: '350px' }"
+  [dismissableMask]="true"
+  [closable]="true"
+>
+  <div *ngIf="notifications.length > 0; else noNotifs">
+    <div *ngFor="let n of notifications" class="p-3 mb-3 shadow-sm border border-gray-300 rounded-md bg-gray-50">
+      {{ n }}
+    </div>
+    <div class="flex justify-end mt-3">
+      <p-button label="Clear" icon="pi pi-trash" class="p-button-danger" (click)="clearNotifications()"></p-button>
+    </div>
+  </div>
+
+  <ng-template #noNotifs>
+    <p>Aucune notification pour le moment.</p>
+  </ng-template>
+</p-dialog>
+
 
 <p-table
   [value]="activeOrganizations"
@@ -57,12 +73,18 @@
         <p-button icon="pi pi-pencil" class="mr-2" (click)="editOrganization(org)" />
         <p-button icon="pi pi-trash" severity="danger" (click)="deleteOrganization(org)" />
         <p-button
-          label="Details"
+          label="View Offices"
           icon="pi pi-info-circle"
           class="p-button-rounded p-button-info"
-          [routerLink]="['/Organisation/offices', org.organization_id]"
+          [routerLink]="['/Organisation/offices', org.id]"
           [disabled]="org.is_deleted"
         ></p-button>
+        <p-button
+        label="View Feedbacks"
+        icon="pi pi-comments"
+        class="p-button-rounded p-button-info"
+        (click)="viewFeedbacks(org.id)"
+      ></p-button>
       </td>
     </tr>
   </ng-template>
@@ -121,6 +143,26 @@
     <p-button label="Save" icon="pi pi-check" (click)="saveOrganization()" />
   </ng-template>
 </p-dialog>
+<p-dialog [(visible)]="feedbackDialog" [style]="{ width: '600px' }" header="Feedbacks" [modal]="true">
+  <ng-template pTemplate="content">
+    <div *ngIf="feedbacks.length > 0; else noFeedbacks">
+      <div *ngFor="let feedback of feedbacks" class="feedback-item">
+        <p><strong>Comment:</strong> {{ feedback.comment }}</p>
+        <p><strong>Note:</strong> {{ feedback.note }}</p>
+        <textarea #responseInput placeholder="Write your response here"></textarea>
+        <p-button 
+          label="Submit" 
+          icon="pi pi-check" 
+          (click)="respondToFeedback(feedback.id, responseInput.value)">
+        </p-button>
+        <hr />
+      </div>
+    </div>
+    <ng-template #noFeedbacks>
+      <p>No feedbacks available for this organization.</p>
+    </ng-template>
 
 
+  </ng-template>
+</p-dialog>
 <p-toast></p-toast>

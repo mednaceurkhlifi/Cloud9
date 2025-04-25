@@ -6,6 +6,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { FeedbackControllerService } from './services/feedback-controller.service';
 import { ServiceControllerService } from './services/service-controller.service';
 import { OrganisationControllerService } from './services/organisation-controller.service';
 import { OfficeControllerService } from './services/office-controller.service';
@@ -18,6 +19,7 @@ import { OfficeControllerService } from './services/office-controller.service';
   exports: [],
   declarations: [],
   providers: [
+    FeedbackControllerService,
     ServiceControllerService,
     OrganisationControllerService,
     OfficeControllerService,

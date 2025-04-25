@@ -4,56 +4,51 @@ import jakarta.persistence.*;
 
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import tn.cloudnine.queute.model.ServiceAndFeedback.services.Services;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
 import tn.cloudnine.queute.model.user.User;
 
 import java.io.Serializable;
-import java.security.cert.CertPathBuilder;
 import java.time.LocalDateTime;
-@Builder
 @Entity
+@Table(name = "feedback")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-
+@SQLDelete(sql = "UPDATE feedback f SET f.is_deleted = true WHERE f.feedback_id=? AND f.is_deleted = false ")
 public class Feedback implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private String content;
-    //private String status;
+    private Double note;
+    private String comment;
 
-     private Double note;
-     private String comment;
+    @Column(name = "is_read")
+    private boolean isRead;
+
+    @ManyToOne
+    @JoinColumn(name = "organisation_id", nullable = false)
+
+    private Organization organisation;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by_user_id", nullable = false)
+    private User user;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
-
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    private  Long lastModifiedBy;
-
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private Services service; // Relation avec Service
-
-    @ManyToOne
-    @JoinColumn(name = "created_by_user_id")
-    private User user;  // Instead of Integer
-
-
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastModifiedDate;
 
 }

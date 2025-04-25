@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
+import tn.cloudnine.queute.model.ServiceAndFeedback.feedback.Feedback;
 import tn.cloudnine.queute.model.ServiceAndFeedback.office.Office;
 
 import java.time.LocalDateTime;
@@ -31,7 +32,8 @@ public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long organization_id;
+    @Column(name = "organization_id")
+    private Long id;
 
     @Column()
     private String name;
@@ -70,5 +72,12 @@ public class Organization {
     @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JsonIgnore
     private List<Office> offices;
+
+    @OneToMany(mappedBy = "organisation")
+    @JsonIgnore
+    private List<Feedback> feedbacks;
+
+    private float averageRate;
+
 
 }

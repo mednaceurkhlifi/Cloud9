@@ -4,13 +4,14 @@
 
 export interface Organization {
   address?: string;
+  averageRate?: number;
   created_at?: string;
   email?: string;
+  id?: number;
   image?: string;
   is_deleted?: boolean;
   lastModifiedBy?: number;
   name?: string;
-  organization_id?: number;
   phone_number?: string;
   updated_at?: string;
 }

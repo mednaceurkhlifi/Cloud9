@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.cloudnine.queute.utils.FileUploader;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -89,5 +91,41 @@ public class OrganisationService implements IOrganisationService {
     }
     public boolean existsById(Long id) {
         return organisationRepository.existsById(id);
+    }
+
+
+
+
+
+   //Statics rate (avg)
+    public Map<String, Object> getGlobalStatistics() {
+        List<Organization> organizations = organisationRepository.findAll();
+
+        double averageRate = organizations.stream()
+                .mapToDouble(Organization::getAverageRate)
+                .average()
+                .orElse(0.0);
+
+        int totalOffices = organizations.stream()
+                .mapToInt(org -> org.getOffices().size())
+                .sum();
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalOrganizations", organizations.size());
+        stats.put("averageRate", averageRate);
+        stats.put("totalOffices", totalOffices);
+
+        return stats;
+    }
+
+    public Map<Long, Integer> getOfficesCountByOrganization() {
+        List<Organization> organizations = organisationRepository.findAll();
+
+        Map<Long, Integer> officesCount = new HashMap<>();
+        for (Organization org : organizations) {
+            officesCount.put(org.getId(), org.getOffices().size());
+        }
+
+        return officesCount;
     }
 }
