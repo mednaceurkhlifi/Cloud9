@@ -25,6 +25,7 @@
                         ],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
+<<<<<<< HEAD
                        "assets": [
                             {
                                 "glob": "**/*",
@@ -37,6 +38,13 @@
                                 "input": "src/assets",
                                 "output": "assets"
                               }
+=======
+                        "assets": [
+                            {
+                                "glob": "**/*",
+                                "input": "public"
+                            }
+>>>>>>> RoadMap
                         ],
                         "styles": [
                             "src/styles.scss"

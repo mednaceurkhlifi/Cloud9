@@ -28,26 +28,26 @@ public class User {
     private String firstName;
     private String lastName;
     private String fullName;
-    private LocalDate birth_date;
+    private LocalDate birthDate;
     private String image;
     private String address;
     private String password;
-    private String reset_pwd_code;
-    private LocalDateTime reset_pwd_date;
+    private String resetPwdCode;
+    private LocalDateTime resetPwdDate;
 
     @Column(unique = true)
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(unique = true)
     private String email;
 
-    private boolean is_locked;
-    private boolean is_deleted;
+    private boolean isLocked;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }
