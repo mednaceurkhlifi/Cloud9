@@ -20,7 +20,7 @@ export class DashboardComponent {
     negativePosts : PostDTO[] = [];
     positivePosts : PostDTO[] = [];
     neutralPosts : PostDTO[] = [];
-    rangeDates :Date[] | undefined;
+    rangeDates :Date[] | null | undefined = undefined;
     topPost : PostDTO|undefined;
      platformId = inject(PLATFORM_ID);
     constructor(private postController : PostControllerService,private cd : ChangeDetectorRef){}

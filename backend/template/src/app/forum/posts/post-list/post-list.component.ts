@@ -11,6 +11,7 @@ import { TopbarWidget } from '../../../pages/landing/components/topbarwidget.com
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { PostControllerService, PostDTO } from '../../api';
+import { PostServiceService } from '../../../src/app/forum/services/post-service.service';
 
 @Component({
   selector: 'app-post-list',
@@ -28,7 +29,7 @@ export class PostListComponent implements OnInit{
     searchQuery: string = '';
     selectedFilter: any = null;
 
-    constructor(private postController : PostControllerService,private router : Router,private route : ActivatedRoute){
+    constructor(private postController : PostControllerService,private router : Router,private route : ActivatedRoute,private postService : PostServiceService){
         this.posts=[];
     }
     ngOnInit(): void {
@@ -49,13 +50,20 @@ export class PostListComponent implements OnInit{
         { label: 'Neutral 😐', value: 'neutral' },
         { label: 'Negative 😠', value: 'negative' }
     ];
+    sortOptions = [
+        { label: 'Newest', value: 'newest' },
+        { label: 'Oldest', value: 'oldest' },
+        { label: 'Most Upvotes', value: 'upvotes' },
+        { label: 'Most Downvotes', value: 'downvotes' }
+    ];
 
+    selectedSort = 'newest';
     resetFilters() {
         this.searchQuery = '';
         this.selectedFilter = null;
     }
     get filteredPosts() {
-        return this.posts.filter(post => {
+        let result= this.posts.filter(post => {
             const matchesSearch = post.title!.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 post.content!.toLowerCase().includes(this.searchQuery.toLowerCase());
             if(this.selectedFilter!=null)
@@ -64,5 +72,20 @@ export class PostListComponent implements OnInit{
 
             return matchesSearch && matchesFilter;
         });
+        switch (this.selectedSort) {
+            case 'newest':
+                result = result.sort((a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime());
+            break;
+            case 'oldest':
+                result = result.sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime());
+            break;
+            case 'upvotes':
+                result = result.sort((a, b) => (this.postService.getPostVotes(b) ?? 0) - (this.postService.getPostVotes(a) ?? 0));
+            break;
+            case 'downvotes':
+                result = result.sort((a, b) => (this.postService.getPostVotes(a) ?? 0) - (this.postService.getPostVotes(b) ?? 0));
+            break;
+        }
+        return result;
     }
 }

@@ -3,6 +3,7 @@
     <p-datepicker [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="onDateInput()" />
 </div>
 <app-post *ngIf="topPost!=undefined" [postId]="topPost.id" [frontOffice]="false"></app-post>
+<p *ngIf="topPost === null">No post created in that time period</p>
 <p-card header="Posts Per Month" class="mb-4">
   <p-chart type="bar" [data]="chartData" [options]="{
     responsive: true,

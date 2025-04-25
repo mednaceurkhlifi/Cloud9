@@ -76,7 +76,7 @@ export class PostComponent implements OnInit{
         if(this.finalPostId!=null){
             this.postController.getPost(this.finalPostId).subscribe(data =>{
                 this.post=data;
-                if(this.post.userId==this.userService.getCurrUser().user_id){
+                if(this.post.userId==this.userService.getCurrUser().user_id || !this.showInfo){
                     this.owner=true;
                 }
             });

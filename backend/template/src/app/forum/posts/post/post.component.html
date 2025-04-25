@@ -38,7 +38,7 @@
                 </ng-template>
                     <div>
                         <markdown emoji [start]="5" [data]="post.content"></markdown>
-                        <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url"/>
+                        <img *ngIf="post.image!=undefined" [src]="'http://localhost:8082/api/v1'+ post.image.url" style="aspect-ratio:auto;max-width:50%;max-height:50%;"/>
                     </div>
             </p-panel>
             <div class="card flex justify-center " style="height:0">

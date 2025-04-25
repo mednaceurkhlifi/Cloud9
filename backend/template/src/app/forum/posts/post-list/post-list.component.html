@@ -24,7 +24,15 @@
                     class="w-full"
                     ></p-dropdown>
             </div>
+            <div class="flex items-center gap-2 w-full md:w-1/3">
+            <p-dropdown
+                [options]="sortOptions"
+                [(ngModel)]="selectedSort"
+                placeholder="Sort by"
+                styleClass="w-full md:w-14rem">
+            </p-dropdown>
 
+            </div>
             <button
                 pButton
                 icon="pi pi-refresh"
