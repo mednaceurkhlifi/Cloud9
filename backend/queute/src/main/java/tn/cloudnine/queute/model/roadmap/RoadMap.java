@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import tn.cloudnine.queute.model.user.User;
 
 import java.util.List;
@@ -16,13 +18,21 @@ import java.util.List;
 @AllArgsConstructor
 public class RoadMap {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
-    private String Content ;
-    private float AprrovalRate ;
-   @OneToMany
-    private List<Step> Steps ;
-    @OneToOne
-    private User Creator ;
+    private String title ;
+    @Column(length = 1000)
+    private String description ;
+    private int nbrApprove ;
+    private int nbrDisapproval;
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<RoadMapApproval> approvals ;
+
+    @ManyToOne
+    private User creator ;
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    private List<Step> steps ;
 
 }
