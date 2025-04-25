@@ -10,7 +10,7 @@ export class NewsService {
 
   constructor(private http:HttpClient) { }
 
-  url:string="http://localhost:8080/news"
+  url:string="http://localhost:8080/api/v1/news"
   /*news!:News;
 
   getNewsToUpdate()

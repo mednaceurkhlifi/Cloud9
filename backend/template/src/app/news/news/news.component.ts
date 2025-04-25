@@ -58,7 +58,7 @@ export class NewsComponent {
         element.content=JSON.parse(element.content).content?.map((item:any)=>item.content?.map((contentItem:any)=> contentItem.text).join('')).filter((text:any)=>text).slice(0)
      } )
 
-     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.userId,news.newsId!))
+     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.userId!,news.newsId!))
      forkJoin(check).subscribe(results=>{  //el fork join testanna el api calls yekmlou mba3d tlanci el subscribe bech mayjiwnich les elements mta3 tableau listNews kol marra kfifech khater el subscribe matestanech li 9balha
       this.listchecked=results.map(res=> res ==1)
 
@@ -163,7 +163,7 @@ export class NewsComponent {
 
   let reaction:Reaction;
   this.trendingService.addAction(trending).subscribe()
-  this.reactionService.getReactionByUserAndNews(this.user.userId,nId).subscribe((res:any)=>
+  this.reactionService.getReactionByUserAndNews(this.user.userId!,nId).subscribe((res:any)=>
   {
     
     if(res!==null) //ma3neha deja reacta
@@ -216,7 +216,7 @@ export class NewsComponent {
       else
       {
       
-      this.newsService.removeChecked(this.user.userId,newsId).subscribe(rest=>this.listchecked[index]=false)
+      this.newsService.removeChecked(this.user.userId!,newsId).subscribe(rest=>this.listchecked[index]=false)
       }
 
   }

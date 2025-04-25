@@ -9,7 +9,7 @@ export class TrendingService {
 
   constructor(private http:HttpClient) { }
 
-   url:string="http://localhost:8080/trending";
+   url:string="http://localhost:8080/api/v1/trending";
   addAction(trending:Trending)
   {
    return this.http.post(this.url+"/addTrending",trending)

@@ -10,7 +10,7 @@ import { RoadMap } from '../models/RoadMap';
 export class RoadMapService {
 
 
-    url : string = "http://localhost:8000/api/v1/road-map";
+    url : string = "http://localhost:8080/api/v1/road-map";
     constructor(private http:HttpClient) {}
 
     getAll() : Observable<RoadMap[]>{

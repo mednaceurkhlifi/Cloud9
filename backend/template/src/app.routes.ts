@@ -17,13 +17,17 @@ export const appRoutes: Routes = [
             { path: 'stepper', loadChildren: () => import('./app/news/stepper/stepper-routes') },
             { path: 'organisationNews', loadChildren: () => import('./app/news/organisation-news/organisation-news-routes') },
             {path:'allStats',loadChildren:()=>import('./app/news/all-stats/all-stats-routes')},
-
+            {
+                path: 'roadmap', loadChildren: () => import('./app/roadMap/road-map-list-component/road-map-routes.module')
+            },
 
         ]
     },
     {path:'news',loadChildren:()=>import('./app/news/all-news/allNews-routes')},
     {path:'newsDetails/:id',loadChildren:()=>import('./app/news/news-details/news-details-routes')},
-
+    {
+        path: 'road-map-front', loadChildren: () => import('./app/roadMap/road-map-front/road-map-front-routes.module')
+    },
     { path: 'landing', component: Landing },
     { path: 'notfound', component: Notfound },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },

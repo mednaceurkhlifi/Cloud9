@@ -30,6 +30,7 @@ export class AppMenu {
                     { label: 'Editor', icon: 'pi pi-fw pi-check-square', routerLink: ['/stepper'] },
                     { label: 'Organisation News', icon: 'pi pi-fw pi-check-square', routerLink: ['/organisationNews'] },
                     { label: 'Sats', icon: 'pi pi-fw pi-check-square', routerLink: ['/allStats'] },
+                    { label: 'Road Map', icon: 'pi pi-fw pi-check-square', routerLink: ['/roadmap'] },
 
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
