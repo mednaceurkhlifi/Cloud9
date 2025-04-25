@@ -23,31 +23,31 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long userId;
 
-    private String firs_name;
-    private String last_name;
-    private String full_name;
-    private LocalDate birth_date;
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private LocalDate birthDate;
     private String image;
     private String address;
     private String password;
-    private String reset_pwd_code;
-    private LocalDateTime reset_pwd_date;
+    private String resetPwdCode;
+    private LocalDateTime resetPwdDate;
 
     @Column(unique = true)
-    private String phone_number;
+    private String phoneNumber;
 
     @Column(unique = true)
     private String email;
 
-    private boolean is_locked;
-    private boolean is_deleted;
+    private boolean isLocked;
+    private boolean isDeleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }
