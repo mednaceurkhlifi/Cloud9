@@ -75,7 +75,8 @@ export class CommentComponent  implements OnInit{
             })
         })
     }
-    upVote(){
+
+    upVote() {
         const currentUser = this.userService.getCurrUser();
         const currentUserId = String(currentUser.user_id);
 
@@ -156,7 +157,7 @@ export class CommentComponent  implements OnInit{
             user: currentUser
         };
 
-        this.voteNum++;
+        this.voteNum--;
         this.voteController.createVote(newVote).subscribe({
             next: (createdVote) => {
                 console.log("New DOWNVOTE created:", createdVote);
@@ -166,6 +167,7 @@ export class CommentComponent  implements OnInit{
         });
 
     }
+
     edit(){
         this.editMode=true;
         this.editableText =this.comment.content!;

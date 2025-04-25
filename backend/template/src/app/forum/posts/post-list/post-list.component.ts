@@ -11,7 +11,7 @@ import { TopbarWidget } from '../../../pages/landing/components/topbarwidget.com
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { PostControllerService, PostDTO } from '../../api';
-import { PostServiceService } from '../../../src/app/forum/services/post-service.service';
+import { PostServiceService } from '../../services/post-service.service';
 
 @Component({
   selector: 'app-post-list',
@@ -66,8 +66,6 @@ export class PostListComponent implements OnInit{
         let result= this.posts.filter(post => {
             const matchesSearch = post.title!.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 post.content!.toLowerCase().includes(this.searchQuery.toLowerCase());
-            if(this.selectedFilter!=null)
-                console.log(post.sentiment,this.selectedFilter.value);
             const matchesFilter = !this.selectedFilter || post.sentiment?.toLowerCase() === this.selectedFilter.value;
 
             return matchesSearch && matchesFilter;

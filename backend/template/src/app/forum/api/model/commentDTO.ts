@@ -18,6 +18,7 @@ export interface CommentDTO {
     author?: string;
     sentiment?: CommentDTO.SentimentEnum;
     votes?: Array<VoteDTO>;
+    date?: string;
 }
 export namespace CommentDTO {
     export type SentimentEnum = 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';

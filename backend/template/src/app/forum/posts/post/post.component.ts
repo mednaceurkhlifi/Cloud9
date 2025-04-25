@@ -253,7 +253,7 @@ export class PostComponent implements OnInit{
             user: currentUser
         };
 
-        this.voteNum++;
+        this.voteNum--;
         this.voteController.createVote(newVote).subscribe({
             next: (createdVote) => {
                 console.log("New DOWNVOTE created:", createdVote);

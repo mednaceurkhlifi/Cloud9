@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Post, PostDTO } from '../../../../forum/api';
+import { CommentDTO } from '../api';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PostServiceService {
+export class CommentServiceService {
 
   constructor() { }
-  getPostVotes(p :PostDTO){
+
+  getCommentVotes(p :CommentDTO){
       let sum = 0;
       p.votes?.forEach(e=>{
           if(e.voteType=="UPVOTE"){
