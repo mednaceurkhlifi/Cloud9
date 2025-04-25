@@ -104,7 +104,7 @@ public class ProjectUserService implements IProjectUserService {
 
         repository.save(projectUser);
 
-        return new UserDTO(user.getFull_name(), user.getEmail(), user.getImage(), role);
+        return new UserDTO(user.getFullName(), user.getEmail(), user.getImage(), role);
     }
 
     private Project getProjectById(Long projectId) {

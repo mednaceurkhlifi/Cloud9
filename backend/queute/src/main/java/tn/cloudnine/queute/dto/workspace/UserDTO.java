@@ -3,7 +3,7 @@ package tn.cloudnine.queute.dto.workspace;
 import tn.cloudnine.queute.enums.workspace.ProjectRole;
 
 public record UserDTO(
-        String full_name,
+        String fullName,
         String email,
         String image,
         ProjectRole role

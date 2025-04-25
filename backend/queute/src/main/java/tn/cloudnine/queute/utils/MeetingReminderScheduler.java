@@ -26,11 +26,11 @@ public class MeetingReminderScheduler implements IMeetingReminderScheduler {
         taskScheduler.schedule(() -> {
             for (User user : meeting.getMembers()) {
                 String meet_admin = "vous";
-                String meeting_link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFull_name();
-                if(!meeting.getAdmin().getEmail().equals(user.getEmail())) meet_admin = meeting.getAdmin().getFull_name();
+                String meeting_link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFullName();
+                if(!meeting.getAdmin().getEmail().equals(user.getEmail())) meet_admin = meeting.getAdmin().getFullName();
                 emailService.sendMeetingReminder(
                         user.getEmail(),
-                        user.getFull_name(),
+                        user.getFullName(),
                         meet_admin,
                         meeting.getTitle(),
                         meeting.getFormattedDate(),

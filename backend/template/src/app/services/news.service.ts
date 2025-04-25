@@ -10,7 +10,7 @@ export class NewsService {
 
   constructor(private http:HttpClient) { }
 
-  url:string="http://localhost:8080/api/v1/news"
+  url:string="http://localhost:8082/api/v1/news"
   /*news!:News;
 
   getNewsToUpdate()
@@ -79,7 +79,7 @@ export class NewsService {
   {
       return this.http.put(this.url+"/update",formData);
   }
- 
+
 
   addSaved(readLater:ReadLater)
   {

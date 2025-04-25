@@ -1,0 +1,41 @@
+**Cahier des charges : Projet d'application mobile**
+
+**1. Titre du projet :** Développement d'une application mobile
+
+**2. Objectif du projet :**  Développer une application mobile fonctionnelle et intuitive répondant aux besoins utilisateurs non spécifiés dans le document source.  Ce cahier des charges servira de base pour définir précisément ces besoins.
+
+**3. Description fonctionnelle :** Le projet consiste en la création d'une application mobile complète, incluant le développement de l'interface utilisateur (front-end) et de l'interface de programmation applicative (API back-end).  Des fonctionnalités spécifiques devront être définies ultérieurement en fonction des besoins utilisateurs.
+
+**4. Modules et leurs objectifs :**
+
+* **Module 1 : Développement Front-end :**  Développement de l'interface utilisateur et de l'expérience utilisateur de l'application mobile, assurant une navigation fluide et une ergonomie optimale.
+
+* **Module 2 : Développement Back-end :** Développement de l'API qui gérera les données et les interactions avec le front-end.  L'API devra être robuste, sécurisée et évolutive.
+
+**5. Tâches par module :**
+
+**Module 1 : Développement Front-end**
+
+* **Conception UI:** Conception de l'interface utilisateur de l'application mobile (maquettes, wireframes, etc.).  Délai : 08/03/2024 - 15/03/2024. Statut : À faire.
+* **Développement UI:** Développement de l'interface utilisateur selon les spécifications de conception. Délai : 15/03/2024 - 29/03/2024. Statut : À faire.
+* **Tests UI:** Tests complets de l'interface utilisateur pour assurer la qualité et la stabilité. Délai : 29/03/2024 - 05/04/2024. Statut : À faire.
+* **Déploiement UI:** Déploiement de l'interface utilisateur sur les plateformes cibles (iOS et Android, à confirmer). Délai : 05/04/2024 - 08/04/2024. Statut : À faire.
+
+
+**Module 2 : Développement Back-end**
+
+* **Conception API:** Conception de l'API, incluant la définition des endpoints, des schémas de données et des protocoles de communication. Délai : 08/04/2024 - 15/04/2024. Statut : À faire.
+* **Développement API:** Développement de l'API selon les spécifications de conception. Délai : 15/04/2024 - 06/05/2024. Statut : À faire.
+* **Tests API:** Tests complets de l'API pour assurer la performance, la sécurité et la fiabilité. Délai : 06/05/2024 - 20/05/2024. Statut : À faire.
+* **Déploiement API:** Déploiement de l'API sur un serveur approprié. Délai : 20/05/2024 - 08/06/2024. Statut : À faire.
+
+
+**6. Dates importantes :**
+
+* **Date de début du projet :** 08/03/2024
+* **Date limite du projet :** 08/06/2024
+
+
+**7. Statut initial :** Non commencé
+
+**8. Contraintes ou remarques :**  Ce cahier des charges est incomplet.  Des spécifications fonctionnelles détaillées, incluant les besoins utilisateurs, les fonctionnalités spécifiques de l'application, la technologie de développement (plateformes cibles, langages de programmation, etc.) et la stratégie de test, doivent être définies dans un document complémentaire avant le démarrage effectif du développement.  L'absence de ces informations constitue une contrainte majeure pour la réalisation du projet dans les délais impartis.  Un atelier de spécifications fonctionnelles est fortement recommandé.

@@ -187,7 +187,7 @@ public class WorkspaceMessageService implements IWorkspaceMessageService {
 
     private UserDTO getUserDto(User sender) {
         return new UserDTO(
-                sender.getFull_name(), sender.getEmail(), sender.getImage(), null
+                sender.getFullName(), sender.getEmail(), sender.getImage(), null
         );
     }
 }

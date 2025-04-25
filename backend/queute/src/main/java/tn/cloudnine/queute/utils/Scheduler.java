@@ -39,7 +39,7 @@ public class Scheduler {
             System.out.println(task.getFormattedDateTime());
             for (User member : task.getMembers()) {
                 emailService.sendTaskDeadlineNotif(
-                        member.getEmail(), member.getFull_name(), task_title, task.getFormattedDateTime(), task_link
+                        member.getEmail(), member.getFullName(), task_title, task.getFormattedDateTime(), task_link
                 );
             }
         }

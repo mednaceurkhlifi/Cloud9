@@ -69,10 +69,10 @@ public class MeetingService implements IMeetingService {
             user = userRepository.findByEmailEquals(user.getEmail()).orElseThrow(
                     () -> new IllegalArgumentException("User not found.")
             );
-            String link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFull_name();
+            String link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFullName();
             emailService.sendMeetingMailInvite(
-                    user.getEmail(), user.getFull_name(),
-                    meeting.getAdmin().getFull_name(),
+                    user.getEmail(), user.getFullName(),
+                    meeting.getAdmin().getFullName(),
                     meeting.getFormattedDate(),
                     meeting.getFormattedTime(), meeting.getTitle(),link
             );
@@ -120,10 +120,10 @@ public class MeetingService implements IMeetingService {
      */
     private void sendInvitation(Meeting meeting) {
         for (User user : meeting.getMembers()) {
-            String link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFull_name();
+            String link = BASE_LINK + meeting.getMeetingId() + "/" + user.getUserId() + "/" + user.getFullName();
             emailService.sendMeetingMailInvite(
-                    user.getEmail(), user.getFull_name(),
-                    meeting.getAdmin().getFull_name(),
+                    user.getEmail(), user.getFullName(),
+                    meeting.getAdmin().getFullName(),
                     meeting.getFormattedDate(),
                     meeting.getFormattedTime(), meeting.getTitle(),link
             );

@@ -9,7 +9,7 @@ export class ReactionService {
 
   constructor(private http:HttpClient) { }
 
-  url:string="http://localhost:8080/api/v1/react"
+  url:string="http://localhost:8082/api/v1/react"
   addReaction(reaction:Reaction)
   {
     return this.http.post(this.url+"/addReaction",reaction);

@@ -172,7 +172,7 @@ public class TaskService implements ITaskService {
         );
         task.getMembers().add(user);
         repository.save(task);
-        return new UserDTO(user.getFull_name(), user.getEmail(), user.getImage(), projectUser.getRole());
+        return new UserDTO(user.getFullName(), user.getEmail(), user.getImage(), projectUser.getRole());
     }
 
     @Override

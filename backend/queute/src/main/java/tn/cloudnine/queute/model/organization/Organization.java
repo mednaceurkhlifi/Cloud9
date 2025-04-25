@@ -57,8 +57,6 @@ public class Organization {
                 ", address='" + address + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", email='" + email + '\'' +
-                ", workspace=" + workspace +
-                ", is_deleted=" + is_deleted +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +
                 ", news=" + news +
