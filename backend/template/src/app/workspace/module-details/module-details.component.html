@@ -1,0 +1,152 @@
+<div class="card !mb-8">
+    <p-toast />
+    <p-confirmdialog></p-confirmdialog>
+
+    <div class="flex items-center justify-between">
+        <div class="flex flex-row items-center justify-start gap-4">
+            <img *ngIf="module.project?.image != 'default_project.jpg' else default_image_project" src="http://localhost:8082/api/v1/project-document/images/{{module.project?.image}}" width="80" style="vertical-align: middle; border-radius: 50%;" />
+            <ng-template #default_image_project>
+                <img src="workspace/images/default_workspace.jpg" width="80" style="vertical-align: middle; border-radius: 50%;" />
+            </ng-template>
+            <span class="text-3xl font-bold">{{module.project?.name}}</span>
+        </div>
+        <p-button icon="pi pi-arrow-left" label="Back to project" (click)="goBack()"/>
+    </div>
+
+    <div class="general-info-container">
+        <p-dialog header="Update module" [modal]="true" [(visible)]="isOnUpdate" [style]="{ width: '80rem' }">
+            <app-module-form
+                [isOnUpdate]="true"
+                [initUpdateF]="isOnUpdate"
+                [module]="module"
+                (hideForm)="isOnUpdate = !isOnUpdate"
+                (moduleCreated)="moduleUpdated($event)"
+            ></app-module-form>
+        </p-dialog>
+        <div class="flex flex-row w-full">
+            <span class="title">{{module.title}}</span>
+            <div class="flex flex-row items-center justify-center w-full">
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editModule()" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteModule()" />
+            </div>
+        </div>
+
+
+        <p class="description"> {{module.description}}</p>
+
+        <div class="details">
+            <div class="flex flex-row gap-24">
+
+                <div class="flex flex-col gap-5">
+
+                    <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-chart-line"></i>
+                            </span>
+                        <span>Achievement</span>
+                    </div>
+
+                    <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-calendar-clock"></i>
+                            </span>
+                        <span>Dates</span>
+                    </div>
+
+                    <div class="single">
+                            <span class="icon-container">
+                                <i class="pi pi-heart-fill"></i>
+                            </span>
+                        <span>Priority</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-around gap-5">
+
+                    <p-progressbar [value]="module.achievement"></p-progressbar>
+
+                    <div class="single">
+                        <span>From {{module.beginDate | date: "medium" }} to {{module.deadline | date: "medium" }}</span>
+                    </div>
+
+                    <div class="single">
+                        <p-tag [value]="module.priority?.toString()" [severity]="getSeverityPriority(module.priority)" styleClass="tag"/>
+                        <p-tag [value]="priority" [severity]="getSeverityPriority(module.priority)" class="w-28" />
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="card">
+        <p-dialog header="Add new task" [modal]="true" [(visible)]="isCreatingTask" [style]="{ width: '60rem' }">
+            <app-task-form
+                [module_id]="module.moduleId"
+                (hideForm)="cancelAddTask()"
+                (taskCreated)="taskCreated($event)"
+            >
+            </app-task-form>
+        </p-dialog>
+        <p-table
+            #dt2
+            [value]="taskResponse.projections!"
+            dataKey="id"
+            [loading]="loading_task"
+            [tableStyle]="{ 'min-width': '75rem' }"
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Module tasks</span>
+                    <p-button icon="pi pi-plus" label="Create new" (click)="addTask()"/>
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr style="font-size: 1.1rem; font-weight: 500;">
+                    <th style="width:22%;">Title</th>
+                    <th style="width:22%;">Description</th>
+                    <th style="width:22%;">Begin date</th>
+                    <th style="width:22%;">Deadline</th>
+                    <th style="width:22%;">Priority</th>
+                    <th style="width:22%;">Status</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-task>
+                <tr style="font-size: 1rem; font-weight: 500;">
+                    <td class="browsable" (click)="showTask(task.taskId)">
+                        {{ task.title }}
+                    </td>
+                    <td>
+                        {{ task.description }}
+                    </td>
+                    <td>
+                        {{ task.beginDate | date: 'medium' }}
+                    </td>
+                    <td>
+                        {{ task.deadline | date: 'medium' }}
+                    </td>
+                    <td>
+                        <p-tag [value]="task.priority" [severity]="getSeverityPriority(task.priority)" />
+                    </td>
+                    <td>
+                        <p-tag [value]="task.status" [severity]="getSeverityStatusTask(task.status)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">No tasks found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChangeTask($event)"  [first]="page_task * size_task" [rows]="size_task" [totalRecords]="taskResponse.totalElements!!"
+                     [rowsPerPageOptions]="[10, 20, 30]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+
+    <app-chat-channel
+        [module_id]="module.moduleId!"
+    ></app-chat-channel>
+</div>

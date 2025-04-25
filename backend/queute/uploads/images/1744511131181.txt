@@ -1,0 +1,38 @@
+Cahier des charges : Plateforme E-learning
+
+1. **Titre du projet :** Plateforme E-learning
+
+2. **Objectif du projet :**  Développer une plateforme e-learning complète permettant aux utilisateurs de s'inscrire, d'accéder à des modules de cours, de visionner des vidéos, de réaliser des quiz et de suivre leur progression.
+
+3. **Description fonctionnelle :** La plateforme e-learning offrira les fonctionnalités suivantes : inscription et authentification des utilisateurs, gestion des modules de cours (création, modification, suppression), hébergement et lecture de vidéos, création et correction de quiz, suivi de la progression des utilisateurs dans les cours.  L'interface utilisateur sera intuitive et facile à utiliser.
+
+4. **Modules et leurs objectifs :**
+
+    * **Frontend :** Développement de l'interface utilisateur et de l'expérience utilisateur.  Objectif :  Fournir une interface utilisateur attractive, intuitive et fonctionnelle pour toutes les interactions de l'utilisateur avec la plateforme.
+
+    * **Backend :** Développement de la logique côté serveur et de la base de données. Objectif :  Gérer la sécurité, la persistance des données, et la logique métier de la plateforme, assurant la fiabilité et la performance du système.
+
+
+5. **Tâches par module :**
+
+    * **Module Frontend :**
+        * **UI Inscription Utilisateur :** Conception et implémentation de l'interface d'inscription utilisateur.  Date butoir : 22/03/2024
+        * **UI Module de Cours :** Conception et implémentation de l'interface des modules de cours. Date butoir : 15/04/2024
+        * **UI Quiz :** Conception et implémentation de l'interface des quiz. Date butoir : 01/05/2024
+
+    * **Module Backend :**
+        * **Authentification Utilisateur :** Implémentation de l'inscription et de l'authentification des utilisateurs. Date butoir : 29/03/2024
+        * **Gestion des Cours :** Implémentation de la création, de la gestion et du contrôle d'accès aux cours. Date butoir : 19/04/2024
+        * **Moteur de Quiz :** Implémentation du moteur de quiz et du système de notation. Date butoir : 06/05/2024
+
+
+6. **Dates importantes :**
+
+    * **Début du projet :** 08/03/2024
+    * **Date butoir des modules Frontend et Backend :** 30/06/2024
+    * **Date limite du projet :** 31/12/2024
+
+
+7. **Statut initial :** Non démarré
+
+8. **Contraintes ou remarques :**  Le cahier des charges est susceptible d'évoluer en fonction des besoins et des contraintes techniques rencontrées durant le développement.  Une communication régulière entre l'équipe de développement et les parties prenantes est essentielle pour garantir le succès du projet.  Des tests rigoureux seront mis en place tout au long du cycle de développement pour assurer la qualité du produit final.

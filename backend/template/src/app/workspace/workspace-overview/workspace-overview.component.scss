@@ -1,0 +1,128 @@
+.workspace-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.workspace-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 10px;
+}
+
+.side-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.workspace-group img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.title {
+    font-size: 1.875rem;
+    font-weight: 600;
+}
+
+.workspace-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.workspace-description p {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.workspace-description span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--granite-gray);
+}
+
+.project-name {
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 550;
+    transition: all 0.3s ease-in-out;
+}
+
+.project-name:hover {
+    color: var(--p-primary-500);
+}
+
+
+.image-form {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+}
+
+.image-form .img-container {
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--light-gray);
+    border-radius: 50%;
+}
+
+.image-form img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.ai-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    width: 150px;
+    height: 50px;
+}
+
+.ai-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.animated-text {
+    font-size: 1.2rem;
+    font-weight: 650;
+    color: #4a4a4a;
+    animation: bounce 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+

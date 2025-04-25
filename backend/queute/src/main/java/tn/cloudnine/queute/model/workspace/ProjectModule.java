@@ -11,34 +11,39 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "modules")
+@Table(name = "project_modules")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE modules m SET m.is_deleted = true WHERE m.module_id=? AND m.is_deleted = false ")
 public class ProjectModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long module_id;
+    private Long moduleId;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private Integer priority;
-    private LocalDateTime begin_date;
+    private Float achievement;
+
+    @Column(name = "begin_date")
+    private LocalDateTime beginDate;
     private LocalDateTime deadline;
+
+    @ManyToOne
+    private Project project;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<ProjectDocument> documents;
 
-    private boolean is_deleted;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }

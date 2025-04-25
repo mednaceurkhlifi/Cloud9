@@ -1,0 +1,241 @@
+<div class="card !mb-8">
+    <div class="card">
+        <div class="font-bold text-3xl mb-4">Workspace</div>
+        <p-fieldset legend="What is ?" [toggleable]="true">
+            <p class="m-0 text-lg">
+                Welcome to your Workspace — the place where your ideas turn into action. Here, you can create and manage
+                all
+                your projects and tasks in a clean, organized space built to help you stay focused and productive. Your
+                Workspace gives you full control to plan, track, and bring your goals
+                to life.
+            </p>
+        </p-fieldset>
+        <p-fieldset legend="How it look ?" [toggleable]="true">
+            <div class="card flex justify-center">
+                <p-organization-chart [value]="data" />
+            </div>
+        </p-fieldset>
+    </div>
+</div>
+
+<p-fluid *ngIf="(!isWkFound || isOnUpdate) && wkForm && !createProject">
+    <div class="card !mb-8">
+        <div class="card flex flex-col gap-6 w-full">
+            <div class="font-bold text-3xl mb-4">{{ formTitle }}</div>
+            <form [formGroup]="wkForm" (ngSubmit)="createWorkspace()" class="font-semibold gap-6 text-xl mb-4">
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <label for="name" class="text-lg">Name</label>
+                        <input pInputText id="name" type="text" formControlName="name"
+                               placeholder="Great workspace need great name" />
+                        <p-message *ngIf="wkForm.get('name')?.invalid && wkForm.get('name')?.touched" severity="error"
+                                   variant="simple">Workspace name is required
+                        </p-message>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap">
+                    <label for="description" class="text-lg">Description</label>
+                    <textarea pTextarea id="description" rows="4" formControlName="description"
+                              placeholder="Tell your team about the workspace"></textarea>
+                    <p-message *ngIf="wkForm.get('description')?.invalid && wkForm.get('description')?.touched"
+                               severity="error" variant="simple">Description is required
+                    </p-message>
+                </div>
+
+                <div class="card" *ngIf="!isOnUpdate">
+                    <p-fileupload [multiple]="false"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                                  (onSelect)="changeImage($event)"
+                    >
+                        <ng-template #empty>
+                            <div>Drag and drop workspace image to here.</div>
+                        </ng-template>
+                        <ng-template #content>
+                            <ul *ngIf="image">
+                                <li>{{ image.name }} - {{ image.size }} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileupload>
+                </div>
+
+                <div class="image-form" *ngIf="isOnUpdate">
+                    <div class="img-container">
+                        <img
+                            *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg' else default_image_workspace"
+                            src="http://localhost:8082/api/v1/project-document/images/{{workspaceResponse.projection?.image}}"
+                            alt="workspace image">
+                        <ng-template #default_image_workspace>
+                            <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+                        </ng-template>
+                    </div>
+                    <p-button *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg'" icon="pi pi-trash"
+                              [rounded]="true" severity="danger" label="remove image" (click)="removeImage()" />
+                    <p-fileupload [multiple]="false"
+                                  (onSelect)="changeImage($event)"
+                                  accept="image/*"
+                                  maxFileSize="1000000" mode="advanced"
+                    >
+                        <ng-template #empty>
+                            <div>Drag and drop workspace image to here.</div>
+                        </ng-template>
+                        <ng-template #content>
+                            <ul *ngIf="image">
+                                <li>{{ image.name }} - {{ image.size }} bytes</li>
+                            </ul>
+                        </ng-template>
+                    </p-fileupload>
+                </div>
+                <div class="flex justify-end mt-4 gap-1">
+                    <p-button label="Cancel" iconPos="right" severity="warn"
+                              styleClass="text-lg font-semibold px-4 py-2 w-40" (click)="cancelUpdate()" />
+                    <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"
+                              styleClass="text-lg font-semibold px-4 py-2 w-40" [disabled]="wkForm.invalid" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</p-fluid>
+<p-dialog header="Create project with AI" [modal]="true" [(visible)]="aiDialog" [style]="{ width: '50rem' }">
+    <form *ngIf="!waitingForAiResponse" [formGroup]="aiCreatePrForm" (ngSubmit)="processAiCreatingProject()"
+          class="font-semibold flex-col gap-10 text-xl mb-4">
+        <div class="flex flex-col gap-4 mt-5">
+            <label for="description-pr" class="text-lg">Description <span style="color: red">*</span></label>
+            <textarea pTextarea id="description-pr" rows="4" formControlName="description"
+                      placeholder="Tell us about the project"></textarea>
+            <p-message
+                *ngIf="aiCreatePrForm.get('description')?.invalid && aiCreatePrForm.get('description')?.touched"
+                severity="error" text="Description is required.">
+            </p-message>
+        </div>
+        <div class="flex justify-end mt-8 gap-1">
+            <p-button type="submit" label="Create project" icon="pi pi-check" iconPos="right"
+                      styleClass="text-lg font-semibold px-4 py-2 w-40" [disabled]="aiCreatePrForm.invalid" />
+        </div>
+    </form>
+    <div *ngIf="waitingForAiResponse" class="flex items-center justify-center">
+        <iframe class="w-96 h-96"
+                src="https://lottie.host/embed/72acc11e-1be3-4b24-87e9-a2846d86c5ef/fiRQfxHRHO.lottie"></iframe>
+    </div>
+    <div *ngIf="waitingForAiResponse" class="ai-loader">
+        <span class="animated-text">Just a moment! We're crafting your AI-powered magic...</span>
+    </div>
+</p-dialog>
+<div *ngIf="isWkFound" class="card flex flex-row justify-between">
+    <div class="flex flex-row gap-1 items-center justify-center">
+        <iframe class="w-20 h-20"
+                src="https://lottie.host/embed/88e9cffa-083e-4f19-953f-2ec41ecfed00/jcrmsXKy6l.lottie"></iframe>
+        <span class="text-xl font-bold">Explore Queuete AI</span>
+    </div>
+    <div class="flex flex-row gap-1 items-center justify-center">
+        <p-button icon="pi pi-plus" label="Create project with AI" (click)="exploreAi()" />
+    </div>
+</div>
+
+<div class="card !mb-8" *ngIf="isWkFound && !isOnUpdate && !createProject">
+    <p-toast />
+    <p-confirmdialog></p-confirmdialog>
+
+    <div class="workspace-card">
+        <div class="workspace-group">
+            <img *ngIf="workspaceResponse.projection?.image != 'default_workspace.jpg' else default_image_workspace"
+                 src="http://localhost:8082/api/v1/project-document/images/{{workspaceResponse.projection?.image}}"
+                 alt="workspace image">
+            <ng-template #default_image_workspace>
+                <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+            </ng-template>
+            <span class="title">{{ workspaceResponse.projection?.name | uppercase }}</span>
+            <div class="side-btn">
+                <p-button icon="pi pi-pen-to-square" [rounded]="true" severity="warn" (click)="showUpdateWorkspace()" />
+                <p-button icon="pi pi-trash" [rounded]="true" severity="danger"
+                          (click)="deleteWorkspace(workspaceResponse.projection?.workspaceId)" />
+            </div>
+        </div>
+        <div class="workspace-description">
+            <p>{{ workspaceResponse.projection?.description }}</p>
+            <span>Created at : {{ workspaceResponse.projection?.createdAt | date: 'medium' }}</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <p-table
+            #dt2
+            [value]="workspaceResponse.projectResponse?.projection!"
+            dataKey="id"
+            [loading]="loading"
+            [tableStyle]="{ 'min-width': '75rem' }"
+        >
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Projects list</span>
+                    <p-button icon="pi pi-plus" label="Create new" (click)="addProject()" />
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr style="font-size: 1.1rem; font-weight: 500;">
+                    <th style="width:22%;">Name</th>
+                    <th style="width:22%;">Image</th>
+                    <th style="width:22%;">Description</th>
+                    <th style="width:22%;">Begin date</th>
+                    <th style="width:22%;">Deadline</th>
+                    <th style="width:22%;">Priority</th>
+                    <th style="width:22%;">Status</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-project>
+                <tr style="font-size: 1rem; font-weight: 500;">
+                    <td class="project-name" (click)="showProject(project.projectId)">
+                        {{ project.name }}
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <img *ngIf="project.image != 'default_project.jpg' else default_image_project"
+                                 src="http://localhost:8082/api/v1/project-document/images/{{project.image}}" width="50"
+                                 style="vertical-align: middle; border-radius: 50%;" />
+                            <ng-template #default_image_project>
+                                <img src="workspace/images/default_workspace.jpg" width="50"
+                                     style="vertical-align: middle; border-radius: 50%;" />
+                            </ng-template>
+                        </div>
+                    </td>
+                    <td class="whitespace-nowrap overflow-hidden text-ellipsis max-w-[300px]">
+                        {{ project.description }}
+                    </td>
+                    <td>
+                        {{ project.beginDate | date: 'medium' }}
+                    </td>
+                    <td>
+                        {{ project.deadline | date: 'medium' }}
+                    </td>
+                    <td>
+                        <p-tag [value]="project.priority" [severity]="getSeverityPriority(project.priority)" />
+                    </td>
+                    <td>
+                        <p-tag [value]="project.status" [severity]="getSeverityStatus(project.status)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">No projects found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChangeProject($event)" [first]="page_no * size_pr" [rows]="size_pr"
+                     [totalRecords]="workspaceResponse.projectResponse?.totalElements!"
+                     [rowsPerPageOptions]="[10, 20, 30]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+</div>
+
+<app-project-form *ngIf=" isWkFound && createProject" [isOnUpdate]="false"
+                  [workspace_id]="workspaceResponse.projection?.workspaceId"
+                  (hideForm)="createProject = !createProject"
+                  (projectCreated)="projectCreated()"></app-project-form>
+
+<app-chat-channel *ngIf="isWkFound"
+                  [workspace_id]="workspaceResponse.projection?.workspaceId!"
+></app-chat-channel>
+

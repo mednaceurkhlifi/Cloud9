@@ -1,0 +1,202 @@
+<p-toast />
+<p-confirmdialog></p-confirmdialog>
+<p-dialog header="Planify new meeting" [modal]="true" [(visible)]="isCreatingNew" [style]="{ width: '80rem' }">
+    <p-fluid>
+        <div *ngIf="!loading" class="card !mb-8">
+            <div class="card flex flex-col gap-6 w-full">
+                <form [formGroup]="meetForm" (ngSubmit)="createMeeting()"
+                      class="font-semibold flex-col gap-10 text-xl mb-4">
+
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <label for="title" class="text-lg">Title <span style="color: red">*</span></label>
+                            <input pInputText id="title" type="text" formControlName="title"
+                                   placeholder="Meeting title" />
+                            <p-message *ngIf="meetForm.get('title')?.invalid && meetForm.get('title')?.touched"
+                                       severity="error"
+                                       text="Title is required.">
+                            </p-message>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap mt-5">
+                        <label for="description" class="text-lg">Description <span style="color: red">*</span></label>
+                        <textarea pTextarea id="description" rows="4" formControlName="description"
+                                  placeholder="Tell your team about the meeting"></textarea>
+                        <p-message
+                            *ngIf="meetForm.get('description')?.invalid && meetForm.get('description')?.touched"
+                            severity="error" text="Description is required.">
+                        </p-message>
+                    </div>
+
+                    <div class="flex flex-col gap-2 mt-5 w-full">
+                        <label class="text-lg">
+                            Meeting date and Time (from to ) <span style="color: red">*</span>
+                        </label>
+
+                        <div class="flex flex-col md:flex-row gap-4 w-full">
+                            <!-- Date Picker -->
+                            <p-datepicker
+                                class="w-full"
+                                formControlName="beginDateDate"
+                                [showIcon]="true"
+                                inputId="buttondisplay"
+                                [showOnFocus]="false">
+                            </p-datepicker>
+
+                            <!-- Time Picker -->
+                            <p-datepicker
+                                class="w-full"
+                                formControlName="beginDateTime"
+                                [iconDisplay]="'input'"
+                                [showIcon]="true"
+                                [timeOnly]="true"
+                                inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+
+                            <!-- Time Picker -->
+                            <p-datepicker
+                                class="w-full"
+                                formControlName="deadlineTime"
+                                [iconDisplay]="'input'"
+                                [showIcon]="true"
+                                [timeOnly]="true"
+                                inputId="templatedisplay">
+                                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                                </ng-template>
+                            </p-datepicker>
+                        </div>
+                        <p-message
+                            *ngIf="(meetForm.get('beginDateTime')?.invalid || meetForm.get('beginDateTime')?.invalid) && (meetForm.get('beginDateDate')?.touched || meetForm.get('beginDateDate')?.touched )"
+                            severity="error"
+                            text="Meeting date and time are required.">
+                        </p-message>
+                        <p-message
+                            *ngIf="meetForm.errors?.['beginInPast'] "
+                            severity="error"
+                            text="Meeting date and time must be in the future.">
+                        </p-message>
+                        <p-message
+                            *ngIf="meetForm.errors?.['invalidDateOrder'] "
+                            severity="error"
+                            text="Begin time must be before end time.">
+                        </p-message>
+                    </div>
+
+                    <div class="flex flex-col gap-2 mt-5 w-full">
+                        <label class="text-lg">Members <span style="color: red">*</span></label>
+                        <div class="chip-input-wrapper">
+                            <p-chip styleClass="chip" *ngFor="let keyword of members; let i = index" removable="true"
+                                    (onRemove)="removeKeyword(i)">
+          <span class="ml-2 font-medium text-color">
+                {{ keyword }}
+            </span>
+                            </p-chip>
+                            <input
+                                type="email"
+                                (keydown.enter)="addKeyword($event)"
+                                placeholder="Type and press enter user email"
+                            />
+                        </div>
+                        <p-message *ngIf="members.length == 0"
+                                   severity="warn"
+                                   text="You need at least one member to join.">
+                        </p-message>
+                    </div>
+
+                    <div class="flex justify-end mt-8 gap-1">
+                        <p-button label="Cancel" iconPos="right" severity="warn"
+                                  styleClass="text-lg font-semibold px-4 py-2 w-40" (click)="cancel()" />
+                        <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"
+                                  styleClass="text-lg font-semibold px-4 py-2 w-40"
+                                  [disabled]="meetForm.invalid || members.length == 0" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div *ngIf="loading" class="card">
+            <p-progressbar mode="indeterminate" [style]="{'height': '6px'}"></p-progressbar>
+        </div>
+    </p-fluid>
+
+</p-dialog>
+<div class="flex flex-col gap-2 mt-10">
+    <div class="flex items-center justify-between">
+        <span class="text-xl font-bold">Meetings :</span>
+        <p-button icon="pi pi-plus" label="Create new" (click)="showForm()"></p-button>
+    </div>
+
+    <div class=" flex flex-col mb-4 p-8 gap-4">
+        <span class="text-lg font-bold">My meetings</span>
+        <div *ngIf="userMeeting.totalElements! > 0; else show_empty_my">
+            <p-card *ngFor="let m of userMeeting.meetings" styleClass="cursor-pointer">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-row justify-between">
+                        <p class="m-0 text-lg"><strong>{{ m.title }}</strong></p>
+                        <p-button icon="pi pi-video" label="Join now" (click)="joinUserMeet(m.meetingId)"></p-button>
+                    </div>
+                    <p class="m-0">
+                        <strong>Organized by : You</strong></p>
+                    <p class="m-0">
+                        {{ m.description }}
+                    </p>
+                    <div class="flex flex-row justify-between items-center">
+<span class="flex flex-row gap-2 items-center text-xs font-bold">
+  <i class="pi pi-calendar"></i>
+    {{ m.beginDate | date: 'mediumDate' }} {{ m.beginDate | date: 'HH:mm' }} to {{ m.endDate | date: 'HH:mm' }}
+</span>
+                        <p-button icon="pi pi-trash" severity="danger" (click)="deleteMeeting(m.meetingId)"></p-button>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <ng-template #show_empty_my>
+            <p-message
+                severity="info"
+                text="No meeting found.">
+            </p-message>
+        </ng-template>
+        <p-paginator (onPageChange)="onPageChangeUserMeeting($event)" [first]="page_no_my * size_my" [rows]="size_my"
+                     [totalRecords]="userMeeting.totalElements!!"
+                     [rowsPerPageOptions]="[5, 10, 25]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+
+    <div class=" flex flex-col mb-4 p-8 gap-4">
+        <span class="text-lg font-bold">Invitaions</span>
+        <div *ngIf="invitedMeeting.totalElements! > 0; else show_empty_inv">
+            <p-card *ngFor="let m of invitedMeeting.meetings" styleClass="cursor-pointer">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-row justify-between">
+                        <p class="m-0 text-lg"><strong>{{ m.title }}</strong></p>
+                        <p-button icon="pi pi-video" label="Join now" (click)="joinInvitedMeet(m.meetingId)"></p-button>
+                    </div>
+                    <p class="m-0">
+                        <strong>Organized by : You</strong></p>
+                    <p class="m-0">
+                        {{ m.description }}
+                    </p>
+                    <span class="flex flex-row gap-2 items-center text-xs font-bold">
+  <i class="pi pi-calendar"></i>
+                        {{ m.beginDate | date: 'mediumDate' }} {{ m.beginDate | date: 'HH:mm' }}
+                        to {{ m.endDate | date: 'HH:mm' }}
+</span>
+
+                </div>
+            </p-card>
+        </div>
+        <ng-template #show_empty_inv>
+            <p-message
+                severity="info"
+                text="No meeting found.">
+            </p-message>
+        </ng-template>
+        <p-paginator (onPageChange)="onPageChangeInvMeeting($event)" [first]="page_no_other * size_other"
+                     [rows]="size_other"
+                     [totalRecords]="invitedMeeting.totalElements!!"
+                     [rowsPerPageOptions]="[5, 10, 25]" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+</div>

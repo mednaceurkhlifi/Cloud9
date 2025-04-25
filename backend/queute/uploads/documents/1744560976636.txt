@@ -1,0 +1,46 @@
+**Cahier des charges : Application de suivi de forme physique**
+
+**1. Titre du projet :** Application de suivi de forme physique
+
+**2. Objectif du projet :** Développer une application mobile permettant aux utilisateurs de suivre leurs entraînements, visualiser leur progression et générer des plans d'entraînement personnalisés.  L'application devra également permettre la synchronisation des données avec des montres connectées.
+
+**3. Description fonctionnelle :** L'application offrira aux utilisateurs un ensemble de fonctionnalités clés, incluant l'enregistrement des séances d'entraînement (type, durée, intensité), la visualisation de la progression via des graphiques et des tableaux, la génération de plans d'entraînement personnalisés en fonction des données utilisateur et la synchronisation des données avec des montres connectées.  L'interface utilisateur devra être intuitive et facile à utiliser.
+
+**4. Modules et leurs objectifs :**
+
+* **Module d'enregistrement des entraînements :** Permettre aux utilisateurs d'enregistrer facilement leurs séances d'entraînement, en spécifiant le type d'activité, la durée et l'intensité.  Les données enregistrées seront stockées de manière sécurisée.
+
+* **Module de visualisation de la progression :** Présenter aux utilisateurs des visualisations claires et concises de leur progression au fil du temps, à l'aide de graphiques et de tableaux.
+
+* **Module de plans d'entraînement personnalisés :** Générer des plans d'entraînement adaptés aux objectifs et aux capacités de chaque utilisateur, en se basant sur les données collectées.
+
+* **Module de synchronisation avec les montres connectées :** Permettre la synchronisation des données d'entraînement entre l'application mobile et les montres connectées compatibles.
+
+**5. Tâches par module :**
+
+* **Module d'enregistrement des entraînements :**
+    * Conception de l'interface utilisateur pour l'enregistrement des entraînements (26/07/2024 - 29/07/2024)
+    * Implémentation du backend pour l'enregistrement des données d'entraînement (30/07/2024 - 10/08/2024)
+
+* **Module de visualisation de la progression :**
+    * Conception des graphiques et des tableaux (16/08/2024 - 20/08/2024)
+    * Intégration des graphiques et des tableaux dans l'application (21/08/2024 - 05/09/2024)
+
+* **Module de plans d'entraînement personnalisés :**
+    * Développement de l'algorithme de génération des plans d'entraînement (06/09/2024 - 20/09/2024)
+    * Intégration de l'algorithme dans l'application (21/09/2024 - 27/09/2024)
+
+* **Module de synchronisation avec les montres connectées :**
+    * Recherche des API pour l'intégration avec les montres connectées (28/09/2024 - 01/10/2024)
+    * Implémentation de la fonctionnalité de synchronisation (02/10/2024 - 24/10/2024)
+
+
+**6. Dates importantes :**
+
+* **Date de début du projet :** 26/07/2024
+* **Date limite du projet :** 24/10/2024
+* Dates limites pour chaque module, détaillées dans la section "Tâches par module".
+
+**7. Statut initial :** Le projet est actuellement en phase de planification (NOT_STARTED).
+
+**8. Contraintes ou remarques :**  La réussite du projet dépendra de la disponibilité des API des différentes marques de montres connectées.  Une gestion rigoureuse du temps est nécessaire pour respecter les délais.  Des tests approfondis seront nécessaires pour garantir la qualité et la fiabilité de l'application.

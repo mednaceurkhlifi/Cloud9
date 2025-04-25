@@ -1,0 +1,45 @@
+**Cahier des charges : Application de suivi de fitness**
+
+**1. Titre du projet:** Application de suivi de fitness
+
+**2. Objectif du projet:** Développer une application mobile permettant aux utilisateurs de suivre leurs entraînements, de visualiser leur progression et de générer des plans d'entraînement personnalisés.  L'application devra également permettre la synchronisation des données avec des montres connectées.
+
+**3. Description fonctionnelle:** L'application offrira aux utilisateurs la possibilité d'enregistrer leurs séances d'entraînement (type, durée, intensité), de visualiser leur progression via des graphiques et des tableaux, et de recevoir des plans d'entraînement personnalisés basés sur leurs objectifs et leur niveau de forme physique. Une intégration avec les montres connectées permettra la synchronisation automatique des données d'entraînement.
+
+**4. Modules et leurs objectifs:**
+
+* **Module d'enregistrement des entraînements:** Permettre aux utilisateurs d'enregistrer facilement et précisément leurs séances d'entraînement, incluant le type d'activité, la durée, l'intensité et d'autres paramètres pertinents.
+* **Module de visualisation de la progression:**  Présenter aux utilisateurs une visualisation claire et concise de leur progression au fil du temps, à l'aide de graphiques et de tableaux interactifs.
+* **Module de plans d'entraînement personnalisés:** Générer des plans d'entraînement adaptés aux objectifs et au niveau de forme physique de chaque utilisateur.  Ce module nécessitera la mise en place d'algorithmes de suggestion personnalisés.
+* **Module de synchronisation avec les montres connectées:**  Permettre la synchronisation bidirectionnelle des données d'entraînement entre l'application mobile et les montres connectées compatibles.
+
+**5. Tâches par module:**
+
+* **Module d'enregistrement des entraînements:**
+    * Conception de l'interface utilisateur pour l'enregistrement des entraînements. (Statut : À faire)
+    * Implémentation de la fonctionnalité backend pour le stockage des données d'entraînement. (Statut : À faire)
+    * Intégration de la fonctionnalité d'enregistrement des entraînements avec l'interface utilisateur. (Statut : À faire)
+
+* **Module de visualisation de la progression:**
+    * Sélection d'une bibliothèque de création de graphiques appropriée. (Statut : À faire)
+
+* **Module de plans d'entraînement personnalisés:**
+    * (Aucune tâche définie pour le moment)
+
+* **Module de synchronisation avec les montres connectées:**
+    * (Aucune tâche définie pour le moment)
+
+
+**6. Dates importantes:**
+
+* **Date de début du projet:** 27 juillet 2024
+* **Date limite du projet:** 25 octobre 2024
+* **Dates limites des modules:**
+    * Module d'enregistrement des entraînements: 15 août 2024
+    * Module de visualisation de la progression: 5 septembre 2024
+    * Module de plans d'entraînement personnalisés: 25 septembre 2024
+    * Module de synchronisation avec les montres connectées: 25 octobre 2024
+
+**7. Statut initial:** Le projet n'a pas encore commencé.
+
+**8. Contraintes ou remarques:**  Le cahier des charges est initial et susceptible d'évoluer au fur et à mesure du projet.  Des tâches supplémentaires seront définies pour les modules "Plans d'entraînement personnalisés" et "Synchronisation avec les montres connectées".  L'intégration avec les montres connectées nécessitera une analyse approfondie des API disponibles.  Une attention particulière doit être accordée à la sécurité et à la confidentialité des données utilisateurs.

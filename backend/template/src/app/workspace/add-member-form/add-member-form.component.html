@@ -1,0 +1,15 @@
+<form [formGroup]="addMemForm" (ngSubmit)="addManager()">
+    <div class="flex flex-wrap gap-2 w-full">
+        <label for="email" class="text-lg">Email <span style="color: red">*</span></label>
+        <input pInputText id="email" type="text" formControlName="email"
+               placeholder="Enter user mail" />
+        <p-message *ngIf="addMemForm.get('email')?.invalid && addMemForm.get('email')?.touched"
+                   severity="error"
+                   text="Email is required and must respect email format.">
+        </p-message>
+    </div>
+    <div class="flex justify-end mt-4 gap-1">
+        <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right"
+                  styleClass="text-lg font-semibold px-4 py-2 w-20" [disabled]="addMemForm.invalid" />
+    </div>
+</form>

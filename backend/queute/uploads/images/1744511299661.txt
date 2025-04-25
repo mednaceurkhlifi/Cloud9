@@ -1,0 +1,26 @@
+**Cahier des charges : Système de gestion d'inventaire Web**
+
+**1. Titre du projet :** Système de gestion d'inventaire Web pour petites entreprises
+
+**2. Objectif du projet :** Développer un système de gestion d'inventaire basé sur le web, robuste et convivial, destiné aux petites entreprises de vente au détail.  Ce système permettra une gestion efficace des produits, du stock, des fournisseurs et de la génération de rapports, tout en assurant une gestion sécurisée des utilisateurs et de leurs droits d'accès.
+
+**3. Description fonctionnelle :** Le système permettra la gestion complète du cycle de vie des produits, du suivi du stock, et la gestion des fournisseurs. Il intégrera des fonctionnalités de génération de rapports pour analyser les données d'inventaire et de ventes.  L'accès au système sera contrôlé par un module de gestion des utilisateurs avec des niveaux de privilèges différents.
+
+**4. Modules et leurs objectifs :**
+
+* **Gestion des produits :** Permettre l'ajout, la modification, la suppression et la recherche de produits, incluant la gestion des informations essentielles telles que la description, le prix, le code produit et l'image.
+* **Suivi du stock :** Permettre le suivi précis des niveaux de stock, en incluant les opérations de réception, d'émission et d'ajustement des quantités.  Le système devra générer des alertes pour les niveaux de stock bas.
+* **Gestion des fournisseurs :** Permettre l'ajout, la modification et la suppression d'informations relatives aux fournisseurs, incluant les coordonnées et l'historique des transactions.
+* **Génération de rapports :** Permettre la génération de rapports sur les niveaux de stock, les ventes, les produits les plus vendus, et d'autres indicateurs clés de performance.  Les rapports devront être exportables en différents formats (PDF, CSV, etc.).
+* **Gestion des utilisateurs :**  Permettre la création, la modification et la suppression de comptes utilisateurs, ainsi que la gestion des rôles et des permissions d'accès aux différents modules.
+
+**5. Tâches par module :**  Les tâches spécifiques pour chaque module seront détaillées dans un document annexe.  Ce document précisera les exigences fonctionnelles et techniques pour chaque tâche, incluant les spécifications techniques, les tests unitaires, et les tests d'intégration.
+
+**6. Dates importantes :**
+
+* **Date de début :** 26 juillet 2024
+* **Date de fin prévue :** 26 septembre 2024
+
+**7. Statut initial :**  Non commencé.
+
+**8. Contraintes ou remarques :**  La conception du système devra privilégier la simplicité d'utilisation et l'intuitivité de l'interface.  Des tests rigoureux seront nécessaires pour garantir la fiabilité et la performance du système.  La sécurité des données est primordiale et des mesures appropriées devront être mises en place.  Un document séparé détaillera les spécifications techniques et les technologies utilisées.  Des réunions régulières seront organisées pour suivre l'avancement du projet et gérer les éventuels problèmes.

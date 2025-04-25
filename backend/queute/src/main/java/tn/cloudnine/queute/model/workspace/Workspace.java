@@ -12,6 +12,7 @@ import tn.cloudnine.queute.model.organization.Organization;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "workspaces")
@@ -21,27 +22,29 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE workspaces w SET w.is_deleted = true WHERE w.workspace_id=? AND w.is_deleted = false ")
 public class Workspace implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long workspace_id;
+    private Long workspaceId;
     private String name;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
 
     @OneToOne
-    @JsonBackReference
     private Organization organization;
 
-    private boolean is_locked;
-    private boolean is_deleted;
+    @OneToMany(mappedBy = "workspace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<Project> projects;
+
+    private boolean isLocked;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }

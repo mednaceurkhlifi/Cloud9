@@ -1,6 +1,8 @@
 package tn.cloudnine.queute.utils;
+
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
@@ -8,7 +10,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import tn.cloudnine.queute.utils.IFileUploader;
+import tn.cloudnine.queute.enums.DocumentType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,8 +20,8 @@ import java.io.IOException;
 
 import static java.io.File.separator;
 
-@Service
-public class FileUploader implements IFileUploader {
+@Component
+public class FileUploader implements IFileUploader{
 
     @Value("${file.upload.path}")
     private String fileUploadPath;
@@ -59,6 +61,11 @@ public class FileUploader implements IFileUploader {
         return uploadFile(sourceFile, fileUploadSubPath);
     }
 
+        public String saveDocument(@Nonnull MultipartFile sourceFile) {
+        final String fileUploadSubPath = "documents" + separator;
+        return uploadFile(sourceFile, fileUploadSubPath);
+    }
+
     private String uploadFile(@Nonnull MultipartFile sourceFile, @Nonnull String fileUploadSubPath) {
         final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath;
         File targetFolder = new File(finalUploadPath);
@@ -83,8 +90,15 @@ public class FileUploader implements IFileUploader {
         }
     }
 
-    public boolean deleteFile(String filePath) {
-        File file = new File(filePath);
+    public boolean deleteFile(String filePath, DocumentType type) {
+        String fileUploadSubPath = "";
+        switch (type) {
+            case IMAGE -> fileUploadSubPath  = "images" + separator;
+            case OTHER -> fileUploadSubPath  = "documents" + separator;
+        }
+
+        final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath + separator + filePath;
+        File file = new File(finalUploadPath);
         if (file.exists()) {
             return file.delete();
         } else {

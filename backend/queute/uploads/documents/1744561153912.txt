@@ -1,0 +1,31 @@
+**Cahier des charges : Système de gestion d'inventaire basé sur le web**
+
+**1. Titre du projet:** Système de gestion d'inventaire basé sur le web
+
+**2. Objectif du projet:** Développer un système de gestion d'inventaire web intuitif et performant destiné aux petites entreprises de vente au détail.  Ce système permettra la gestion des produits, le suivi des stocks, la gestion des fournisseurs, la génération de rapports et la gestion multi-utilisateurs avec des rôles définis.
+
+**3. Description fonctionnelle:** Le système permettra aux utilisateurs de gérer l'ensemble de leur inventaire de manière efficace.  Les fonctionnalités clés incluent : l'ajout, la modification et la suppression de produits ; le suivi précis des niveaux de stock (réception, émission, ajustements) ; la gestion des informations fournisseurs (ajout, modification, suppression) ; la génération de rapports sur les niveaux de stock, les ventes et autres indicateurs clés ; et la gestion des comptes utilisateurs avec des niveaux d'accès et des rôles différents (ex: administrateur, gestionnaire, employé).
+
+**4. Modules et leurs objectifs:**
+
+* **Gestion des produits:**  Permettre l'ajout, la modification et la suppression de produits, incluant la gestion des informations essentielles telles que la description, le prix, le code produit et les images.
+
+* **Suivi des stocks:**  Assurer un suivi précis des quantités de stock en temps réel, en intégrant les opérations de réception, d'émission et d'ajustement des stocks.  Ce module doit fournir des alertes pour les niveaux de stock bas.
+
+* **Gestion des fournisseurs:**  Permettre la gestion des informations des fournisseurs, incluant leurs coordonnées, l'historique des commandes et les informations de contact.
+
+* **Rapports:**  Générer des rapports personnalisés sur les niveaux de stock, les ventes, les produits les plus vendus, les fournisseurs les plus utilisés, etc.  Les rapports devront être exportables au format PDF et CSV.
+
+* **Gestion des utilisateurs:**  Gérer les comptes utilisateurs, attribuer des rôles et définir les permissions d'accès pour chaque rôle.  Le système doit garantir la sécurité des données et l'intégrité des informations.
+
+
+**5. Tâches par module:**  (Les tâches spécifiques pour chaque module seront définies dans un document séparé et plus détaillé.)  Pour chaque module, les tâches comprendront l'analyse des besoins, la conception de l'interface utilisateur, le développement, les tests unitaires, l'intégration et les tests d'acceptation utilisateur.
+
+**6. Dates importantes:**
+
+* **Début du projet:** 26 juillet 2024
+* **Date limite:** 26 septembre 2024
+
+**7. Statut initial:** Le projet est actuellement en phase de démarrage (NOT_STARTED).
+
+**8. Contraintes ou remarques:**  Les spécifications détaillées de chaque module, ainsi que les tâches spécifiques associées, seront documentées séparément.  La plateforme cible pour le développement sera précisée ultérieurement.  La sécurité des données et la performance du système sont des priorités essentielles.  Des réunions régulières seront organisées pour suivre l'avancement du projet et gérer les éventuelles difficultés.

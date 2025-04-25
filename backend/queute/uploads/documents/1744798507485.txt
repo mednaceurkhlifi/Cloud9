@@ -1,0 +1,34 @@
+**Cahier des charges : Projet d'application mobile**
+
+**1. Titre du projet :** Projet d'application mobile
+
+**2. Objectif du projet :** Créer une application mobile complète, incluant un module frontend et un module backend fonctionnels et performants.
+
+**3. Description fonctionnelle :** Le projet vise à développer une application mobile accessible aux utilisateurs finaux.  L'application permettra [à ce stade, une description plus précise des fonctionnalités de l'application est nécessaire.  Exemple :  de gérer un agenda personnel, de suivre une activité sportive, etc.  Cette section doit être complétée avec les spécifications fonctionnelles détaillées].
+
+**4. Modules et leurs objectifs :**
+
+* **Module Frontend :** Développer l'interface utilisateur (UI) et les composants de l'application mobile.  L'objectif est de créer une interface intuitive et agréable à utiliser, garantissant une expérience utilisateur optimale.
+
+* **Module Backend :** Développer l'infrastructure backend et les API nécessaires au fonctionnement de l'application mobile.  L'objectif est de fournir une architecture robuste et scalable, assurant la sécurité et la performance des données.
+
+
+**5. Tâches par module :**
+
+* **Module Frontend :**
+    * **Conception UI :**  Conception de l'interface utilisateur de l'application mobile (Date butoir : 22/03/2024).
+    * **Développement des composants :** Développement des composants UI de l'application mobile (Date butoir : 08/05/2024).
+
+* **Module Backend :**
+    * **Configuration de la base de données :** Configuration et mise en place de la base de données de l'application (Date butoir : 08/04/2024).
+    * **Développement des API :** Développement des interfaces de programmation d'application (API) (Date butoir : 08/06/2024).
+
+
+**6. Dates importantes :**
+
+* **Date de début du projet :** 08/03/2024
+* **Date de fin du projet :** 08/06/2024
+
+**7. Statut initial :** Le projet est en phase de démarrage (NOT_STARTED).
+
+**8. Contraintes ou remarques :**  [Cette section doit être complétée avec des informations concernant les contraintes techniques, budgétaires,  humaines ou autres qui pourraient impacter le projet. Exemples :  contraintes technologiques spécifiques,  dépendances à des services tiers,  disponibilité des ressources humaines, etc.].  Une description plus détaillée des fonctionnalités de l'application est nécessaire pour une estimation précise des efforts et des délais.  Des spécifications techniques plus précises concernant les technologies utilisées (langages de programmation, frameworks, bases de données, etc.) doivent également être fournies.

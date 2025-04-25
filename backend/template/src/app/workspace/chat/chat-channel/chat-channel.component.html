@@ -1,0 +1,60 @@
+<div class="card !mb-8 flex flex-col">
+    <div class="header-chat">
+        <div class="channel-info">
+            <img src="workspace/images/default_workspace.jpg" alt="workspace image">
+            <span>Chat group</span>
+        </div>
+<!--        <div class="participants">-->
+<!--            <span>122 Participants</span>-->
+<!--        </div>-->
+    </div>
+    <div class="flex flex-row items-start pt-4">
+        <div *ngIf="messageResponse?.messages?.length! > 0" class="w-full">
+            <div class="messages-container">
+                <div *ngFor="let msg of messageResponse.messages" [ngClass]="msg.sender?.email !== user_email ? 'single-message' : 'single-message self'">
+                    <div *ngIf="msg.sender?.email !== user_email" class="sender">
+                        <span>{{msg.sender?.full_name}}</span>
+                    </div>
+                    <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image != 'default_user.jpg' " src="http://localhost:8082/api/v1/project-document/images/{{msg.sender?.image}}" alt="user image">
+                    <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image == 'default_user.jpg'" src="default_user.jpg" alt="user image">
+                    <div class="message-content">
+                        <p>{{msg.message}}</p>
+                        <span>{{ msg.createdAt | date: 'medium'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="messageResponse?.messages?.length! == 0" class="w-full">
+            <span class="text-lg font-bold">No messages found.</span>
+        </div>
+        <form class="form-container" [formGroup]="msgForm" (ngSubmit)="sendMessage()">
+            <div class="w-full">
+                <p-floatlabel variant="in">
+                <textarea formControlName="message" pTextarea id="over_label" rows="5" cols="30" style="resize: none"
+                          class="h-full w-full"></textarea>
+                    <label for="in_label">Write a message...</label>
+                </p-floatlabel>
+                <p-message
+                    *ngIf="msgForm.get('message')?.touched && msgForm.get('message')?.invalid"
+                    severity="error"
+                    text="Please write a message.">
+                </p-message>
+            </div>
+            <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
+                          [multiple]="true"
+                          maxFileSize="1000000"
+                          mode="advanced">
+                <ng-template #empty>
+                    <div>Drag and drop files to here to upload.</div>
+                </ng-template>
+                <ng-template #content>
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                    </ul>
+                </ng-template>
+            </p-fileupload>
+            <p-button icon="pi pi-send" label="Send message" iconPos="right" type="submit" [disabled]="msgForm.invalid"/>
+        </form>
+    </div>
+
+</div>

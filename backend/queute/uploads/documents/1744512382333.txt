@@ -1,0 +1,26 @@
+**Cahier des charges : Système de gestion d'inventaire Web**
+
+**1. Titre du projet :** Système de gestion d'inventaire Web pour petites entreprises
+
+**2. Objectif du projet :** Développer un système de gestion d'inventaire web convivial et efficace pour les petites entreprises de vente au détail.  Ce système permettra une gestion optimisée des produits, du stock, des fournisseurs et de la génération de rapports, le tout accessible via une interface web multi-utilisateurs.
+
+**3. Description fonctionnelle :** Le système permettra la gestion complète du cycle de vie des produits, du suivi du stock à la gestion des fournisseurs, en passant par la génération de rapports détaillés.  Il offrira un système d'authentification multi-utilisateurs avec des rôles et des permissions définis, assurant ainsi la sécurité et la confidentialité des données.  L'interface utilisateur devra être intuitive et facile à utiliser, même pour des utilisateurs sans expertise informatique approfondie.
+
+**4. Modules et leurs objectifs :**
+
+* **Gestion des produits :**  Permettre l'ajout, la modification et la suppression d'informations sur les produits, incluant le nom, la description, le prix, les images et d'autres attributs pertinents.
+* **Suivi du stock :**  Gérer les niveaux de stock en temps réel, surveiller les seuils de stock bas et générer des alertes automatiques pour prévenir les ruptures de stock.
+* **Gestion des fournisseurs :**  Permettre la gestion des informations des fournisseurs, y compris les coordonnées, l'historique des achats et la gestion des commandes.
+* **Rapports :** Générer divers rapports sur les ventes, les niveaux de stock, la performance des fournisseurs et d'autres indicateurs clés de performance (KPI).
+* **Gestion des utilisateurs :**  Implémenter un système d'authentification sécurisé avec la gestion des rôles et permissions utilisateurs (administrateur, gestionnaire, etc.).
+
+**5. Tâches par module :**  (Les tâches spécifiques pour chaque module seront définies dans un document annexe,  détaillant les user stories et les spécifications techniques.)
+
+**6. Dates importantes :**
+
+* **Date de début :** 26 juillet 2024
+* **Date limite :** 26 septembre 2024
+
+**7. Statut initial :** Non commencé
+
+**8. Contraintes ou remarques :**  La réussite du projet dépendra de la disponibilité des ressources (développeurs, testeurs) et de la clarté des exigences fonctionnelles.  Un processus de gestion de projet agile sera mis en place pour assurer une adaptation continue aux besoins et une livraison itérative.  Des tests rigoureux seront effectués à chaque étape du développement pour garantir la qualité et la fiabilité du système.  La compatibilité avec les navigateurs modernes est requise.  Des spécifications techniques plus détaillées seront fournies ultérieurement.

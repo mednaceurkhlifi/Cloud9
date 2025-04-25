@@ -3,6 +3,7 @@
 @use './assets/layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
+
 .ProseMirror {
     padding: 20px;
 }
@@ -95,3 +96,24 @@ blockquote{
 
     }
 
+:root {
+    --granite-gray: hsl(0, 0%, 40%);
+    --light-gray: hsl(0, 0%, 80%);
+}
+
+/***********************\
+    #REUSED STYLE ( workspace )
+\***********************/
+.browsable {
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 550;
+    transition: all 0.3s ease-in-out;
+}
+
+.browsable:hover {
+    color: var(--p-primary-500);
+}
+/***********************\
+    #END REUSED STYLE ( workspace )
+\***********************/
