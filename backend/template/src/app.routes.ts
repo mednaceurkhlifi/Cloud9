@@ -11,10 +11,16 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
+            {
+                path: 'roadmap', loadChildren: () => import('./app/roadMap/road-map-list-component/road-map-routes.module')
+            },
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
+    },
+    {
+        path: 'road-map-front', loadChildren: () => import('./app/roadMap/road-map-front/road-map-front-routes.module')
     },
     { path: 'landing', component: Landing },
     { path: 'notfound', component: Notfound },

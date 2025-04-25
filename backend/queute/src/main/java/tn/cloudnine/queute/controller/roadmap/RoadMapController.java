@@ -57,6 +57,7 @@ public class RoadMapController {
     }
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody RoadMap roadMap){
+        System.out.println(roadMap);
         this.roadMapService.add(roadMap);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "status","success" ,

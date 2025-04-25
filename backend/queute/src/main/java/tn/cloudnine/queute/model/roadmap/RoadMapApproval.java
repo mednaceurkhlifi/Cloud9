@@ -26,4 +26,13 @@ public class RoadMapApproval {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
+    @Override
+    public String toString() {
+        return "RoadMapApproval{" +
+                "id=" + id +
+                ", isApproved=" + isApproved +
+                ", date=" + date +
+                ", user=" + user +
+                '}';
+    }
 }

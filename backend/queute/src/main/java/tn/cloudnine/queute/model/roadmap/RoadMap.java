@@ -35,4 +35,17 @@ public class RoadMap {
     @Cascade(CascadeType.ALL)
     private List<Step> steps ;
 
+    @Override
+    public String toString() {
+        return "RoadMap{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", nbrApprove=" + nbrApprove +
+                ", nbrDisapproval=" + nbrDisapproval +
+                ", approvals=" + approvals +
+                ", creator=" + creator +
+                ", steps=" + steps +
+                '}';
+    }
 }
