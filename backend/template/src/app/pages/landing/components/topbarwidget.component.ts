@@ -59,6 +59,11 @@ import { ButtonModule } from 'primeng/button';
                         <span>Booking</span>
                     </a>
                 </li>
+                                <li>
+                    <a (click)="router.navigate(['/app-map'], { fragment: 'map' })" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+                        <span>Map</span>
+                    </a>
+                </li>
             </ul>
             <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
                 <button pButton pRipple label="Login" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
