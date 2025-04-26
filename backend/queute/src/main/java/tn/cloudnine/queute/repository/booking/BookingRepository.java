@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findByReference(String reference);
 
-    @Query("SELECT b FROM Booking b WHERE b.user.user_id = :userId")
+    @Query("SELECT b FROM Booking b WHERE b.user.userId = :userId")
     List<Booking> findBookingsByUserId(@Param("userId") Long userId);
     @Query("SELECT b FROM Booking b WHERE b.service.id = :serviceId")
     List<Booking> findBookingByServiceId(@Param("serviceId") Long userId);

@@ -51,7 +51,7 @@ public class BlockchainServiceImpl implements BlockchainService {
                 () -> contract.createBooking(
                     booking.getReference(),
                     booking.getStatus(),
-                    BigInteger.valueOf(booking.getUser().getUser_id()),
+                    BigInteger.valueOf(booking.getUser().getUserId()),
                     BigInteger.valueOf(booking.getService().getId())
                 ).sendAsync(),
                 maxRetryAttempts,
@@ -61,7 +61,7 @@ public class BlockchainServiceImpl implements BlockchainService {
             
             return true;
         } catch (Exception e) {
-            log.error("Error creating booking on blockchain: {}", e.getMessage());
+            // log.error("Error creating booking on blockchain: {}", e.getMessage());
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class BlockchainServiceImpl implements BlockchainService {
             
             return true;
         } catch (Exception e) {
-            log.error("Error updating booking on blockchain: {}", e.getMessage());
+            // log.error("Error updating booking on blockchain: {}", e.getMessage());
             return false;
         }
     }
@@ -102,7 +102,7 @@ public class BlockchainServiceImpl implements BlockchainService {
             
             return true;
         } catch (Exception e) {
-            log.error("Error deleting booking on blockchain: {}", e.getMessage());
+            // log.error("Error deleting booking on blockchain: {}", e.getMessage());
             return false;
         }
     }
@@ -113,7 +113,7 @@ public class BlockchainServiceImpl implements BlockchainService {
             BookingContract contract = getContract();
             return contract.verifyBooking(reference).send();
         } catch (Exception e) {
-            log.error("Error verifying booking on blockchain: {}", e.getMessage());
+            // log.error("Error verifying booking on blockchain: {}", e.getMessage());
             return false;
         }
     }
@@ -129,7 +129,7 @@ public class BlockchainServiceImpl implements BlockchainService {
             long chainId = web3j.ethChainId().send().getChainId().longValue();
             return getNetworkNameFromChainId(chainId);
         } catch (Exception e) {
-            log.error("Error getting network name: {}", e.getMessage());
+            // log.error("Error getting network name: {}", e.getMessage());
             return "Unknown Network";
         }
     }

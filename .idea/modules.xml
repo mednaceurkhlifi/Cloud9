@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/piCloudNineFront.iml" filepath="$PROJECT_DIR$/.idea/piCloudNineFront.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/pi_4arctic_cloud-nine.iml" filepath="$PROJECT_DIR$/.idea/pi_4arctic_cloud-nine.iml" />
     </modules>
   </component>
 </project>

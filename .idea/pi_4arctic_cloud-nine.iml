@@ -2,8 +2,41 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/backend/queute/src/main/java" isTestSource="false" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.web3j:abi:4.12.2" level="project" />
+    <orderEntry type="library" name="Maven: io.reactivex.rxjava2:rxjava:2.2.21" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:crypto:4.12.2" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:core:4.12.2" level="project" />
+    <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.26" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:codegen:4.12.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.validation:jakarta.validation-api:3.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.persistence:jakarta.persistence-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.orm:hibernate-core:6.6.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-annotations:2.2.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.18.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.18.2" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.transaction:jakarta.transaction-api:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-test:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.angus:jakarta.mail:2.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:6.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:3.1.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf-spring6:3.1.3.RELEASE" level="project" />
   </component>
 </module>
