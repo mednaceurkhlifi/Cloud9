@@ -75,7 +75,7 @@ public class Organization {
     @JsonIgnore
     private List<Office> offices;
 
-    @OneToMany(mappedBy = "organisation")
+    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JsonIgnore
     private List<Feedback> feedbacks;
 

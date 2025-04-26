@@ -1,7 +1,11 @@
 package tn.cloudnine.queute.serviceImpl;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
+import tn.cloudnine.queute.repository.serviceRepo.FeedbackRepository;
+import tn.cloudnine.queute.repository.serviceRepo.OfficeRepository;
 import tn.cloudnine.queute.repository.serviceRepo.OrganizationRepository;
 import tn.cloudnine.queute.services.IOrganisationService;
 
@@ -21,6 +25,10 @@ public class OrganisationService implements IOrganisationService {
 
     @Autowired
     private OrganizationRepository organisationRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+    @Autowired
+    private OfficeRepository officesRepository;
 
 
 
@@ -85,10 +93,29 @@ public class OrganisationService implements IOrganisationService {
         }).orElseThrow(() -> new RuntimeException("Organization not found with id: " + id));
     }
 
-
+    @Transactional
     public void deleteOrganisation(Long id) {
+        Organization organization = organisationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Organization not found"));
+
+        // 2. Supprimer tous les feedbacks liés
+        if (organization.getFeedbacks() != null && !organization.getFeedbacks().isEmpty()) {
+            feedbackRepository.deleteAll(organization.getFeedbacks());
+        }
+        if (organization.getOffices() != null && !organization.getOffices().isEmpty()) {
+            officesRepository.deleteAll(organization.getOffices());
+        }
+
+        // 3. Maintenant tu peux supprimer l'organisation
+        organisationRepository.delete(organization);
+    }
+
+
+    /* public void deleteOrganisation(Long id) {
         organisationRepository.deleteById(id);
     }
+
+    */
     public boolean existsById(Long id) {
         return organisationRepository.existsById(id);
     }

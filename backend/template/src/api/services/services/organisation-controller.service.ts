@@ -19,8 +19,12 @@ import { getAllOrganisations } from '../fn/organisation-controller/get-all-organ
 import { GetAllOrganisations$Params } from '../fn/organisation-controller/get-all-organisations';
 import { getAverageRate } from '../fn/organisation-controller/get-average-rate';
 import { GetAverageRate$Params } from '../fn/organisation-controller/get-average-rate';
+import { getGlobalStatistics } from '../fn/organisation-controller/get-global-statistics';
+import { GetGlobalStatistics$Params } from '../fn/organisation-controller/get-global-statistics';
 import { getImage } from '../fn/organisation-controller/get-image';
 import { GetImage$Params } from '../fn/organisation-controller/get-image';
+import { getOfficesCountByOrganization } from '../fn/organisation-controller/get-offices-count-by-organization';
+import { GetOfficesCountByOrganization$Params } from '../fn/organisation-controller/get-offices-count-by-organization';
 import { getOrganisationById } from '../fn/organisation-controller/get-organisation-by-id';
 import { GetOrganisationById$Params } from '../fn/organisation-controller/get-organisation-by-id';
 import { Organization } from '../models/organization';
@@ -183,6 +187,39 @@ export class OrganisationControllerService extends BaseService {
     );
   }
 
+  /** Path part for operation `getOfficesCountByOrganization()` */
+  static readonly GetOfficesCountByOrganizationPath = '/organisations/offices-count';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getOfficesCountByOrganization()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getOfficesCountByOrganization$Response(params?: GetOfficesCountByOrganization$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: number;
+}>> {
+    return getOfficesCountByOrganization(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getOfficesCountByOrganization$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getOfficesCountByOrganization(params?: GetOfficesCountByOrganization$Params, context?: HttpContext): Observable<{
+[key: string]: number;
+}> {
+    return this.getOfficesCountByOrganization$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+[key: string]: number;
+}>): {
+[key: string]: number;
+} => r.body)
+    );
+  }
+
   /** Path part for operation `getImage()` */
   static readonly GetImagePath = '/organisations/images/{filename}';
 
@@ -205,6 +242,43 @@ export class OrganisationControllerService extends BaseService {
   getImage(params: GetImage$Params, context?: HttpContext): Observable<Blob> {
     return this.getImage$Response(params, context).pipe(
       map((r: StrictHttpResponse<Blob>): Blob => r.body)
+    );
+  }
+
+  /** Path part for operation `getGlobalStatistics()` */
+  static readonly GetGlobalStatisticsPath = '/organisations/global';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getGlobalStatistics()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getGlobalStatistics$Response(params?: GetGlobalStatistics$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: {
+};
+}>> {
+    return getGlobalStatistics(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getGlobalStatistics$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getGlobalStatistics(params?: GetGlobalStatistics$Params, context?: HttpContext): Observable<{
+[key: string]: {
+};
+}> {
+    return this.getGlobalStatistics$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+[key: string]: {
+};
+}>): {
+[key: string]: {
+};
+} => r.body)
     );
   }
 

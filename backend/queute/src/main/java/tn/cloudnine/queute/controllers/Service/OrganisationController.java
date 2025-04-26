@@ -88,6 +88,7 @@ public class OrganisationController {
         }
     }
 
+
     @GetMapping("/{organizationId}/average-rate")
     public Double getAverageRate(@PathVariable Long organizationId) {
         return feedbackService.getAverageRateByOrganizationId(organizationId);
