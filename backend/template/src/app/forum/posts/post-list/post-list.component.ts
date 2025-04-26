@@ -67,7 +67,6 @@ export class PostListComponent implements OnInit{
             const matchesSearch = post.title!.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 post.content!.toLowerCase().includes(this.searchQuery.toLowerCase());
             const matchesFilter = !this.selectedFilter || post.sentiment?.toLowerCase() === this.selectedFilter.value;
-
             return matchesSearch && matchesFilter;
         });
         switch (this.selectedSort) {

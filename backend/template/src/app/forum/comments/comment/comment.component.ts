@@ -61,7 +61,7 @@ export class CommentComponent  implements OnInit{
 
         this.commentController.getComment(this.finalCommentId).subscribe(data => {
             this.comment=data;
-            if(this.comment.userId==this.userService.getCurrUser().user_id)
+            if(this.comment.userId==this.userService.getCurrUser().userId)
                 this.owner= true;
         })
         this.voteController.getVotesPerComment(this.finalCommentId).subscribe(data => {
@@ -78,7 +78,7 @@ export class CommentComponent  implements OnInit{
 
     upVote() {
         const currentUser = this.userService.getCurrUser();
-        const currentUserId = String(currentUser.user_id);
+        const currentUserId = String(currentUser.userId);
 
         const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
 
@@ -123,7 +123,7 @@ export class CommentComponent  implements OnInit{
     }
     downVote(){
         const currentUser = this.userService.getCurrUser();
-        const currentUserId = String(currentUser.user_id);
+        const currentUserId = String(currentUser.userId);
 
         const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
 

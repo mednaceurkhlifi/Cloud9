@@ -25,7 +25,7 @@ public class UserService implements IUserService {
     @Override
     public User update(User user) {
         //TODO: update user to the users list
-        User oldUser = findById(user.getUser_id());
+        User oldUser = findById(user.getUserId());
         return userRepository.save(oldUser);
     }
 

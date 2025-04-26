@@ -11,8 +11,6 @@ import { RippleModule } from 'primeng/ripple';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { BookingService, Booking } from '../../service/booking.service';
-import { ServiceService } from '../../../services/service/service.service';
-import { User } from '../../../services/service/service.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,14 +35,13 @@ import { Router } from '@angular/router';
 })
 export class BookingListComponent implements OnInit {
     @ViewChild('dt1') dt1!: Table;
-    
+
     bookings: Booking[] = [];
     loading = true;
     error: string | null = null;
 
     constructor(
         private bookingService: BookingService,
-        private serviceService: ServiceService,
         private router: Router
     ) { }
 
@@ -105,4 +102,4 @@ export class BookingListComponent implements OnInit {
     clear(table: Table): void {
         table.clear();
     }
-} 
+}

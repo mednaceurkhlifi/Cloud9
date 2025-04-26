@@ -11,7 +11,7 @@ public class VoteDTO {
     private Long userId;
     public VoteDTO(Vote vote){
         this.votableId=vote.getVotable().getId();
-        this.userId=vote.getUser().getUser_id();
+        this.userId=vote.getUser().getUserId();
         this.id=vote.getId();
         this.voteType=vote.getVoteType();
 

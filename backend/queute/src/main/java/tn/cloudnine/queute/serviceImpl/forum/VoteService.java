@@ -20,7 +20,7 @@ public class VoteService implements IVoteService {
     @Override
     public Vote create(Vote vote) {
         //TODO: add vote to the users list
-        var user = userService.findById(vote.getUser().getUser_id());
+        var user = userService.findById(vote.getUser().getUserId());
         vote.setUser(user);
         return voteRepository.save(vote);
     }
@@ -60,7 +60,7 @@ public class VoteService implements IVoteService {
     @Override
     public Vote findByUserIdAndPostId(Long userId, Long postId) {
         var votes = voteRepository.findByVotable_Id(postId).orElse(new ArrayList<>());
-        Vote vote = votes.stream().filter(v -> v.getUser().getUser_id().equals(userId)).findFirst().orElse(null);
+        Vote vote = votes.stream().filter(v -> v.getUser().getUserId().equals(userId)).findFirst().orElse(null);
         return vote;
     }
 

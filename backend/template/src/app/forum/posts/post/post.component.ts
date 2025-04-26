@@ -76,7 +76,7 @@ export class PostComponent implements OnInit{
         if(this.finalPostId!=null){
             this.postController.getPost(this.finalPostId).subscribe(data =>{
                 this.post=data;
-                if(this.post.userId==this.userService.getCurrUser().user_id || !this.showInfo){
+                if(this.post.userId==this.userService.getCurrUser().userId || !this.showInfo){
                     this.owner=true;
                 }
             });
@@ -173,7 +173,7 @@ export class PostComponent implements OnInit{
     }
     upVote() {
         const currentUser = this.userService.getCurrUser();
-        const currentUserId = String(currentUser.user_id);
+        const currentUserId = String(currentUser.userId);
 
         const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
 
@@ -219,7 +219,7 @@ export class PostComponent implements OnInit{
 
     downVote(){
         const currentUser = this.userService.getCurrUser();
-        const currentUserId = String(currentUser.user_id);
+        const currentUserId = String(currentUser.userId);
 
         const existingVote = this.votes.find(v => String(v.userId) === currentUserId);
 

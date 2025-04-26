@@ -24,7 +24,7 @@ public class PostDTO {
         this.id = post.getId();
         this.Title = post.getTitle();
         this.content = post.getContent();
-        this.userId=post.getUser().getUser_id();
+        this.userId=post.getUser().getUserId();
         sentiment=post.getSentimentType();
         date=post.getDate();
         if(post.getImage() != null) {

@@ -15,7 +15,7 @@ export class PostServiceService {
           }
           else
               sum--;
-      });p
+      });
       return sum;
   }
 }

@@ -13,7 +13,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { BookingService, Booking, BookingRequest } from '../../service/booking.service';
-import { User } from '../../../services/service/service.model';
+import { User } from '../../../services/models/user';
 
 @Component({
     selector: 'app-booking-user-list',
@@ -39,13 +39,13 @@ import { User } from '../../../services/service/service.model';
 })
 export class BookingUserListComponent implements OnInit {
     @ViewChild('dt1') dt1!: Table;
-    
+
     bookings: Booking[] = [];
     loading = true;
     error: string | null = null;
     currentUser: User = {
-        id: 1, // Static user ID for now
-        name: 'John Doe',
+        userId: 1, // Static user ID for now
+        full_name: 'John Doe',
         email: 'john.doe@example.com'
     };
 
@@ -59,7 +59,7 @@ export class BookingUserListComponent implements OnInit {
 
     loadUserBookings(): void {
         this.loading = true;
-        this.bookingService.getBookingsByUserId(this.currentUser.id).subscribe({
+        this.bookingService.getBookingsByUserId(this.currentUser.userId!).subscribe({
             next: (bookings) => {
                 this.bookings = bookings;
                 this.loading = false;
@@ -124,4 +124,4 @@ export class BookingUserListComponent implements OnInit {
             });
         }
     }
-} 
+}

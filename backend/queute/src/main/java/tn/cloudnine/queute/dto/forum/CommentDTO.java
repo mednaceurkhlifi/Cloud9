@@ -21,9 +21,9 @@ public class CommentDTO {
     public CommentDTO(Comment comment){
         this.id=comment.getId();
         this.postId=comment.getPost().getId();
-        this.userId=comment.getUser().getUser_id();
+        this.userId=comment.getUser().getUserId();
         this.content=comment.getContent();
-        this.author=comment.getUser().getFirs_name();
+        this.author=comment.getUser().getFullName();
         sentiment=comment.getSentimentType();
         this.votes=new ArrayList<>();
         this.date=comment.getDate();

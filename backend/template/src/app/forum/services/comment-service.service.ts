@@ -16,7 +16,7 @@ export class CommentServiceService {
           }
           else
               sum--;
-      });p
+      });
       return sum;
   }
 }
