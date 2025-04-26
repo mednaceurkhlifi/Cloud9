@@ -1,0 +1,53 @@
+<div class="form-container">
+  <h1 class="form-title">{{ isEdit ? 'Edit Booking' : 'New Booking' }}</h1>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="form-field">
+      <mat-label>User ID</mat-label>
+      <input matInput type="number" formControlName="userId" required>
+      <mat-error *ngIf="bookingForm.get('userId')?.invalid && bookingForm.get('userId')?.touched">
+        User ID is required and must be greater than 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Service ID</mat-label>
+      <input matInput type="number" formControlName="serviceId" required>
+      <mat-error *ngIf="bookingForm.get('serviceId')?.invalid && bookingForm.get('serviceId')?.touched">
+        Service ID is required and must be greater than 0
+      </mat-error>
+    </mat-form-field>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <div class="flex flex-wrap gap-2 w-full">
+        <label for="status">Status</label>
+        <p-dropdown
+          id="status"
+          [options]="dropdownItems"
+          optionLabel="name"
+          formControlName="status"
+          placeholder="Select One"
+          class="w-full"
+        ></p-dropdown>
+        <small *ngIf="bookingForm.get('status')?.invalid && bookingForm.get('status')?.touched" class="text-red-500">
+          Status is required
+        </small>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid || loading">
+        {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+      </button>
+      <button mat-button type="button" routerLink="/bookings">Cancel</button>
+    </div>
+  </form>
+
+  <div *ngIf="loading" class="loading-overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>

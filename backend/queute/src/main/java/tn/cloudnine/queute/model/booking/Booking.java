@@ -26,10 +26,12 @@ public class Booking implements Serializable {
     @Column(unique = true)
     private String reference;
     private String status;
+
     @ManyToOne
-    private User id_user;
+    @JoinColumn(name = "user_id")
+    private User user;
     @ManyToOne
-    private Service id_service;
+    private Service service;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
