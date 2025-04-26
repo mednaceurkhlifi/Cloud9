@@ -52,6 +52,15 @@ public class BlockchainController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/verify/{reference}")
+    public ResponseEntity<Booking> verifyBooking(@PathVariable String reference) {
+        Booking booking = bookingRepository.findBookingByReference(reference);
+
+        boolean result = blockchainService.verifyBookingOnBlockchain(booking.getReference());
+        return ResponseEntity.ok(booking);
+    }
+
+
     @PostMapping("/generate-wrapper")
     public ResponseEntity<Map<String, String>> generateContractWrapper() {
         try {

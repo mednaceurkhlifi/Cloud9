@@ -22,18 +22,6 @@
       </mat-error>
     </mat-form-field>
 
-<!--     <mat-form-field class="form-field">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status" required>
-        <mat-option value="PENDING">Pending</mat-option>
-        <mat-option value="CONFIRMED">Confirmed</mat-option>
-        <mat-option value="CANCELLED">Cancelled</mat-option>
-      </mat-select>
-      <mat-error *ngIf="bookingForm.get('status')?.invalid && bookingForm.get('status')?.touched">
-        Status is required
-      </mat-error>
-    </mat-form-field> -->
-
     <div class="flex flex-col md:flex-row gap-6">
       <div class="flex flex-wrap gap-2 w-full">
         <label for="status">Status</label>
@@ -51,8 +39,6 @@
       </div>
     </div>
     
-
-
     <div class="form-actions">
       <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid || loading">
         {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}

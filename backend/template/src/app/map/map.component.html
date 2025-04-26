@@ -1,0 +1,46 @@
+<div class="layout-wrapper">
+    <div class="layout-topbar">
+        <div class="layout-topbar-logo-container">
+            <a class="layout-topbar-logo" routerLink="/">
+                <img src="assets/layout/images/logo.png" alt="Logo" />
+                <span>Cloud Nine</span>
+            </a>
+        </div>
+        <div class="layout-topbar-actions">
+            <button mat-button color="primary" routerLink="/front-office">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </button>
+            <button mat-button color="primary" routerLink="/bookings">
+                <mat-icon>list</mat-icon>
+                <span>Bookings</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="layout-main">
+        <div class="container mx-auto px-4 py-8 mt-16">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Service Locations</h1>
+                <div class="flex gap-2">
+                    <button mat-button color="primary" (click)="fitBounds()">
+                        <mat-icon>zoom_out_map</mat-icon>
+                        Show All
+                    </button>
+                    <button mat-button color="warn" (click)="clearMarkers()">
+                        <mat-icon>clear_all</mat-icon>
+                        Clear Markers
+                    </button>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-footer">
+        <span>© 2024 Cloud Nine. All rights reserved.</span>
+    </div>
+</div> 

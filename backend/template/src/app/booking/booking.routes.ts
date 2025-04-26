@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { BookingListComponent } from './component/booking-list/booking-list.component';
 import { BookingFormComponent } from './component/booking-form/booking-form.component';
+import { BookingUserListComponent } from './component/booking-user-list/booking-user-list.component';
 
 export const bookingRoutes: Routes = [
   {
@@ -17,5 +18,6 @@ export const bookingRoutes: Routes = [
     path: ':id',
     component: BookingFormComponent,
     title: 'Edit Booking'
-  }
+  }, 
+
 ]; 

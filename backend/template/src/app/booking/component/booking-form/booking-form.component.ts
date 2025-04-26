@@ -8,14 +8,29 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {InputText} from "primeng/inputtext";
-import {Select} from "primeng/select";
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { InputText } from "primeng/inputtext";
+import { Select } from "primeng/select";
 import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
     selector: 'app-booking-form',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, RouterModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, Select, DropdownModule, MatProgressSpinnerModule, FormsModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        DropdownModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTooltipModule,
+        FormsModule
+    ],
     templateUrl: './booking-form.component.html',
     styleUrls: ['./booking-form.component.scss']
 })
@@ -25,14 +40,13 @@ export class BookingFormComponent implements OnInit {
     bookingId: number | null = null;
     loading = false;
     error: string | null = null;
+    currentBooking: Booking | null = null;
 
     dropdownItems = [
         { name: 'Canceled', code: 'Canceled' },
         { name: 'Pending', code: 'Pending' },
         { name: 'Confirmed', code: 'Confirmed' }
     ];
-
-    // dropdownItem = null;
 
     constructor(
         private fb: FormBuilder,
@@ -62,6 +76,7 @@ export class BookingFormComponent implements OnInit {
             this.loading = true;
             this.bookingService.getBookingById(this.bookingId).subscribe({
                 next: (booking) => {
+                    this.currentBooking = booking;
                     this.bookingForm.patchValue({
                         userId: booking.userId,
                         serviceId: booking.serviceId,

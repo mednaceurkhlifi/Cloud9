@@ -1,0 +1,97 @@
+<div class="layout-wrapper">
+    <div class="layout-topbar">
+        <div class="layout-topbar-logo-container">
+            <a class="layout-topbar-logo" routerLink="/">
+                <img src="assets/layout/images/logo.png" alt="Logo" />
+                <span>Cloud Nine</span>
+            </a>
+        </div>
+        <div class="layout-topbar-actions">
+            <button mat-button color="primary" routerLink="/front-office">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </button>
+            <button mat-button color="primary" routerLink="/bookings">
+                <mat-icon>list</mat-icon>
+                <span>All Bookings</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="layout-main">
+        <div class="container mx-auto px-4 py-8 mt-16">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">My Bookings</h1>
+            </div>
+
+            <div *ngIf="error" class="error-message mb-4">
+                {{ error }}
+            </div>
+
+            <div *ngIf="loading" class="loading-container">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p class="mt-4">Loading your bookings...</p>
+            </div>
+
+            <div *ngIf="!loading && bookings.length === 0" class="empty-state">
+                <mat-icon class="text-gray-400 text-6xl">event_busy</mat-icon>
+                <p class="mt-4 text-gray-600">You don't have any bookings yet.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div *ngFor="let booking of bookings" class="booking-card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">{{ booking.serviceName }}</h3>
+                                <p class="text-sm text-gray-500">Ref: {{ booking.reference }}</p>
+                            </div>
+                            <p-tag [value]="booking.status.toLowerCase()" [severity]="getSeverity(booking.status)" />
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="info-row">
+                            <mat-icon class="text-gray-400">event</mat-icon>
+                            <span class="text-gray-600">{{ booking.createdAt | date:'medium' }}</span>
+                        </div>
+                        
+                        <div class="qr-code-container">
+                            <qrcode
+                                [qrdata]="getQRCodeData(booking)"
+                                [width]="128"
+                                [errorCorrectionLevel]="'M'"
+                                [elementType]="'canvas'"
+                                [cssClass]="'qr-code'"
+                            ></qrcode>
+                            <p class="text-xs text-gray-500 mt-2 text-center">Scan to view booking details</p>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="flex gap-2">
+                            <button mat-button color="primary" class="flex-1">
+                                <mat-icon>visibility</mat-icon>
+                                View Details
+                            </button>
+                            <button 
+                                *ngIf="booking.status !== 'CANCELLED'"
+                                mat-button 
+                                color="warn" 
+                                class="flex-1"
+                                (click)="cancelBooking(booking)"
+                            >
+                                <mat-icon>cancel</mat-icon>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-footer">
+        <span>© 2024 Cloud Nine. All rights reserved.</span>
+    </div>
+</div> 

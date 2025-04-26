@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Table, TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
@@ -10,79 +11,65 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
-import { BookingService, Booking } from '../../service/booking.service';
-import { ServiceService } from '../../../services/service/service.service';
+import { QRCodeComponent } from 'angularx-qrcode';
+import { BookingService, Booking, BookingRequest } from '../../service/booking.service';
 import { User } from '../../../services/service/service.model';
-import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-booking-list',
+    selector: 'app-booking-user-list',
     standalone: true,
     imports: [
         CommonModule,
         RouterModule,
         MatButtonModule,
         MatIconModule,
+        MatProgressSpinnerModule,
         TableModule,
         InputTextModule,
         TagModule,
         ButtonModule,
         RippleModule,
         InputIconModule,
-        IconFieldModule
+        IconFieldModule,
+        QRCodeComponent
     ],
     providers: [DatePipe],
-    templateUrl: './booking-list.component.html',
-    styleUrls: ['./booking-list.component.scss']
+    templateUrl: './booking-user-list.component.html',
+    styleUrls: ['./booking-user-list.component.scss']
 })
-export class BookingListComponent implements OnInit {
+export class BookingUserListComponent implements OnInit {
     @ViewChild('dt1') dt1!: Table;
     
     bookings: Booking[] = [];
     loading = true;
     error: string | null = null;
+    currentUser: User = {
+        id: 1, // Static user ID for now
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+    };
 
     constructor(
-        private bookingService: BookingService,
-        private serviceService: ServiceService,
-        private router: Router
+        private bookingService: BookingService
     ) { }
 
     ngOnInit(): void {
-        this.loadBookings();
+        this.loadUserBookings();
     }
 
-    loadBookings(): void {
+    loadUserBookings(): void {
         this.loading = true;
-        this.bookingService.getAllBookings().subscribe({
+        this.bookingService.getBookingsByUserId(this.currentUser.id).subscribe({
             next: (bookings) => {
                 this.bookings = bookings;
                 this.loading = false;
             },
             error: (err) => {
-                this.error = 'Failed to load bookings';
+                this.error = 'Failed to load your bookings';
                 this.loading = false;
                 console.error(err);
             }
         });
-    }
-
-    deleteBooking(id: number): void {
-        if (confirm('Are you sure you want to delete this booking? This action cannot be undone.')) {
-            this.bookingService.deleteBooking(id).subscribe({
-                next: () => {
-                    this.bookings = this.bookings.filter(booking => booking.id !== id);
-                },
-                error: (err) => {
-                    this.error = 'Failed to delete booking. Please try again later.';
-                    console.error('Error deleting booking:', err);
-                }
-            });
-        }
-    }
-
-    updateBooking(id: number): void {
-        this.router.navigate(['/bookings', id]);
     }
 
     getSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
@@ -104,5 +91,37 @@ export class BookingListComponent implements OnInit {
 
     clear(table: Table): void {
         table.clear();
+    }
+
+    getQRCodeData(booking: Booking): string {
+        return JSON.stringify({
+            reference: booking.reference,
+            service: booking.serviceName,
+            status: booking.status,
+            date: booking.createdAt
+        });
+    }
+
+    cancelBooking(booking: Booking): void {
+        if (confirm('Are you sure you want to cancel this booking?')) {
+            const bookingRequest: BookingRequest = {
+                userId: booking.userId,
+                serviceId: booking.serviceId,
+                status: 'CANCELLED'
+            };
+
+            this.bookingService.updateBooking(booking.id, bookingRequest).subscribe({
+                next: (updatedBooking) => {
+                    const index = this.bookings.findIndex(b => b.id === booking.id);
+                    if (index !== -1) {
+                        this.bookings[index] = updatedBooking;
+                    }
+                },
+                error: (err) => {
+                    this.error = 'Failed to cancel booking. Please try again later.';
+                    console.error('Error cancelling booking:', err);
+                }
+            });
+        }
     }
 } 

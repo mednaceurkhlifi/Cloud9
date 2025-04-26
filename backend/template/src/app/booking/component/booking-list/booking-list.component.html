@@ -1,72 +1,117 @@
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Bookings</h1>
-    <a routerLink="/bookings/new" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
-      New Booking
-    </a>
+    <h1 class="text-2xl font-bold text-gray-800">Booking List</h1>
+    <button mat-button color="primary" routerLink="/front-office">
+      Services
+    </button>
   </div>
 
-  <div class="table-container">
-    <div *ngIf="loading" class="loading-container">
-      <mat-spinner></mat-spinner>
-    </div>
+  <div class="card">
+    <p-table
+      #dt1
+      [value]="bookings"
+      dataKey="id"
+      [rows]="10"
+      [loading]="loading"
+      [rowHover]="true"
+      [showGridlines]="true"
+      [paginator]="true"
+      [globalFilterFields]="['reference', 'userName', 'serviceName', 'status']"
+      responsiveLayout="scroll"
+    >
+      <ng-template #caption>
+        <div class="flex justify-between items-center flex-column sm:flex-row">
+          <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+          <p-iconfield iconPosition="left" class="ml-auto">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Search keyword" />
+          </p-iconfield>
+        </div>
+      </ng-template>
 
-    <div *ngIf="error" class="error-message">
-      {{ error }}
-    </div>
+      <ng-template #header>
+        <tr>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Reference
+              <p-columnFilter type="text" field="reference" display="menu" placeholder="Search by reference"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              User
+              <p-columnFilter type="text" field="userName" display="menu" placeholder="Search by user"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Service
+              <p-columnFilter type="text" field="serviceName" display="menu" placeholder="Search by service"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-between items-center">
+              Status
+              <p-columnFilter type="text" field="status" display="menu" placeholder="Search by status"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Created At
+              <p-columnFilter type="date" field="createdAt" display="menu" placeholder="mm/dd/yyyy"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 8rem">
+            <div class="flex justify-between items-center">
+              Actions
+            </div>
+          </th>
+        </tr>
+      </ng-template>
 
-    <table mat-table [dataSource]="bookings" *ngIf="!loading && !error" class="mat-table">
-      <!-- Reference Column -->
-      <ng-container matColumnDef="reference">
-        <th mat-header-cell *matHeaderCellDef>Reference</th>
-        <td mat-cell *matCellDef="let booking">{{ booking.reference }}</td>
-      </ng-container>
+      <ng-template #body let-booking>
+        <tr>
+          <td>{{ booking.reference }}</td>
+          <td>{{ booking.userName }}</td>
+          <td>{{ booking.serviceName }}</td>
+          <td>
+            <p-tag [value]="booking.status.toLowerCase()" [severity]="getSeverity(booking.status)" />
+          </td>
+          <td>{{ booking.createdAt | date:'medium' }}</td>
+          <td>
+            <div class="flex gap-2">
+              <button pButton 
+                      icon="pi pi-pencil" 
+                      class="p-button-info p-button-rounded p-button-text" 
+                      (click)="updateBooking(booking.id)"
+                      pTooltip="Update Booking"
+                      tooltipPosition="top">
+              </button>
+              <button pButton 
+                      icon="pi pi-trash" 
+                      class="p-button-danger p-button-rounded p-button-text" 
+                      (click)="deleteBooking(booking.id)"
+                      pTooltip="Delete Booking"
+                      tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
 
-      <!-- User Name Column -->
-      <ng-container matColumnDef="userName">
-        <th mat-header-cell *matHeaderCellDef>User</th>
-        <td mat-cell *matCellDef="let booking">{{ booking.userName }}</td>
-      </ng-container>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">No bookings found.</td>
+        </tr>
+      </ng-template>
 
-      <!-- Service Name Column -->
-      <ng-container matColumnDef="serviceName">
-        <th mat-header-cell *matHeaderCellDef>Service</th>
-        <td mat-cell *matCellDef="let booking">{{ booking.serviceName }}</td>
-      </ng-container>
-
-      <!-- Status Column -->
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let booking">
-          <span class="status-badge" [ngClass]="booking.status.toLowerCase()">
-            {{ booking.status }}
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- Created At Column -->
-      <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef>Created At</th>
-        <td mat-cell *matCellDef="let booking">{{ booking.createdAt | date:'medium' }}</td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let booking">
-          <div class="action-buttons">
-            <button mat-button color="primary" [routerLink]="['/bookings', booking.id]">
-              Edit
-            </button>
-            <button mat-button color="warn" (click)="deleteBooking(booking.id)">
-              Delete
-            </button>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+      <ng-template #loadingbody>
+        <tr>
+          <td colspan="6">Loading bookings data. Please wait.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div> 
