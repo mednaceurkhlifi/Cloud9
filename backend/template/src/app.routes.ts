@@ -13,8 +13,9 @@ import { ProfileComponent } from './app/workspace/profile/profile.component';
 import { MeetComponent } from './app/workspace/meeting/meet/meet.component';
 
 export const appRoutes: Routes = [
+    { path: '', component: Landing },
     {
-        path: '',
+        path: 'dashboard',
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
@@ -52,7 +53,10 @@ export const appRoutes: Routes = [
         path: 'meeting/:room_id/:user_id/:username',
         component: MeetComponent
     },
-    { path: 'landing', component: Landing },
+    {
+        path: 'auth',
+        loadChildren: () => import('./app/user/user.routes').then(m => m.default)  // Lazy loading user-related routes
+    },
     { path: 'notfound', component: Notfound },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
     { path: '**', redirectTo: '/notfound' }

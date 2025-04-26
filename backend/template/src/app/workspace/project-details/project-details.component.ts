@@ -32,6 +32,7 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Toast } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
     selector: 'app-project-details',
@@ -84,6 +85,11 @@ export class ProjectDetailsComponent implements OnInit {
     isCreatingMember: boolean = false;
     isOnUpdate: boolean = false;
     projectId!: any;
+    userRole: any;
+    projectUser!: ProjectUserProjection;
+    user_email: string = '';
+    isManagerOrAdmin: boolean = false;
+    isAdmin: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -93,7 +99,8 @@ export class ProjectDetailsComponent implements OnInit {
         private _projectUserService: ProjectUserControllerService,
         private router: Router,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private _tokenService: TokenService
     ) {}
 
     ngOnInit() {
@@ -102,9 +109,23 @@ export class ProjectDetailsComponent implements OnInit {
         this.page_task = 0;
         this.size_module = 10;
         this.page_module = 0;
-
+        this.userRole = this._tokenService.getCurrentUserRole();
+        this.user_email = this._tokenService.getUserEmail();
         if (this.projectId) {
             this.getProject(parseInt(this.projectId));
+            this._projectUserService.getProjectUser({
+                user_email: this.user_email,
+                project_id: parseInt(this.projectId)
+            }).subscribe({
+                next: (result) => {
+                    this.projectUser = result
+                },
+                error: err => {}
+            });
+            if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
+                this.isManagerOrAdmin = true;
+            if(this.userRole.includes('ADMIN'))
+                this.isAdmin = true;
         }
     }
 
@@ -344,7 +365,7 @@ export class ProjectDetailsComponent implements OnInit {
             project: this.project!,
             user: {
                 email: member.email,
-                full_name: member.full_name,
+                fullName: member.fullName,
                 image: member.image
             }
         });

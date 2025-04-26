@@ -7,7 +7,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import tn.cloudnine.queute.enums.roles.Role;
+import tn.cloudnine.queute.model.organization.Organization;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -20,11 +23,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE users u SET u.is_deleted = true WHERE u.user_id=? AND u.is_deleted = false ")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
+    @Column(nullable = false,unique = true)
+    String login;
     private String firstName;
     private String lastName;
     private String fullName;
@@ -32,44 +36,30 @@ public class User {
     private String image;
     private String address;
     private String password;
-    private String resetPwdCode;
-    private LocalDateTime resetPwdDate;
+    private String reset_pwd_code;
+    private LocalDateTime reset_pwd_date;
 
     @Column(unique = true)
-    private String phoneNumber;
+    private String phone_number;
 
     @Column(unique = true)
     private String email;
 
-    private boolean isLocked;
-    private boolean isDeleted;
+    @ManyToOne
+    private Organization organization;
 
+    private boolean is_locked;
+    private boolean is_deleted;
+    @Enumerated(EnumType.STRING)
+    Role role;
+    String barCode;
+    boolean enabled;
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", birthDate=" + birthDate +
-                ", image='" + image + '\'' +
-                ", address='" + address + '\'' +
-                ", password='" + password + '\'' +
-                ", resetPwdCode='" + resetPwdCode + '\'' +
-                ", resetPwdDate=" + resetPwdDate +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", isLocked=" + isLocked +
-                ", isDeleted=" + isDeleted +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
+    private LocalDateTime updated_at;
+    String resetToken;
+    LocalDateTime tokenExpiration;
 }

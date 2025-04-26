@@ -24,6 +24,7 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> 
     Set<ProjectUserProjection> findByUserEmail(String email);
     Set<ProjectUserProjection> findByProjectProjectId(Long id);
     Optional<ProjectUser> findById(ProjectUserId id);
+    Optional<ProjectUserProjection> findByProjectProjectIdAndUserEmail(Long projectId, String user_email);
 
     @Transactional
     @Modifying

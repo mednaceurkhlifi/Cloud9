@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'footer-widget',
+    standalone: true,
     imports: [RouterModule],
     template: `
         <div class="py-12 px-12 mx-0 mt-20 lg:mx-20">

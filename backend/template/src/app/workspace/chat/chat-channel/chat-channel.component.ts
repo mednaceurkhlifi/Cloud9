@@ -8,7 +8,6 @@ import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { DocumentRequest } from '../../../services/models/document-request';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WorkspaceMessageControllerService } from '../../../services/services/workspace-message-controller.service';
-import { TokenService } from '../util/token.service';
 import { Message } from 'primeng/message';
 import { WorkspaceMessage } from '../../../services/models/workspace-message';
 import { MessageResponse } from '../../../services/models/message-response';
@@ -18,6 +17,7 @@ import Stomp from 'stompjs';
 import { Toast } from 'primeng/toast';
 import { Avatar } from 'primeng/avatar';
 import { MessageDto } from '../../../services/models/message-dto';
+import { TokenService } from '../../../token-service/token.service';
 
 @Component({
     selector: 'app-chat-channel',
@@ -55,7 +55,7 @@ export class ChatChannelComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.user_email = this._tokenService.email;
+        this.user_email = this._tokenService.getUserEmail();
 
         this.msgForm = new FormGroup({
             message: new FormControl('', [Validators.required])

@@ -1,0 +1,111 @@
+<p-button styleClass=" p-button"  routerLink="/"> Landing Page</p-button>
+<p-toast position="top-right"></p-toast>
+
+<div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden p-4">
+    <div class="w-full max-w-md">
+        <div style="border-radius: 1.5rem; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
+            <div class="w-full bg-surface-0 dark:bg-surface-900 py-8 px-6 sm:px-8 md:px-10" style="border-radius: 1.4rem">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-primary mb-2">Create Your Account</h2>
+                    <p class="text-surface-600 dark:text-surface-300">Join our community today</p>
+                </div>
+
+                <!-- OAuth Login Section -->
+                <div class="text-center mb-6">
+                    <p class="text-surface-500 dark:text-surface-400 mb-3">Sign up with:</p>
+                    <div class="flex justify-center gap-4 mb-4">
+                        <button pButton type="button" icon="pi pi-google" 
+                                class="p-button-rounded p-button-outlined p-button-danger" 
+                                label="Google" (click)="loginWithGoogle()"></button>
+                        <button pButton type="button" icon="pi pi-facebook" 
+                                class="p-button-rounded p-button-outlined" 
+                                label="Facebook" (click)="loginWithFacebook()"></button>
+                        <button pButton type="button" icon="pi pi-github" 
+                                class="p-button-rounded p-button-outlined p-button-secondary" 
+                                label="GitHub" (click)="loginWithGithub()"></button>
+                    </div>
+                    <div class="flex items-center my-4">
+                        <div class="flex-grow border-t border-surface-300 dark:border-surface-700"></div>
+                        <span class="mx-4 text-surface-500 dark:text-surface-400">OR</span>
+                        <div class="flex-grow border-t border-surface-300 dark:border-surface-700"></div>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form [formGroup]="myForm" class="space-y-4">
+                    <!-- Name Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="field">
+                            <label for="firstName" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">First Name</label>
+                            <input id="firstName" type="text" pInputText formControlName="firstName" 
+                                   class="w-full" placeholder="Enter your first name" />
+                            <small *ngIf="firstName?.touched && firstName?.invalid" class="p-error block mt-1">
+                                This field is required
+                            </small>
+                        </div>
+                        <div class="field">
+                            <label for="lastName" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">Last Name</label>
+                            <input id="lastName" type="text" pInputText formControlName="lastName" 
+                                   class="w-full" placeholder="Enter your last name" />
+                            <small *ngIf="lastName?.touched && lastName?.invalid" class="p-error block mt-1">
+                                This field is required
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="field">
+                        <label for="email" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">Email</label>
+                        <input id="email" type="email" pInputText formControlName="email" 
+                               class="w-full" placeholder="Enter your email" />
+                        <small *ngIf="email?.touched && email?.invalid" class="p-error block mt-1">
+                            Please enter a valid email
+                        </small>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="field">
+                        <label for="birth_date" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">Date of Birth</label>
+                        <p-calendar id="birthDate" formControlName="birthDate" 
+                                   [showIcon]="true" inputId="icon" 
+                                   dateFormat="dd/mm/yy" [showButtonBar]="true"
+                                   placeholder="Select your birth date"
+                                   class="w-full"></p-calendar>
+                        <small *ngIf="birthDate?.touched && birthDate?.invalid" class="p-error block mt-1">
+                            Please select your birth date
+                        </small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="field">
+                        <label for="password" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">Password</label>
+                        <p-password id="password" formControlName="password" 
+                                   [toggleMask]="true" [feedback]="true"
+                                   placeholder="Create a password"
+                                   class="w-full"></p-password>
+                        <small *ngIf="password?.touched && password?.invalid" class="p-error block mt-1">
+                            Password must be at least 6 characters with symbols
+                        </small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button pButton type="button" label="Register" 
+                                class="w-full p-button-lg" 
+                                [disabled]="!isFormValid()" 
+                                (click)="onSubmit()"></button>
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center mt-4">
+                        <p class="text-surface-600 dark:text-surface-400">
+                            Already have an account? 
+                            <a routerLink="/auth/login" class="text-primary font-semibold hover:underline">Sign In</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

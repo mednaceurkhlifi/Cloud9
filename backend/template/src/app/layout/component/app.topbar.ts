@@ -6,7 +6,6 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
 import { MessageDto } from '../../services/models/message-dto';
-import { TokenService } from '../../workspace/chat/util/token.service';
 import { ChatService } from '../../workspace/socket/ChatService';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
@@ -20,6 +19,7 @@ import { ProjectModule } from '../../services/models/project-module';
 import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Toast } from 'primeng/toast';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
     selector: 'app-topbar',
@@ -32,7 +32,7 @@ import { Toast } from 'primeng/toast';
                 <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                     <i class="pi pi-bars"></i>
                 </button>
-                <a class="layout-topbar-logo" routerLink="/">
+                <a class="layout-topbar-logo" routerLink="/dashboard">
                     <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             fill-rule="evenodd"
@@ -115,7 +115,7 @@ import { Toast } from 'primeng/toast';
                         <p-avatar *ngIf="this.comingMessage.sender?.image != 'default_user.jpg'"
                                   image="http://localhost:8082/api/v1/project-document/images/{{ this.comingMessage.sender?.image }}"
                                   shape="circle" />
-                        <span class="font-bold">{{ this.comingMessage.sender?.full_name }}</span>
+                        <span class="font-bold">{{ this.comingMessage.sender?.fullName }}</span>
                     </div>
                     <div class="font-medium text-lg my-4">{{ message.summary }}</div>
                     <p-button severity="success" size="small" label="{{ this.roomName }}" (click)="onConfirm()" />
@@ -126,7 +126,7 @@ import { Toast } from 'primeng/toast';
 })
 export class AppTopbar implements OnInit {
     items!: MenuItem[];
-    organization_id: number = 2;
+    organization_id: any;
     socketClient!: any;
     visible: boolean = false;
     comingMessage: MessageDto = {};
@@ -151,7 +151,8 @@ export class AppTopbar implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.user_email = this._tokenService.email;
+        this.user_email = this._tokenService.getUserEmail();
+        this.organization_id = this._tokenService.getOrganizationId();
         this._wkService
             .getWorkspace({
                 organization_id: this.organization_id,

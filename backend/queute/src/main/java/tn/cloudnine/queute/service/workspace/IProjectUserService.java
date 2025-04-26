@@ -19,4 +19,6 @@ public interface IProjectUserService {
     Set<ProjectUserProjection> getProjectTeams(Long projectId);
 
     Set<ProjectUserProjection> getUserProjectsByEmail(String userEmail);
+
+    ProjectUserProjection getProjectUser(String userEmail, Long projectId);
 }

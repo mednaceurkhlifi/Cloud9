@@ -10,7 +10,7 @@ import { Paginator } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { TaskFormComponent } from '../task-form/task-form.component';
-import { TokenService } from '../chat/util/token.service';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
     selector: 'app-profile',
@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.user_email = this._tokenService.email!;
+        this.user_email = this._tokenService.getUserEmail()!;
         this.getTasks();
     }
 

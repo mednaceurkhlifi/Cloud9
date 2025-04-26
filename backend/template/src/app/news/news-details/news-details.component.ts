@@ -25,6 +25,7 @@ import ListItem from '@tiptap/extension-list-item';
 
 @Component({
   selector: 'app-news-details',
+    standalone: true,
   imports: [CommonModule, Empty],
   templateUrl: './news-details.component.html',
   styleUrl: './news-details.component.css'
@@ -37,14 +38,14 @@ export class NewsDetailsComponent {
   ){}
   ngOnInit()
   {
- 
+
     const lowlight = createLowlight(all)
 
-  
+
     this.ac.paramMap.subscribe((res)=>{this.newsService.getNewsById(Number(res.get('id'))).subscribe((res)=>{this.news=res as News
       let trending=new Trending()
       trending.type='visit';
-      trending.user={userId:1}
+      trending.user={id:1}
       trending.news={newsId:this.news.newsId}
       this.trendingService.addAction(trending).subscribe(res=>console.log(res))
 

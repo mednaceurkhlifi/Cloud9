@@ -31,6 +31,7 @@ export class TeamViewComponent {
     @Input() team!: ProjectUserProjection[];
     @Input() task!: Task;
     @Input() project!: Project;
+    @Input() isAdmin: boolean = false;
 
     @Output() userAssigned: EventEmitter<User> = new EventEmitter();
     @Output() memberAssigned: EventEmitter<UserDto> = new EventEmitter();
@@ -45,7 +46,7 @@ export class TeamViewComponent {
     memberCreated($event: UserDto) {
         if (this.usersTask) {
             this.userAssigned.emit({
-                full_name: $event.full_name,
+                fullName: $event.fullName,
                 email: $event.email,
                 image: $event.image
             });

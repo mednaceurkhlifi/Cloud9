@@ -8,7 +8,7 @@ export interface User {
   created_at?: string;
   email?: string;
   first_name?: string;
-  full_name?: string;
+  fullName?: string;
   image?: string;
   is_deleted?: boolean;
   is_locked?: boolean;

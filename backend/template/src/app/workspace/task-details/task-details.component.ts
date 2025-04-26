@@ -21,6 +21,9 @@ import { DocumentsViewComponent } from '../documents-view/documents-view.compone
 import { ProjectDocument } from '../../services/models/project-document';
 import { User } from '../../services/models/user';
 import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
+import { TokenService } from '../../token-service/token.service';
+import { ProjectUserControllerService } from '../../services/services/project-user-controller.service';
+import { ProjectUserProjection } from '../../services/models/project-user-projection';
 
 @Component({
     selector: 'app-task-details',
@@ -36,6 +39,11 @@ export class TaskDetailsComponent implements OnInit {
     priority: 'Low' | 'Medium' | 'High' = 'Low';
     isShowMember: boolean = false;
     loading: boolean = false;
+    isManagerOrAdmin: boolean = false;
+    isAdmin: boolean = false;
+    user_email: string = '';
+    userRole: any;
+    projectUser!: ProjectUserProjection;
 
     constructor(
         private _taskService: TaskControllerService,
@@ -43,11 +51,15 @@ export class TaskDetailsComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private _tokenService: TokenService,
+        private messageService: MessageService,
+        private _projectUserService: ProjectUserControllerService
     ) {}
 
     ngOnInit() {
         const taskId = this.route.snapshot.paramMap.get('task_id');
+        this.userRole = this._tokenService.getCurrentUserRole();
+        this.user_email = this._tokenService.getUserEmail();
         if (taskId) {
             this.getTask(parseInt(taskId));
         }
@@ -62,6 +74,24 @@ export class TaskDetailsComponent implements OnInit {
             .subscribe({
                 next: (response) => {
                     this.task = response;
+                    let projectId = 0;
+                    if(response.project?.projectId)
+                        projectId = response.project.projectId;
+                    else
+                        projectId = response.module?.project?.projectId!;
+                    this._projectUserService.getProjectUser({
+                        user_email: this.user_email,
+                        project_id: projectId
+                    }).subscribe({
+                        next: (result) => {
+                            this.projectUser = result
+                            if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
+                                this.isManagerOrAdmin = true;
+                        },
+                        error: err => {}
+                    });
+                    if(this.userRole.includes('ADMIN'))
+                        this.isAdmin = true;
                 },
                 error: (err) => {
                     // treat errors

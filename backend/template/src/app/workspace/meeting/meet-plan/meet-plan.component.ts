@@ -16,7 +16,6 @@ import { Fluid } from 'primeng/fluid';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Chip } from 'primeng/chip';
 import { Meeting } from '../../../services/models/meeting';
-import { TokenService } from '../../chat/util/token.service';
 import { Toast } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MeetingResponse } from '../../../services/models/meeting-response';
@@ -24,6 +23,7 @@ import { Paginator } from 'primeng/paginator';
 import { ProgressBar } from 'primeng/progressbar';
 import { Router } from '@angular/router';
 import { validateDateRange } from '../../util/validators/date-range-validator';
+import { TokenService } from '../../../token-service/token.service';
 
 @Component({
     selector: 'app-meet-plan',
@@ -63,7 +63,7 @@ export class MeetPlanComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.user_email = this._tokenService.email!;
+        this.user_email = this._tokenService.getUserEmail()!;
         this.getInvitedMeeting();
         this.getUserMeeting();
         this.meetForm = new FormGroup({
@@ -207,14 +207,14 @@ export class MeetPlanComponent implements OnInit {
     joinUserMeet(meetingId: number | undefined) {
         let toJoin = this.userMeeting.meetings?.find(m => m.meetingId == meetingId);
         let user = toJoin!.admin!;
-        const url = `/meeting/${meetingId}/${user.userId}/${user.full_name}`;
+        const url = `/meeting/${meetingId}/${user.userId}/${user.fullName}`;
         window.open(url, '_blank');
     }
 
     joinInvitedMeet(meetingId: number | undefined) {
         let toJoin = this.invitedMeeting.meetings?.find(m => m.meetingId == meetingId);
         let user = toJoin!.members!.find(m => m.email == this.user_email)!;
-        const url = `/meeting/${meetingId}/${user.userId}/${user.full_name}`;
+        const url = `/meeting/${meetingId}/${user.userId}/${user.fullName}`;
         window.open(url, '_blank');
     }
 

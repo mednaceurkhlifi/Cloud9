@@ -13,7 +13,7 @@
             <div class="messages-container">
                 <div *ngFor="let msg of messageResponse.messages" [ngClass]="msg.sender?.email !== user_email ? 'single-message' : 'single-message self'">
                     <div *ngIf="msg.sender?.email !== user_email" class="sender">
-                        <span>{{msg.sender?.full_name}}</span>
+                        <span>{{msg.sender?.fullName}}</span>
                     </div>
                     <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image != 'default_user.jpg' " src="http://localhost:8082/api/v1/project-document/images/{{msg.sender?.image}}" alt="user image">
                     <img *ngIf="msg.sender?.email !== user_email && msg.sender?.image == 'default_user.jpg'" src="default_user.jpg" alt="user image">

@@ -38,6 +38,7 @@ import { Step } from '../../models/Step';
 
 @Component({
   selector: 'app-road-map-front',
+    standalone: true,
   imports: [RouterModule,
             TopbarWidget,
             FooterWidget,
@@ -62,13 +63,13 @@ import { Step } from '../../models/Step';
 })
 
 export class RoadMapFrontComponent implements OnInit{
- 
-  
-  user: User = new User({ userId: 1 });
 
-  /* crudStep:Step={id:1,isStrict:false,requiredPapers:"",serviceDescription:"",serviceName:"",serviceOutput:"",stepOrder:0};    
-  */ 
-  
+
+  user: User = { id: 1 };
+
+  /* crudStep:Step={id:1,isStrict:false,requiredPapers:"",serviceDescription:"",serviceName:"",serviceOutput:"",stepOrder:0};
+  */
+
   roadMapList :RoadMap []=[];
   detailVisible =false;
   addVisible =false;
@@ -90,12 +91,12 @@ export class RoadMapFrontComponent implements OnInit{
   }
   ngOnInit(): void {
     this.loadData();
-    
+
   }
   loadData(){
-   
-    
-    
+
+
+
     this.roadMapSercice.getAll().subscribe(
       res=>{this.roadMapList=res;
             console.log(res)
@@ -138,7 +139,7 @@ deleteStep(){
 
 }
 generateRange(n: number): number[] {
-  return [...Array(n).keys()]; 
+  return [...Array(n).keys()];
 }
 saveRoadMap(){
   this.crudRoadMap.creator=this.user;
@@ -150,9 +151,9 @@ saveRoadMap(){
                                 this.addVisible=false;
                       },
                                 err=>{console.log(err)});
-  this.crudRoadMap=new RoadMap();  
-  this.crudRoadMap.steps=[];    
-                       
+  this.crudRoadMap=new RoadMap();
+  this.crudRoadMap.steps=[];
+
 }
 approve(id:number|null){
   if(id==null)
@@ -166,7 +167,7 @@ approve(id:number|null){
     (error) => {
       if (error.status === 404) {
         console.error('Not Found:', error); // 404
-        
+
       } else {
         console.error('Error:', error); // Other errors (500, 400, etc.)
         }
@@ -183,23 +184,23 @@ approve(id:number|null){
       (response) => {
         console.log('Success:', response); // 200 OK
         this.loadData();
-        
+
       },
       (error) => {
         if (error.status === 404) {
           console.error('Not Found:', error); // 404
-         
-          
+
+
         } else {
           console.error('Error:', error); // Other errors (500, 400, etc.)
-          
+
           }
        }
       );
-      
+
     }
     }
 
-    
 
-}   
+
+}

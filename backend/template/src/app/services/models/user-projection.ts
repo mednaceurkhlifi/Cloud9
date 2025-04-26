@@ -4,7 +4,7 @@
 
 export interface UserProjection {
   email?: string;
-  full_name?: string;
+  fullName?: string;
   image?: string;
   userId?: number;
 }

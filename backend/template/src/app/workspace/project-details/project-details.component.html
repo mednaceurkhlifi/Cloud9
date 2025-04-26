@@ -16,7 +16,7 @@
             <ng-template #default_image_project>
                 <img src="workspace/images/default_workspace.jpg" width="50" style="vertical-align: middle; border-radius: 50%;" />
             </ng-template>
-            <div class="flex flex-row items-center justify-center w-full">
+            <div *ngIf="isManagerOrAdmin || isAdmin" class="flex flex-row items-center justify-center w-full">
                 <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editProject()" />
                 <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProject()" />
             </div>
@@ -37,6 +37,7 @@
                     (memberAssigned)="memberCreated($event)"
                     [team]="team"
                     [project]="project"
+                    [isAdmin]="isManagerOrAdmin"
                     (deleted)="memberDeleted($event)"
                 >
                 </app-team-view>
@@ -104,10 +105,10 @@
                             <ng-template #default_image_project>
                                 <img src="default_user.jpg" alt="team manager image">
                             </ng-template>
-                            <span>{{ getProjectManager()?.user?.full_name}}</span>
-                            <p-button class="ml-2" icon="pi pi-trash" severity="danger" (click)="deleteProjectManager()"/>
+                            <span>{{ getProjectManager()?.user?.fullName}}</span>
+                            <p-button *ngIf="isAdmin" class="ml-2" icon="pi pi-trash" severity="danger" (click)="deleteProjectManager()"/>
                         </div>
-                        <div class="single" *ngIf="!checkProjectManagerExist()">
+                        <div class="single" *ngIf="!checkProjectManagerExist() && isAdmin">
                             <p-button class="ml-2" label="Add manager" (onClick)="showAddManagerForm()" severity="info" icon="pi pi-user-edit"/>
                         </div>
 
@@ -123,7 +124,8 @@
                                         size="normal" shape="circle"></p-avatar>
                             </p-avatargroup>
                             <p-avatar *ngIf="getSizeEndTeam() > 0" label="+{{getSizeEndTeam()}}" shape="circle" size="normal" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                            <p-button class="ml-2" label="Update" icon="pi pi-user-edit" severity="warn" (click)="showAddMemberForm()"/>
+                            <p-button *ngIf="isManagerOrAdmin" class="ml-2" label="Update" icon="pi pi-user-edit" severity="warn" (click)="showAddMemberForm()"/>
+                            <p-button *ngIf="!isManagerOrAdmin" class="ml-2" label="Show team"  severity="warn" (click)="showAddMemberForm()"/>
                         </div>
                         <div class="single" *ngIf="!checkProjectManagerExist()">
                             <p-message severity="warn">You need to add a manager first</p-message>
@@ -176,7 +178,7 @@
             <ng-template #caption>
                 <div class="flex items-center justify-between">
                     <span class="text-xl font-bold">Project modules</span>
-                    <p-button icon="pi pi-plus" label="Create new" (click)="addModule()"/>
+                    <p-button *ngIf="isManagerOrAdmin || isAdmin" icon="pi pi-plus" label="Create new" (click)="addModule()"/>
                 </div>
             </ng-template>
             <ng-template #header>
@@ -241,7 +243,7 @@
             <ng-template #caption>
                 <div class="flex items-center justify-between">
                     <span class="text-xl font-bold">Project tasks</span>
-                    <p-button icon="pi pi-plus" label="Create new" (click)="addTask()"/>
+                    <p-button *ngIf="isManagerOrAdmin || isAdmin" icon="pi pi-plus" label="Create new" (click)="addTask()"/>
                 </div>
             </ng-template>
             <ng-template #header>
