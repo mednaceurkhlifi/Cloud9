@@ -1,0 +1,11 @@
+export * from './commentController.service';
+import { CommentControllerService } from './commentController.service';
+export * from './postController.service';
+import { PostControllerService } from './postController.service';
+export * from './userController.service';
+import { UserControllerService } from './userController.service';
+export * from './voteController.service';
+import { VoteControllerService } from './voteController.service';
+export * from './workspaceController.service';
+import { WorkspaceControllerService } from './workspaceController.service';
+export const APIS = [CommentControllerService, PostControllerService, UserControllerService, VoteControllerService, WorkspaceControllerService];

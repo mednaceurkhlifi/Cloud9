@@ -24,6 +24,32 @@ export const appRoutes: Routes = [
             {
                 path: 'bookings', loadChildren: () => import('./app/booking/booking.routes').then(m => m.bookingRoutes)
             },
+            //forum
+            { path: 'post/:id',component: PostComponent},
+            { path: 'forumDashboard',component: DashboardComponent},
+            {
+                path: 'posts',
+                component: PostListComponent ,
+                children:[
+                    {
+                        path:"post",
+                        component:CreatePostComponent,
+                        outlet:"create"
+                    },
+                    {
+                        path:"post/:id",
+                        component:CreatePostComponent,
+                        outlet:"create"
+                    },
+                    {
+                        path: 'view/:id',
+                        component: PostComponent                     }
+
+                ]
+
+            },
+
+            //end forum
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
@@ -52,6 +78,8 @@ export const appRoutes: Routes = [
             {
                 path: 'profile', component: ProfileComponent
             }
+                { path: 'documentation', component: Documentation },
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
     },
     {
@@ -70,7 +98,34 @@ export const appRoutes: Routes = [
     },
     { path: 'front-office', component: FrontOfficeComponent },
     { path: 'landing', component: Landing },
+    //forum
+    {
+        path: 'postList',
+        component: PostListComponent ,
+        children:[
+            {
+                path:"post",
+                component:CreatePostComponent,
+                outlet:"create"
+            },
+            {
+                path:"post/:id",
+                component:CreatePostComponent,
+                outlet:"create"
+            },
+            {
+                path: 'view/:id',
+                component: PostComponent
+
+            }
+
+        ]
+
+    },
+    { path: 'postInfo/:id', component: PostComponent },
+    //end forum
     { path: 'notfound', component: Notfound },
+    { path: 'landing', component: Landing },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
-    { path: '**', redirectTo: '/notfound' }
+        { path: '**', redirectTo: '/notfound' }
 ];

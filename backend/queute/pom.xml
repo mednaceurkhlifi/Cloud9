@@ -110,6 +110,15 @@
 			<artifactId>ortools-java</artifactId>
 			<version>9.10.4067</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version> <!-- Check for latest version -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -122,7 +131,6 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
@@ -139,47 +147,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.web3j</groupId>
-				<artifactId>web3j-maven-plugin</artifactId>
-				<version>4.8.2</version>
-				<configuration>
-					<packageName>tn.cloudnine.queute.blockchain</packageName>
-					<sourceDestination>src/main/java/generated</sourceDestination>
-					<nativeJavaType>true</nativeJavaType>
-					<outputFormat>java,bin</outputFormat>
-					<soliditySourceFiles>
-						<directory>src/main/resources/contracts</directory>
-						<includes>
-							<include>**/*.sol</include>
-						</includes>
-					</soliditySourceFiles>
-					<abiSourceFiles>
-						<directory>src/main/resources/contracts</directory>
-						<includes>
-							<include>**/*.json</include>
-						</includes>
-					</abiSourceFiles>
-					<outputDirectory>
-						<java>src/java/generated</java>
-						<bin>src/bin/generated</bin>
-						<abi>src/abi/generated</abi>
-					</outputDirectory>
-					<contract>
-						<includes>
-							<include>greeter</include>
-						</includes>
-						<excludes>
-							<exclude>mortal</exclude>
-						</excludes>
-					</contract>
-					<pathPrefixes>
-						<pathPrefix>dep=../dependencies</pathPrefix>
-					</pathPrefixes>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 

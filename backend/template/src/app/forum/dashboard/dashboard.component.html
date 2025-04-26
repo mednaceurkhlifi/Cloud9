@@ -1,0 +1,24 @@
+<div class="card flex justify-center items-center">
+    <span>Top post between </span>
+    <p-datepicker [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="onDateInput()" />
+</div>
+<app-post *ngIf="topPost!=undefined" [postId]="topPost.id" [frontOffice]="false"></app-post>
+<p *ngIf="topPost === null">No post created in that time period</p>
+<p-card header="Posts Per Month" class="mb-4">
+  <p-chart type="bar" [data]="chartData" [options]="{
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Monthly Post Count' }
+    },
+    scales: {
+      x: { title: { display: true, text: 'Month' } },
+      y: { beginAtZero: true, title: { display: true, text: 'Posts' } }
+    }
+  }"></p-chart>
+</p-card>
+<div class="card flex justify-center">
+    <p-chart type="pie" [data]="sentimentPieData" [options]="sentimentPieOptions" class="w-full md:w-[30rem]" />
+</div>
+
+
