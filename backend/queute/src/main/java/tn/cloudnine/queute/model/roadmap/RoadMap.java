@@ -29,7 +29,7 @@ public class RoadMap {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<RoadMapApproval> approvals ;
 
-    @ManyToOne
+    @OneToOne
     private User creator ;
     @OneToMany
     @Cascade(CascadeType.ALL)

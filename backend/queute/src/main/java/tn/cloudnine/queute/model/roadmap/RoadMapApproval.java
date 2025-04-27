@@ -23,7 +23,6 @@ public class RoadMapApproval {
     private boolean isApproved;
     private LocalDateTime date;
     @OneToOne
-    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User user;
 
     @Override
