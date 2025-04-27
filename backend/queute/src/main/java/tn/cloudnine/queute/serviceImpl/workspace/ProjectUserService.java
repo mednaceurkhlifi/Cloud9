@@ -135,7 +135,7 @@ public class ProjectUserService implements IProjectUserService {
         projectUser.setRole(role);
 
         repository.save(projectUser);
-        String title = role + "Affectation";
+        String title = role + " Affectation";
         String description = "Your added as " + role + " to " + project.getName() + " project";
         NotificationDTO notification = new NotificationDTO(
                 title, description
