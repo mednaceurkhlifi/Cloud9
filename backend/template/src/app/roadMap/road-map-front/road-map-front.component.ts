@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
 import { HeroWidget } from '../../pages/landing/components/herowidget';
 import { FeaturesWidget } from '../../pages/landing/components/featureswidget';
@@ -22,6 +23,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ToggleButtonModule } from 'primeng/togglebutton'
+import { ToolbarModule } from 'primeng/toolbar';
 import { RoadMapService } from '../../services/road-map.service';
 import { RoadMap } from '../../models/RoadMap';
 import { FormsModule } from '@angular/forms';
@@ -56,7 +58,8 @@ import { Step } from '../../models/Step';
             FormsModule,
             AccordionModule,
             ToggleSwitchModule,
-            ToggleButtonModule],
+            ToggleButtonModule,
+            ToolbarModule],
   templateUrl: './road-map-front.component.html',
   styleUrl: './road-map-front.component.scss'
 })
@@ -85,7 +88,7 @@ export class RoadMapFrontComponent implements OnInit{
   isLoading = false;
 
   /* api ai */
-  constructor(private roadMapSercice :RoadMapService ){
+  constructor(private roadMapSercice :RoadMapService , public router :Router ){
 
   }
   ngOnInit(): void {

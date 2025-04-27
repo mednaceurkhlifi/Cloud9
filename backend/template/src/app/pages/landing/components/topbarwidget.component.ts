@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StyleClassModule } from 'primeng/styleclass';
 import { Router, RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
+
+
 
 @Component({
     selector: 'topbar-widget',
-    imports: [RouterModule, StyleClassModule, ButtonModule, RippleModule],
+    imports: [RouterModule, StyleClassModule, ButtonModule, RippleModule,ButtonModule,MenubarModule],
     template: `<a class="flex items-center" href="#">
             <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-12 mr-2">
                 <path
@@ -54,6 +58,14 @@ import { ButtonModule } from 'primeng/button';
                         <span>Pricing</span>
                     </a>
                 </li>
+                <li>
+                    <a (click)="router.navigate(['/road-map-front'])" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+                        <span>RoadMap </span>
+                    </a>
+                </li>
+               
+                
+
             </ul>
             <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
                 <button pButton pRipple label="Login" routerLink="/auth/login" [rounded]="true" [text]="true"></button>
@@ -61,6 +73,11 @@ import { ButtonModule } from 'primeng/button';
             </div>
         </div> `
 })
-export class TopbarWidget {
+export class TopbarWidget  {
+  
+    items: MenuItem[] | undefined;
+
     constructor(public router: Router) {}
+    
+   
 }
