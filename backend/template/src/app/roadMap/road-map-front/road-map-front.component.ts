@@ -29,6 +29,8 @@ import { RoadMap } from '../../models/RoadMap';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/User';
 import { Step } from '../../models/Step';
+import { FollowedRoadMap } from '../../models/FollowedRoadMap';
+import { FollowedRoadMapService } from '../../services/followed-road-map.service';
 
 
 
@@ -75,11 +77,13 @@ export class RoadMapFrontComponent implements OnInit{
   roadMapList :RoadMap []=[];
   detailVisible =false;
   addVisible =false;
+  followVisible=false;
   enhance=false;
   selectedRoadMap:RoadMap=new RoadMap();
   crudRoadMap:RoadMap= new RoadMap();
 /*   crudStep:Step = new Step(); */
   stepsCount=0;
+  followedRoadMap :FollowedRoadMap =new FollowedRoadMap();
 
   /* api ai */
 
@@ -88,7 +92,7 @@ export class RoadMapFrontComponent implements OnInit{
   isLoading = false;
 
   /* api ai */
-  constructor(private roadMapSercice :RoadMapService , public router :Router ){
+  constructor(private roadMapSercice :RoadMapService ,private followedService:FollowedRoadMapService, public router :Router ){
 
   }
   ngOnInit(): void {
@@ -125,6 +129,14 @@ showAddDialog(){
   this.enhance=false;
 this.addVisible=true;
 this.stepsCount=0;
+}
+
+showFollowDialog(id:number|null){
+  if(id==null){
+    console.log("error")
+  }else{this.followedRoadMap.roadMapId=id;
+    this.followedRoadMap.user=this.user;
+    this.followVisible=true;}
 }
 
 
@@ -201,6 +213,18 @@ approve(id:number|null){
       );
       
     }
+    }
+
+    savefollowedRoadMap(){
+      console.log(this.followedRoadMap);
+     this.followedService.add(this.followedRoadMap).subscribe(
+      res=>{this.followVisible=false;
+            this.followedRoadMap=new FollowedRoadMap();
+      },
+      err=>{console.log(err)}
+
+     );
+
     }
 
     

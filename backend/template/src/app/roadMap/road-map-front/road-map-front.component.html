@@ -95,7 +95,7 @@
                         <div class="flex flex-col-3 mt-5" >
                             <p-button class="mr-1 ml-1 col-span-12  " severity="info"   [label]="roadMap.nbrApprove.toString()" styleClass="font-bold" [rounded]="true"  icon="pi pi-thumbs-up" (click)="approve(roadMap.id);$event.stopPropagation()"  /> 
                             <p-button class="mr-1 ml-1 col-span-12" severity="danger"  [label]="roadMap.nbrDisapproval.toString()" styleClass="font-bold" [rounded]="true"  icon="pi pi-thumbs-down" (click)="disapprove(roadMap.id);$event.stopPropagation()" />
-                            <p-button class="mr-1 ml-1 col-span-12  " severity="success" label="follow" icon="pi pi-heart-fill"  [rounded]="true"    />
+                            <p-button class="mr-1 ml-1 col-span-12  " severity="success" label="follow" icon="pi pi-heart-fill"  [rounded]="true"   (click)="showFollowDialog(roadMap.id);$event.stopPropagation()"  />
                                
                         </div>
                     </ng-template> 
@@ -284,5 +284,31 @@
     <ng-template #footer>
         <p-togglebutton [(ngModel)]="enhance"   [onIcon]="'pi pi-lightbulb'"onLabel="enhance active" offLabel="enhance with ai" offIcon="pi pi-lightbulb" [onIcon]="'pi pi-lightbulb'" offIcon="pi pi-lightbulb" styleClass="w-36"/>
         <p-button label="ADD" icon="pi pi-plus-circle" (click)="saveRoadMap()" />
+    </ng-template>
+</p-dialog>
+
+
+<!-- followDialog -->
+<p-dialog [(visible)]="followVisible" [style]="{ width: '800px' }"  header="confirm follow" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+           
+            <div  [style]="{'border-color': 'gray'}" >
+               <p-card>
+                   <span>
+                    click yes to confirm
+                   </span>
+                 
+                </p-card>
+            </div>
+
+        
+
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="cancel"  severity="danger" icon="pi pi-times" (click)="savefollowedRoadMap()" />
+        <p-button label="yes" icon="pi pi-check" (click)="savefollowedRoadMap()" />
     </ng-template>
 </p-dialog>

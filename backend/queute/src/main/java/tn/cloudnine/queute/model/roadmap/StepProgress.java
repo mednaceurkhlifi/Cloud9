@@ -16,6 +16,7 @@ public class StepProgress {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
     private boolean isDone;
-    @OneToOne
-    private Step step ;
+    private String spDescription;
+    private String spRequiredPaper ;
+    private Long stepId ;
 }

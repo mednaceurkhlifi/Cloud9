@@ -27,18 +27,23 @@ public class FollowedRoadMapController {
         this.stepProgressService = stepProgressService;
     }
     @GetMapping("get-all")
-    public List<FollowedRoadMap> getAll() {
-        return  this.followedRoadMapService.getAll();
+    public ResponseEntity<List<FollowedRoadMap>> getAll() {
+        return  ResponseEntity.ok(followedRoadMapService.getAll());
     }
     @GetMapping("find/{id}")
     public ResponseEntity<FollowedRoadMap> findById(@PathVariable Long id) {
         Optional<FollowedRoadMap> FollowedRoadMap_opt = this.followedRoadMapService.findById(id);
         return FollowedRoadMap_opt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/get-by-user-id/{id}")
+    public ResponseEntity<List<FollowedRoadMap>> getByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(followedRoadMapService.getByUserId(id));
+    }
     @PostMapping("add")
     public ResponseEntity<?> add(@RequestBody FollowedRoadMap followedRoadMap) {
-        this.followedRoadMapService.add(followedRoadMap);
+        if(this.followedRoadMapService.add(followedRoadMap))
         return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().build();
     }
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {

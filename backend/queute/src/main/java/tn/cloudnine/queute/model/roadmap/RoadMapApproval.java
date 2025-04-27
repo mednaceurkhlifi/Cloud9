@@ -22,7 +22,7 @@ public class RoadMapApproval {
     private Long id ;
     private boolean isApproved;
     private LocalDateTime date;
-    @OneToOne
+    @ManyToOne
     private User user;
 
     @Override

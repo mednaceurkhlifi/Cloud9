@@ -109,7 +109,9 @@ public class IRoadMapService implements RoadMapService {
         roadMapApproval.setUser(user);
         roadMapApproval.setApproved(approved);
         roadMapApproval.setDate(LocalDateTime.now());
+        System.out.println(roadMapApproval);
         roadMap_opt.get().getApprovals().add(roadMapApproval);
+
         this.roadMapRepository.save(roadMap_opt.get());
         return true;
     }

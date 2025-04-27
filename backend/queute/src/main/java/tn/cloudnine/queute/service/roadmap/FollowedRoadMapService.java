@@ -8,9 +8,11 @@ import java.util.Optional;
 
 @Service
 public interface FollowedRoadMapService {
-    public void add(FollowedRoadMap folowedRoadMap);
+    public boolean add(FollowedRoadMap folowedRoadMap);
     public void delete(Long id);
     public void update(Long id, FollowedRoadMap folowedRoadMap) ;
     public Optional<FollowedRoadMap> findById(Long id);
     public List<FollowedRoadMap> getAll();
+    public List<FollowedRoadMap> getByUserId(Long userId);
+
 }
