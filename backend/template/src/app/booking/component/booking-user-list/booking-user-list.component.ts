@@ -14,6 +14,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { BookingService, Booking, BookingRequest } from '../../service/booking.service';
 import { User } from '../../../services/models/user';
+import { TokenService } from '../../../token-service/token.service';
 
 @Component({
     selector: 'app-booking-user-list',
@@ -43,14 +44,15 @@ export class BookingUserListComponent implements OnInit {
     bookings: Booking[] = [];
     loading = true;
     error: string | null = null;
-    currentUser: User = {
-        userId: 1, // Static user ID for now
-        fullName: 'John Doe',
-        email: 'john.doe@example.com'
-    };
+    // currentUser: User = {
+    //     userId: 1, // Static user ID for now
+    //     fullName: 'John Doe',
+    //     email: 'john.doe@example.com'
+    // };
 
     constructor(
-        private bookingService: BookingService
+        private bookingService: BookingService,
+        private tokenService: TokenService
     ) { }
 
     ngOnInit(): void {
@@ -59,7 +61,7 @@ export class BookingUserListComponent implements OnInit {
 
     loadUserBookings(): void {
         this.loading = true;
-        this.bookingService.getBookingsByUserId(this.currentUser.userId!).subscribe({
+        this.bookingService.getBookingsByUserId(+this.tokenService.getUserId()!).subscribe({
             next: (bookings) => {
                 this.bookings = bookings;
                 this.loading = false;
