@@ -1,22 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { CardModule } from 'primeng/card';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { AccordionModule } from 'primeng/accordion';
+import { DividerModule } from 'primeng/divider';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ActivatedRoute } from '@angular/router';
+import { FollowedRoadMap } from '../../../models/FollowedRoadMap';
+import { FollowedRoadMapService } from '../../../services/followed-road-map.service';
 
 @Component({
   selector: 'app-my-followed-road-map',
   imports: [CommonModule,
             ButtonModule,
-            MenuModule],
+            MenuModule,
+            CardModule,
+            ScrollPanelModule,
+            ProgressBarModule,
+            AccordionModule,
+            DividerModule,
+            ToggleSwitchModule,
+            FormsModule,
+            ToolbarModule],
   templateUrl: './my-followed-road-map.component.html',
   styleUrl: './my-followed-road-map.component.scss'
 })
-export class MyFollowedRoadMapComponent {
-  menu = null;
+export class MyFollowedRoadMapComponent implements OnInit {
 
-  items = [
-      { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-      { label: 'Remove', icon: 'pi pi-fw pi-trash' }
-  ];
+  constructor(private followedRoadMapService :FollowedRoadMapService,private ac:ActivatedRoute){}
 
+ followedRoadMapList :FollowedRoadMap[]=[];
+ selected:FollowedRoadMap= new FollowedRoadMap();
+ firstSelection=false;
+ 
+
+
+id:any;
+ ngOnInit(): void {
+  this.ac.paramMap.subscribe(
+    params=>{
+     this.id=params.get('id')
+     this.loadData(this.id)
+    }
+  );
+ }
+ loadData(id:string){
+  this.followedRoadMapService.getByUserId(id).subscribe(
+    res=>{this.followedRoadMapList=res;
+          console.log(res)
+    },
+    err=>{console.log(err)}
+  )
+
+ }
+ selectFollowedRoadMap(fl:FollowedRoadMap)
+ {
+  this.firstSelection=true;
+  console.log(fl);
+  this.selected=fl;
+ }
+ update(){
+  this.followedRoadMapService.update(this.selected).subscribe(
+    res=>{console.log("here"+res)},
+    err=>{console.log(err)}
+  )
+ }
 }

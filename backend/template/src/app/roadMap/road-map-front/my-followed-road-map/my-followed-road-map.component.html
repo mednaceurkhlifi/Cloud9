@@ -8,28 +8,101 @@
 
         <div class="card">
             <div class="flex justify-between items-center mb-6">
-                <div class="font-semibold text-xl">click on one to select </div>
+                <div class="font-semibold text-xl">  {{this.followedRoadMapList.length}} followed road maps  </div>
                 
             </div>
             <ul class="list-none p-0 m-0">
-                <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                    <div>
-                        <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Space T-Shirt</span>
-                        <div class="mt-1 text-muted-color">Clothing</div>
-                    </div>
-                    <div class="mt-2 md:mt-0 flex items-center">
-                        <div class="bg-surface-300 dark:bg-surface-500 rounded-border overflow-hidden w-40 lg:w-24" style="height: 8px">
-                            <div class="bg-orange-500 h-full" style="width: 50%"></div>
-                        </div>
-                        <span class="text-orange-500 ml-4 font-medium">%50</span>
-                    </div>
+                
+                @for (fl of followedRoadMapList ; track $index) {
+                <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6" (click)="selectFollowedRoadMap(fl)">
+                    
+
+
+                    <p-card  [style]="{ width: '25rem', overflow: 'hidden' }">
+                        
+                        <ng-template #title>Title : {{fl.frTitle}} </ng-template>
+                        <ng-template #subtitle> Description</ng-template>
+                        
+                        <p-scrollpanel [style]="{ width: '100%', height: '70px' }">
+                        <p>
+
+                           {{fl.frDescription}}
+                        
+                        </p>
+                        </p-scrollpanel>
+                        
+                        <ng-template #footer>
+                            <div class="flex gap-4 mt-1">
+                                <p-button label="unfollow" severity="danger" class="w-full" [outlined]="true" styleClass="w-full" />
+                            </div>
+                        </ng-template>
+                    </p-card>
+
                 </li>
+            }
             
             </ul>
         </div>
 
     </div>
-    <div class="basis-3/4">
+    <div class="basis-3/4 ml-10">
+
+
+        <div  *ngIf="!firstSelection" class="card 5 justify-center items-center" [style]="{ width: 'w-full' }" header="Road Map Detail" >
+            <span class="font-bold text-2xl"> select a road map</span>
+        </div>
+
+
+
+        <div  *ngIf="firstSelection" class="card 5" [style]="{ width: 'w-full' }" header="Road Map Detail" >
+            <div>
+                <div class="flex flex-col gap-6">
+                    <img class="h-[120px] p-[2px] rounded-[10px]" src="assets/road-map-assets/1.jpg">
+                    <div>
+                        <label  class="block font-bold mb-3">title :</label>
+                       <span>{{selected.frTitle}}</span>
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block font-bold mb-3">Description</label>
+                        <span>{{selected.frDescription}}</span>
+                        
+                    </div>
+        
+                    
+                    
+                    <p-accordion value="0">
+                        @for (sp of selected.stepProgressList ; track $index) {
+                        <div class="bg-slate-100  rounded mb-10"  [ngClass]="{'bg-lime-100': sp.done}" >
+                            <div class="flex pt-3 "><p class=" font-bold font-base "> Step {{$index+1}} : {{sp.stepId}} </p>  <p-toggleswitch  (onChange)="update()" styleClass="ml-3" [(ngModel)]="sp.done"  /></div>
+                                <label for="detail-description"  class="font-bold" > Description</label>
+                                <p id="detail-description" class="m-0">
+                                  {{sp.spDescription}}  
+                                </p>
+                                <p-divider/>
+                                <label for="detail-required-paper" class="font-bold"> required paper</label>
+                                <p id="detail-required-paper" class="m-0">
+                                  {{sp.spRequiredPaper}}  
+                                </p>
+                            
+                            </div>
+                    }
+                    </p-accordion>
+        
+        
+                </div>
+            </div>
+        
+            <ng-template #footer>
+                <div   class="p-buttonset">
+                    <p-button  icon="pi pi-thumbs-up-fill" rounded="true" severity="info" class="m-2" />
+                    <p-button  icon="pi pi-thumbs-down-fill" rounded="true" severity="danger" />
+                    
+                </div>
+                <!-- <p-button label="Cancel" icon="pi pi-times" text (click)="hideDetail()" /> -->
+                <p-button label="follow" icon="pi pi-heart-fill"  />
+            </ng-template>
+        </div>
 
     </div>
 

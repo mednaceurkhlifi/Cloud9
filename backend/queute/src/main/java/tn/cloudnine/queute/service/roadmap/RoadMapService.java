@@ -17,5 +17,6 @@ public interface RoadMapService {
     public boolean addStepToRoadMap(RoadMap roadMap, Step step);
     public boolean rmoveStepFromRoadMap(RoadMap roadMap,Step step);
     public boolean approveRoadMap(Long id, boolean isApproved, User user);
+    public RoadMap clarifyRoadMapTexts(RoadMap roadMap);
 
 }

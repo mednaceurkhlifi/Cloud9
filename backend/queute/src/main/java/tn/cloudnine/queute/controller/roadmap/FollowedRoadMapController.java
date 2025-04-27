@@ -71,6 +71,11 @@ public class FollowedRoadMapController {
             }
         }
     }
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody FollowedRoadMap followedRoadMap) {
+        this.followedRoadMapService.update(id, followedRoadMap);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

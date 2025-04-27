@@ -13,13 +13,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 @Service
 public class IRoadMapService implements RoadMapService {
 
     private final RoadMapRepository roadMapRepository ;
+    private final RoadMapGeminiService textClarifier ;
     @Autowired
-    public IRoadMapService(RoadMapRepository roadMapRepository){
+    public IRoadMapService(RoadMapRepository roadMapRepository,RoadMapGeminiService textClarifier){
         this.roadMapRepository=roadMapRepository;
+        this.textClarifier=textClarifier;
 
     }
 
@@ -115,6 +123,34 @@ public class IRoadMapService implements RoadMapService {
         this.roadMapRepository.save(roadMap_opt.get());
         return true;
     }
+
+    @Override
+    public RoadMap clarifyRoadMapTexts(RoadMap roadMap) {
+        try {
+            // Process main fields
+            roadMap.setTitle(textClarifier.clarifyText(roadMap.getTitle()));
+            roadMap.setDescription(textClarifier.clarifyText(roadMap.getDescription()));
+
+            // Process steps
+            if (roadMap.getSteps() != null) {
+                for (Step step : roadMap.getSteps()) {
+                    step.setStepName(textClarifier.clarifyText(step.getStepName()));
+                    step.setStepDescription(textClarifier.clarifyText(step.getStepDescription()));
+                    step.setRequiredPapers(textClarifier.clarifyText(step.getRequiredPapers()));
+                }
+            }
+
+            return roadMap;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to clarify roadmap texts", e);
+        }
+    }
+
+
+
+
+
+
 
 
 }
