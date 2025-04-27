@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.workspace.NotificationDTO;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
 import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
@@ -47,6 +49,7 @@ public class TaskService implements ITaskService {
     private final ProjectUserRepository projectUserRepository;
     private final UserRepository userRepository;
     private final IFileUploader fileUploader;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public Task addTaskToProject(Long projectId, Task task, List<DocumentRequest> documents_request, List<MultipartFile> documents) {
@@ -172,6 +175,12 @@ public class TaskService implements ITaskService {
         );
         task.getMembers().add(user);
         repository.save(task);
+        String title = "Assigned to a new task";
+        String description = "Your assigned to " + task.getTitle();
+        NotificationDTO notification = new NotificationDTO(
+                title, description
+        );
+        messagingTemplate.convertAndSendToUser(user.getEmail(), "wknotif", notification);
         return new UserDTO(user.getFullName(), user.getEmail(), user.getImage(), projectUser.getRole());
     }
 

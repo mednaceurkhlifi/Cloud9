@@ -7,10 +7,10 @@
             <ng-template #default_image_user>
                 <img src="default_user.jpg" width="50" style="vertical-align: middle; border-radius: 50%;" />
             </ng-template>
-            <span class="text-lg">{{ t.user?.full_name }}</span>
+            <span class="text-lg">{{ t.user?.fullName }}</span>
             <p-tag *ngIf="t.role == 'MANAGER'" value="Manager" severity="success" />
             <p-tag *ngIf="t.role == 'TEAM_MEMBER'"  value="Member" severity="info" />
-            <p-button *ngIf="t.role != 'MANAGER'" icon="pi pi-trash" size="small" severity="danger" (onClick)="deleteProjectMember(t)" />
+            <p-button *ngIf="isAdmin" icon="pi pi-trash" size="small" severity="danger" (onClick)="deleteProjectMember(t)" />
         </div>
     </div>
 
@@ -22,14 +22,14 @@
             <ng-template #default_image_user>
                 <img src="default_user.jpg" width="38" style="vertical-align: middle; border-radius: 50%;" />
             </ng-template>
-            <span class="text-lg">{{ user.full_name }}</span>
+            <span class="text-lg">{{ user.fullName }}</span>
             <p-tag value="Member" severity="info" />
-            <p-button icon="pi pi-trash" size="small" severity="danger" (onClick)="deleteTaskMember(user)" />
+            <p-button *ngIf="isAdmin" icon="pi pi-trash" size="small" severity="danger" (onClick)="deleteTaskMember(user)" />
         </div>
     </div>
 </div>
 
-<p-fluid>
+<p-fluid *ngIf="isAdmin">
     <div class="card flex flex-col gap-6 w-full">
         <div class="font-bold text-lg">Add member</div>
         <app-add-member-form *ngIf="task"

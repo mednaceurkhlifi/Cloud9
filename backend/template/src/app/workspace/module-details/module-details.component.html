@@ -25,7 +25,7 @@
         </p-dialog>
         <div class="flex flex-row w-full">
             <span class="title">{{module.title}}</span>
-            <div class="flex flex-row items-center justify-center w-full">
+            <div class="flex flex-row items-center justify-center w-full" *ngIf="isManagerOrAdmin">
                 <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editModule()" />
                 <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteModule()" />
             </div>
@@ -101,7 +101,7 @@
             <ng-template #caption>
                 <div class="flex items-center justify-between">
                     <span class="text-xl font-bold">Module tasks</span>
-                    <p-button icon="pi pi-plus" label="Create new" (click)="addTask()"/>
+                    <p-button *ngIf="isManagerOrAdmin" icon="pi pi-plus" label="Create new" (click)="addTask()"/>
                 </div>
             </ng-template>
             <ng-template #header>
@@ -147,6 +147,6 @@
     </div>
 
     <app-chat-channel
-        [module_id]="module.moduleId!"
+        [module_id]="moduleId"
     ></app-chat-channel>
 </div>

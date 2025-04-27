@@ -156,7 +156,6 @@ export class WorkspaceMessageControllerService extends BaseService {
       map((r: StrictHttpResponse<MessageResponse>): MessageResponse => r.body)
     );
   }
-
     /**** manually added methods ****/
     sendMessageToTarget(target: number, targetId: number, user_email: string,  workspaceMsg: WorkspaceMessage ,attachment_request: DocumentRequest[], attachments: File[]): Observable<WorkspaceMessage> {
         const formData = new FormData();
@@ -168,4 +167,5 @@ export class WorkspaceMessageControllerService extends BaseService {
 
         return this.http.post<WorkspaceMessage>(`http://localhost:8082/api/v1/ws-msg/send-message/${target}/${targetId}/${user_email}`, formData);
     }
+
 }

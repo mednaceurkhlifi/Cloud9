@@ -31,6 +31,7 @@ import { Dialog } from 'primeng/dialog';
 import { AiAutomationServiceService } from '../../AI/AI-Workflow-Automation/ai-automation-service.service';
 import { WorkFlowRequest } from '../../AI/WorkFlowRequest';
 import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
     selector: 'app-workspace-overview',
@@ -71,7 +72,7 @@ export class WorkspaceOverviewComponent implements OnInit {
     workspaceResponse!: WorkspaceResponse;
     isWkFound: boolean = false;
     loading: boolean = false;
-    organization_id: number = 2;
+    organization_id: any = 0;
     isOnUpdate: boolean = false;
     isImageChanged: boolean = false;
     formTitle: string = 'Create yours now !';
@@ -80,7 +81,9 @@ export class WorkspaceOverviewComponent implements OnInit {
     size_pr: number = 10;
     aiDialog: boolean = false;
     waitingForAiResponse: boolean = false;
-
+    isOrganizationExist: boolean = false;
+    userRole: any;
+    isAdmin: boolean = false;
     data: TreeNode[] = [
         {
             label: 'Project',
@@ -155,10 +158,17 @@ export class WorkspaceOverviewComponent implements OnInit {
         private router: Router,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
-        private _aiAutoService: AiAutomationServiceService
+        private _aiAutoService: AiAutomationServiceService,
+        private _tokenService: TokenService
     ) {}
 
     ngOnInit() {
+        this.organization_id = this._tokenService.getOrganizationId();
+        this.userRole = this._tokenService.getCurrentUserRole();
+        if(this.userRole.includes('ADMIN'))
+            this.isAdmin = true;
+        if(this.organization_id != '-1')
+            this.isOrganizationExist = true;
         this.getWorkspace();
         this.aiCreatePrForm = new FormGroup({
             description: new FormControl('', [Validators.required])
@@ -354,9 +364,12 @@ export class WorkspaceOverviewComponent implements OnInit {
 
     processAiCreatingProject() {
         this.waitingForAiResponse = true;
+        let now = new Date();
+        let isoString = now.toISOString().slice(0, 19);
         let request: WorkFlowRequest = {
             input: this.aiCreatePrForm.get('description')?.value,
-            workspace_id: this.workspaceResponse.projection?.workspaceId
+            workspace_id: this.workspaceResponse.projection?.workspaceId,
+            today: isoString
         };
         this._aiAutoService.createProjectWithAi(request).subscribe({
             next: (response) => {

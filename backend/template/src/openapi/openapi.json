@@ -347,6 +347,45 @@
                 }
             }
         },
+        "/project-user/get-project-user/{user_email}/{project_id}": {
+            "get": {
+                "tags": [
+                    "project-user-controller"
+                ],
+                "operationId": "getProjectUser",
+                "parameters": [
+                    {
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "user_email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectUserProjection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/project-user/add-project-member/{project_id}": {
             "post": {
                 "tags": [

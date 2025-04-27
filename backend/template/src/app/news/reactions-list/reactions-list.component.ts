@@ -4,6 +4,7 @@ import { Reaction } from '../../models/Reaction';
 
 @Component({
   selector: 'app-reactions-list',
+    standalone: true,
   imports: [CommonModule],
   templateUrl: './reactions-list.component.html',
   styleUrl: './reactions-list.component.css'
@@ -18,11 +19,11 @@ export class ReactionsListComponent {
       let rea=1;
       if(this.numberReactions.has(element.reactionType))
         rea=this.numberReactions.get(element.reactionType)+1
-      
+
 
       this.numberReactions.set(element.reactionType,rea);
 
-      
+
     });
     console.log(this.numberReactions)
   }

@@ -21,6 +21,8 @@ import { getProjects } from '../fn/project-user-controller/get-projects';
 import { GetProjects$Params } from '../fn/project-user-controller/get-projects';
 import { getProjectTeams } from '../fn/project-user-controller/get-project-teams';
 import { GetProjectTeams$Params } from '../fn/project-user-controller/get-project-teams';
+import { getProjectUser } from '../fn/project-user-controller/get-project-user';
+import { GetProjectUser$Params } from '../fn/project-user-controller/get-project-user';
 import { getUserProjectsByEmail } from '../fn/project-user-controller/get-user-projects-by-email';
 import { GetUserProjectsByEmail$Params } from '../fn/project-user-controller/get-user-projects-by-email';
 import { ProjectUserProjection } from '../models/project-user-projection';
@@ -31,6 +33,31 @@ import { UserDto } from '../models/user-dto';
 export class ProjectUserControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getProjectUser()` */
+  static readonly GetProjectUserPath = '/project-user/get-project-user/{user_email}/{project_id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getProjectUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProjectUser$Response(params: GetProjectUser$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectUserProjection>> {
+    return getProjectUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getProjectUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getProjectUser(params: GetProjectUser$Params, context?: HttpContext): Observable<ProjectUserProjection> {
+    return this.getProjectUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ProjectUserProjection>): ProjectUserProjection => r.body)
+    );
   }
 
   /** Path part for operation `addProjectMember()` */

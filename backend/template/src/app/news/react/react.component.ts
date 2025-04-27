@@ -4,6 +4,7 @@ import { common } from 'lowlight';
 
 @Component({
   selector: 'app-react',
+    standalone: true,
   imports: [CommonModule],
   templateUrl: './react.component.html',
   styleUrl: './react.component.css'

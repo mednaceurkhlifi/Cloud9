@@ -19,8 +19,9 @@ import { PostListComponent } from './app/forum/posts/post-list/post-list.compone
 import { CreatePostComponent } from './app/forum/posts/create-post/create-post.component';
 
 export const appRoutes: Routes = [
+    { path: '', component: Landing },
     {
-        path: '',
+        path: 'dashboard',
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
@@ -88,6 +89,10 @@ export const appRoutes: Routes = [
     {
         path: 'meeting/:room_id/:user_id/:username',
         component: MeetComponent
+    },
+    {
+        path: 'auth',
+        loadChildren: () => import('./app/user/user.routes').then(m => m.default)  // Lazy loading user-related routes
     },
     {
         path: 'user-bookings',

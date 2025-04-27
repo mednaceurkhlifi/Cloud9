@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import tn.cloudnine.queute.dto.workspace.NotificationDTO;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.projections.ProjectUserProjection;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectUserResponse;
 import tn.cloudnine.queute.enums.workspace.ProjectRole;
+import tn.cloudnine.queute.exception.WorkspaceBadRequest;
 import tn.cloudnine.queute.model.Embeddable.ProjectUserId;
 import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.model.workspace.Project;
@@ -31,22 +34,42 @@ public class ProjectUserService implements IProjectUserService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public UserDTO addProjectManager(ProjectUser projectUser) {
         Project project = getProjectById(projectUser.getProject().getProjectId());
-
-        if (repository.countByProjectProjectIdAndRole(projectUser.getProject().getProjectId(), ProjectRole.MANAGER) > 0) {
-            throw new IllegalArgumentException(project.getName() + " already has a manager");
+        User manager = userRepository.findByEmailEquals(projectUser.getUser()
+                .getEmail()).orElseThrow(
+                () -> new WorkspaceBadRequest("User not found")
+        );
+        Long organizationId = project.getWorkspace().getOrganization().getOrganizationId();
+        if(manager.getOrganization() != null &&
+                manager.getOrganization().getOrganizationId().equals(organizationId)) {
+            if (repository.countByProjectProjectIdAndRole(projectUser.getProject().getProjectId(), ProjectRole.MANAGER) > 0) {
+                throw new WorkspaceBadRequest(project.getName() + " already has a manager");
+            }
+            return saveProjectUser(project, projectUser, ProjectRole.MANAGER);
+        } else {
+            throw new WorkspaceBadRequest("User is not affected to your organization.");
         }
-
-        return saveProjectUser(project, projectUser, ProjectRole.MANAGER);
     }
 
     @Override
     public UserDTO addProjectMember(Long projectId, ProjectUser projectUser) {
         Project project = getProjectById(projectId);
-        return saveProjectUser(project, projectUser, ProjectRole.TEAM_MEMBER);
+        User manager = userRepository.findByEmailEquals(projectUser.getUser()
+                .getEmail()).orElseThrow(
+                () -> new WorkspaceBadRequest("User not found")
+        );
+        Long organizationId = project.getWorkspace().getOrganization().getOrganizationId();
+        if(manager.getOrganization() != null &&
+                manager.getOrganization().getOrganizationId().equals(organizationId)) {
+            return saveProjectUser(project, projectUser, ProjectRole.TEAM_MEMBER);
+        } else {
+            throw new WorkspaceBadRequest("User is not affected to your organization.");
+        }
+
     }
 
     @Override
@@ -54,7 +77,7 @@ public class ProjectUserService implements IProjectUserService {
         Project project = getProjectById(projectId);
         User user = getUserByEmail(userEmail);
         ProjectUser projectUser = repository.findById(new ProjectUserId(project.getProjectId(), user.getUserId())).orElseThrow(
-                () -> new IllegalArgumentException("Project user not found")
+                () -> new WorkspaceBadRequest("Project user not found")
         );
         Set<Task> tasks = taskRepository.findTasksByUserEmail(userEmail);
         for (Task t : tasks) {
@@ -73,6 +96,15 @@ public class ProjectUserService implements IProjectUserService {
     public Set<ProjectUserProjection> getUserProjectsByEmail(String userEmail) {
         User user = getUserByEmail(userEmail);
         return repository.findByUserEmail(user.getEmail());
+    }
+
+    @Override
+    public ProjectUserProjection getProjectUser(String userEmail, Long projectId) {
+        return repository.findByProjectProjectIdAndUserEmail(
+                projectId, userEmail
+        ).orElseThrow(
+                () -> new WorkspaceBadRequest("Project user not found")
+        );
     }
 
     @Override
@@ -95,7 +127,7 @@ public class ProjectUserService implements IProjectUserService {
 
         User user = getUserByEmail(email);
         if(repository.findById(new ProjectUserId(project.getProjectId(), user.getUserId())).isPresent()) {
-            throw new IllegalArgumentException("User is already affected to this project");
+            throw new WorkspaceBadRequest("User is already affected to this project");
         }
         projectUser.setId(new ProjectUserId(project.getProjectId(), user.getUserId()));
         projectUser.setUser(user);
@@ -103,18 +135,23 @@ public class ProjectUserService implements IProjectUserService {
         projectUser.setRole(role);
 
         repository.save(projectUser);
-
+        String title = role + "Affectation";
+        String description = "Your added as " + role + " to " + project.getName() + " project";
+        NotificationDTO notification = new NotificationDTO(
+                title, description
+        );
+        messagingTemplate.convertAndSendToUser(user.getEmail(), "wknotif", notification);
         return new UserDTO(user.getFullName(), user.getEmail(), user.getImage(), role);
     }
 
     private Project getProjectById(Long projectId) {
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found with ID: " + projectId));
+                .orElseThrow(() -> new WorkspaceBadRequest("Project not found with ID: " + projectId));
     }
 
     private User getUserByEmail(String email) {
         return userRepository.findByEmailEquals(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+                .orElseThrow(() -> new WorkspaceBadRequest("User not found with email: " + email));
     }
 
 }

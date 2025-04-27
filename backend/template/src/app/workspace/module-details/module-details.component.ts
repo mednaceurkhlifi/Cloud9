@@ -22,6 +22,9 @@ import { ProjectModule } from '../../services/models/project-module';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { Task } from '../../services/models/task';
 import { ChatChannelComponent } from '../chat/chat-channel/chat-channel.component';
+import { TokenService } from '../../token-service/token.service';
+import { ProjectUserProjection } from '../../services/models/project-user-projection';
+import { ProjectUserControllerService } from '../../services/services/project-user-controller.service';
 
 @Component({
     selector: 'app-module-details',
@@ -41,6 +44,13 @@ export class ModuleDetailsComponent implements OnInit {
     isOnUpdate: boolean = false;
     loading: boolean = false;
     priority: 'Low' | 'Medium' | 'High' = 'Low';
+    isManagerOrAdmin: boolean = false;
+    isAdmin: boolean = false;
+    userRole: any;
+    projectUser!: ProjectUserProjection;
+    user_email: string = '';
+    moduleId: any;
+
 
     constructor(
         private route: ActivatedRoute,
@@ -49,15 +59,19 @@ export class ModuleDetailsComponent implements OnInit {
         private _documentService: ProjectDocumentControllerService,
         private router: Router,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private _tokenService: TokenService,
+        private _projectUserService: ProjectUserControllerService
     ) {}
 
     ngOnInit() {
-        const moduleId = this.route.snapshot.paramMap.get('module_id');
+        this.moduleId = this.route.snapshot.paramMap.get('module_id');
         this.size_task = 10;
         this.page_task = 0;
-        if (moduleId) {
-            this.getModule(parseInt(moduleId));
+        this.userRole = this._tokenService.getCurrentUserRole();
+        this.user_email = this._tokenService.getUserEmail();
+        if (this.moduleId) {
+            this.getModule(parseInt(this.moduleId));
         }
     }
 
@@ -104,6 +118,20 @@ export class ModuleDetailsComponent implements OnInit {
                     this.module = response;
                     this.updatePriorityLabel(this.module.priority!);
                     this.getModuleTasks(this.module.moduleId!);
+                    this._projectUserService.getProjectUser({
+                        user_email: this.user_email,
+                        project_id: response.project?.projectId!
+                    }).subscribe({
+                        next: (result) => {
+                            this.projectUser = result
+                            if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
+                                this.isManagerOrAdmin = true;
+                            if(this.userRole == 'ADMIN')
+                                this.isAdmin = true;
+                        },
+                        error: err => {}
+                    });
+
                 },
                 error: (err) => {
                     // treat errors

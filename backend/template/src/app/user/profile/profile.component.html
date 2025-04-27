@@ -1,0 +1,41 @@
+<div class="profile-container">
+    <app-sidebar></app-sidebar>
+    <app-topbar></app-topbar>
+    
+    <div class="layout-topbar" *ngIf="isAuthenticated && user">
+      <div class="layout-topbar-logo-container">
+        <!-- Your logo and menu toggle button -->
+      </div>
+  
+      <div class="layout-topbar-actions">
+        <!-- Profile button -->
+        <button (click)="toggleProfile()">Profile</button>
+  
+        <!-- Simple modal or dropdown for user info -->
+        <div *ngIf="showProfile" class="profile-popup">
+          <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <button (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="profile-content">
+      <h2>Your Profile</h2>
+      <div *ngIf="user" class="profile-details">
+        <div class="profile-field">
+          <label>First Name:</label>
+          <span>{{ user.firstName }}</span>
+        </div>
+        <div class="profile-field">
+          <label>Last Name:</label>
+          <span>{{ user.lastName }}</span>
+        </div>
+        <div class="profile-field">
+          <label>Email:</label>
+          <span>{{ user.email }}</span>
+        </div>
+        <!-- Add more fields as needed -->
+      </div>
+    </div>
+  </div>

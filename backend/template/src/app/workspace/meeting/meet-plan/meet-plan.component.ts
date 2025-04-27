@@ -16,7 +16,6 @@ import { Fluid } from 'primeng/fluid';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Chip } from 'primeng/chip';
 import { Meeting } from '../../../services/models/meeting';
-import { TokenService } from '../../chat/util/token.service';
 import { Toast } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MeetingResponse } from '../../../services/models/meeting-response';
@@ -24,20 +23,25 @@ import { Paginator } from 'primeng/paginator';
 import { ProgressBar } from 'primeng/progressbar';
 import { Router } from '@angular/router';
 import { validateDateRange } from '../../util/validators/date-range-validator';
+import { TokenService } from '../../../token-service/token.service';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, EventClickArg  } from '@fullcalendar/core'; // useful for typechecking
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
     selector: 'app-meet-plan',
     standalone: true,
-    imports: [CardModule, CommonModule, Toast, ProgressBar, ConfirmDialog, FormsModule, Button, Dialog, ProjectFormComponent, DatePicker, InputNumber, InputText, Message, ReactiveFormsModule, Tag, Textarea, Fluid, Chip, Paginator],
+    imports: [CardModule, CommonModule, Toast, FullCalendarModule,
+        ProgressBar, ConfirmDialog, FormsModule, Button, Dialog, ProjectFormComponent, DatePicker, InputNumber, InputText, Message, ReactiveFormsModule, Tag, Textarea, Fluid, Chip, Paginator],
     templateUrl: './meet-plan.component.html',
     styleUrl: './meet-plan.component.scss',
     providers: [MessageService, ConfirmationService]
 })
 export class MeetPlanComponent implements OnInit {
     isCreatingNew: boolean = false;
-    size_my: number = 5;
+    size_my: number = 200;
     page_no_my: number = 0;
-    size_other: number = 5;
+    size_other: number = 200;
     page_no_other: number = 0;
     members: string[] = [];
     meetForm!: FormGroup;
@@ -53,6 +57,106 @@ export class MeetPlanComponent implements OnInit {
     invitedMeeting: MeetingResponse = {totalElements: 0};
     userMeeting: MeetingResponse = {totalElements: 0};
     loading: boolean = false;
+    // calendar
+    calendarOptions: CalendarOptions = {
+        initialView: 'dayGridMonth',
+        plugins: [dayGridPlugin],
+        events: [],
+        eventClick: this.handleUserMeetingClick.bind(this),
+        eventContent: (arg) => {
+            const meeting = arg.event.extendedProps;
+
+            return {
+                html: `
+        <div style="
+          background: white;
+          border: 1px solid #dcdcdc;
+          border-radius: 8px;
+          padding: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          font-family: 'Roboto', sans-serif;
+          font-size: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          cursor: pointer;
+          overflow: hidden;
+        ">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 14px; color: #333;">${arg.event.title}</strong>
+            <button style="
+              background-color: #8ddd57;
+              border: none;
+              border-radius: 5px;
+              padding: 4px 8px;
+              font-size: 10px;
+              font-weight: bold;
+              color: white;
+              cursor: pointer;
+            ">Join</button>
+          </div>
+          <div style="font-size: 11px; color: #666;">
+            <strong>Organized by: You</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #999;">
+            <span><i class="pi pi-calendar"></i> ${arg.timeText}</span>
+          </div>
+        </div>
+      `
+            };
+        }
+    };
+
+
+    calendarOptionsInvited: CalendarOptions = {
+        initialView: 'dayGridMonth',
+        events: [],
+        eventClick: this.handleInvitedMeetingClick.bind(this),
+        plugins: [dayGridPlugin],
+        eventContent: (arg) => {
+            const meeting = arg.event.extendedProps;
+
+            return {
+                html: `
+        <div style="
+          background: white;
+          border: 1px solid #dcdcdc;
+          border-radius: 8px;
+          padding: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          font-family: 'Roboto', sans-serif;
+          font-size: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          cursor: pointer;
+          overflow: hidden;
+        ">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 14px; color: #333;">${arg.event.title}</strong>
+            <button style="
+              background-color: #8ddd57;
+              border: none;
+              border-radius: 5px;
+              padding: 4px 8px;
+              font-size: 10px;
+              font-weight: bold;
+              color: white;
+              cursor: pointer;
+            ">Join</button>
+          </div>
+          <div style="font-size: 11px; color: #666;">
+            <strong>Organized by: You</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #999;">
+            <span><i class="pi pi-calendar"></i> ${arg.timeText}</span>
+          </div>
+        </div>
+      `
+            };
+        }
+    };
+
 
     constructor(
         private _meetingService: MeetingControllerService,
@@ -63,7 +167,7 @@ export class MeetPlanComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.user_email = this._tokenService.email!;
+        this.user_email = this._tokenService.getUserEmail()!;
         this.getInvitedMeeting();
         this.getUserMeeting();
         this.meetForm = new FormGroup({
@@ -101,12 +205,13 @@ export class MeetPlanComponent implements OnInit {
             .subscribe({
                 next: (response) => {
                     this.invitedMeeting = response;
+                    this.loadInvitedMeetings();
                 },
                 error: (err) => {}
             });
     }
 
-    getUserMeeting() {
+    getUserMeeting(): void {
         this._meetingService
             .getUserMeetings({
                 user_email: this.user_email,
@@ -116,10 +221,40 @@ export class MeetPlanComponent implements OnInit {
             .subscribe({
                 next: (response) => {
                     this.userMeeting = response;
+                    this.loadMeetings();
                 },
-                error: (err) => {}
+                error: (err) => {
+                    console.error('Error fetching meetings', err);
+                }
             });
     }
+
+    loadMeetings(): void {
+        this.calendarOptions = {
+            ...this.calendarOptions,
+            events: this.userMeeting?.meetings?.map(m => ({
+                id: m.meetingId?.toString(),
+                title: m.title,
+                start: m.beginDate,
+                end: m.endDate,
+                description: m.description,
+            }))
+        };
+    }
+
+    loadInvitedMeetings(): void {
+        this.calendarOptionsInvited = {
+            ...this.calendarOptionsInvited,
+            events: this.invitedMeeting?.meetings?.map(m => ({
+                id: m.meetingId?.toString(),
+                title: m.title,
+                start: m.beginDate,
+                end: m.endDate,
+                description: m.description,
+            }))
+        };
+    }
+
 
     createMeeting() {
         if (this.setRequest()) {
@@ -207,17 +342,48 @@ export class MeetPlanComponent implements OnInit {
     joinUserMeet(meetingId: number | undefined) {
         let toJoin = this.userMeeting.meetings?.find(m => m.meetingId == meetingId);
         let user = toJoin!.admin!;
-        const url = `/meeting/${meetingId}/${user.userId}/${user.full_name}`;
+        const url = `/meeting/${meetingId}/${user.userId}/${user.fullName}`;
         window.open(url, '_blank');
     }
+
+    handleUserMeetingClick(info: EventClickArg): void {
+        const meetingId = Number(info.event.id);
+        this.joinUserMeet(meetingId);
+    }
+
 
     joinInvitedMeet(meetingId: number | undefined) {
         let toJoin = this.invitedMeeting.meetings?.find(m => m.meetingId == meetingId);
         let user = toJoin!.members!.find(m => m.email == this.user_email)!;
-        const url = `/meeting/${meetingId}/${user.userId}/${user.full_name}`;
+        const url = `/meeting/${meetingId}/${user.userId}/${user.fullName}`;
         window.open(url, '_blank');
     }
 
+    handleInvitedMeetingClick(info: EventClickArg): void {
+        const meetingId = Number(info.event.id);
+        this.joinInvitedMeet(meetingId);
+    }
+
+
+    get beginDateTime() {
+        const date = this.meetForm.get('beginDateDate')?.value;
+        const time = this.meetForm.get('beginDateTime')?.value;
+
+        if (!date || !time) return null;
+
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()).toISOString();
+    }
+
+    get deadlineDateTime() {
+        const date = this.meetForm.get('beginDateDate')?.value;
+        const time = this.meetForm.get('deadlineTime')?.value;
+
+        if (!date || !time) return null;
+
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()).toISOString();
+    }
+
+/*
     onPageChangeUserMeeting($event: any) {
         this.page_no_my = $event.page;
         this.size_my = $event.rows;
@@ -264,23 +430,5 @@ export class MeetPlanComponent implements OnInit {
                 this._messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
             }
         });
-    }
-
-    get beginDateTime() {
-        const date = this.meetForm.get('beginDateDate')?.value;
-        const time = this.meetForm.get('beginDateTime')?.value;
-
-        if (!date || !time) return null;
-
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()).toISOString();
-    }
-
-    get deadlineDateTime() {
-        const date = this.meetForm.get('beginDateDate')?.value;
-        const time = this.meetForm.get('deadlineTime')?.value;
-
-        if (!date || !time) return null;
-
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), time.getSeconds()).toISOString();
-    }
+    }*/
 }

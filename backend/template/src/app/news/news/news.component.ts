@@ -23,6 +23,7 @@ import { TopbarWidget } from '../../pages/landing/components/topbarwidget.compon
 
 @Component({
   selector: 'app-news',
+    standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, ReactionsListComponent, ReactComponent, ButtonModule, CardModule,
     Empty, TotalLikesComponent],
   templateUrl: './news.component.html',
@@ -32,7 +33,7 @@ export class NewsComponent {
   constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService){}
   listchecked:Boolean[]=[];
   listNews:News[]=[];
-  user:User={userId:1}
+  user:User={id:1}
   reactionClickedCheckList:Boolean[]=[]
   reactionList:Reaction[]=[]
   overlayToggle:Boolean=false;
@@ -52,24 +53,24 @@ export class NewsComponent {
             // Create an object URL for the image Blob and store it in the images object
             this.images[element.image!] = URL.createObjectURL(response);
           },
-         
+
         );
         if(element.content!=null)
         element.content=JSON.parse(element.content).content?.map((item:any)=>item.content?.map((contentItem:any)=> contentItem.text).join('')).filter((text:any)=>text).slice(0)
      } )
 
-     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.userId!,news.newsId!))
+     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.id!,news.newsId!))
      forkJoin(check).subscribe(results=>{  //el fork join testanna el api calls yekmlou mba3d tlanci el subscribe bech mayjiwnich les elements mta3 tableau listNews kol marra kfifech khater el subscribe matestanech li 9balha
       this.listchecked=results.map(res=> res ==1)
 
      })
-      
+
       this.test()
       });
-     
-     
+
+
       //console.log(this.listNews[2].content)
-    
+
   }
 
   test() ////nkharej fi map fiha el newsId 9odemha el lista mta3 el reactions w n3ayet lel getMostReactedPerNews
@@ -87,13 +88,13 @@ export class NewsComponent {
       else
       {
         this.allReactionsPerNews.set(this.listNews[i].newsId,r)
-      } 
+      }
      });
-      
+
      //console.log(this.mostReactedOnPost)
 
      this.getMostReactedPerNews()
-    
+
      })
   }
 
@@ -103,7 +104,7 @@ export class NewsComponent {
     this.listNews.forEach(news => {
       const reactions = this.allReactionsPerNews.get(news.newsId) as Reaction[] || [];
       let mostReacted: string[] = [];
-  
+
       if (reactions.length === 0) {
         this.totalLikes.push(0)
         mostReacted.push('em-1');
@@ -113,24 +114,24 @@ export class NewsComponent {
         mostReacted.push("ht-" + reactions.filter(r => r.reactionType === 'HEART').length.toString());
         mostReacted.push("wo-" + reactions.filter(r => r.reactionType === 'WOWEMOJI').length.toString());
         mostReacted.push("sd-" + reactions.filter(r => r.reactionType === 'SAD').length.toString());
-  
+
         mostReacted.sort((a, b) => {
           const numA = parseInt(a.split('-')[1]);
           const numB = parseInt(b.split('-')[1]);
           return numB - numA;
         });
-  
+
         mostReacted = mostReacted.filter(item => {
           const num = parseInt(item.split('-')[1]);
           return num !== 0;
         });
       }
-  
+
       updatedMap.set(news.newsId, mostReacted);
     });
     this.mostReactedOnPost = updatedMap;
   }
-  
+
   isOverlayToggle()
   {
     this.overlayToggle=!this.overlayToggle
@@ -143,29 +144,29 @@ export class NewsComponent {
 
   reactionClicked(i:number,newsId:Number)
   {
-    this.reactionService.getAllReactionsByNews(newsId!).subscribe(res=>{this.reactionList=res as Reaction[]})    
+    this.reactionService.getAllReactionsByNews(newsId!).subscribe(res=>{this.reactionList=res as Reaction[]})
     if(this.reactionList.length>0)
         this.reactionClickedCheckList[i]=true
 
     this.isOverlayToggle()
-    
+
 
 
     }
-  
-  
+
+
   addReaction($event:any,nId:Number)
 {
    let trending=new Trending()
-        trending.user={userId:1}
+        trending.user={id:1}
         trending.news={newsId:nId}
         trending.type=$event;
 
   let reaction:Reaction;
   this.trendingService.addAction(trending).subscribe()
-  this.reactionService.getReactionByUserAndNews(this.user.userId!,nId).subscribe((res:any)=>
+  this.reactionService.getReactionByUserAndNews(this.user.id!,nId).subscribe((res:any)=>
   {
-    
+
     if(res!==null) //ma3neha deja reacta
     {
 
@@ -181,23 +182,23 @@ export class NewsComponent {
       }
     }
     else
-    {    
+    {
 
       reaction=new Reaction()
       reaction.user=this.user;
       reaction.news={newsId:nId};
       reaction.reactionType=$event;
       this.reactionService.addReaction(reaction).subscribe((rest)=>this.test())
-    
+
     }
-    
+
 
 
 }
 
   );
 
- 
+
 
 }
   onSavedClicked(newsId:Number,index:number)
@@ -207,18 +208,18 @@ export class NewsComponent {
       let readLater:ReadLater;
       readLater=new ReadLater();
       readLater.news=new News()
-      readLater.news.newsId=newsId; 
+      readLater.news.newsId=newsId;
       readLater.user=this.user;
       readLater.status="SAVED";
       this.newsService.addSaved(readLater).subscribe((res)=>this.listchecked[index]=true);
-      
+
       }
       else
       {
-      
-      this.newsService.removeChecked(this.user.userId!,newsId).subscribe(rest=>this.listchecked[index]=false)
+
+      this.newsService.removeChecked(this.user.id!,newsId).subscribe(rest=>this.listchecked[index]=false)
       }
 
   }
-  
+
 }

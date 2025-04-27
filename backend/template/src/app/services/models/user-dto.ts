@@ -4,7 +4,7 @@
 
 export interface UserDto {
   email?: string;
-  full_name?: string;
+  fullName?: string;
   image?: string;
   role?: 'MANAGER' | 'TEAM_MEMBER';
 }
