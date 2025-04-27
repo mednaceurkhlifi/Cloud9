@@ -55,12 +55,12 @@ export const appRoutes: Routes = [
 
             //end forum
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
-                { path: 'documentation', component: Documentation },
+            { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
-                { path: 'stepper', loadChildren: () => import('./app/news/stepper/stepper-routes') },
-                { path: 'organisationNews', loadChildren: () => import('./app/news/organisation-news/organisation-news-routes') },
-                {path:'allStats',loadChildren:()=>import('./app/news/all-stats/all-stats-routes')},
-                {
+            { path: 'stepper', loadChildren: () => import('./app/news/stepper/stepper-routes') },
+            { path: 'organisationNews', loadChildren: () => import('./app/news/organisation-news/organisation-news-routes') },
+            {path:'allStats',loadChildren:()=>import('./app/news/all-stats/all-stats-routes')},
+            {
                 path: 'roadmap', loadChildren: () => import('./app/roadMap/road-map-list-component/road-map-routes.module')
             },
 
@@ -134,5 +134,5 @@ export const appRoutes: Routes = [
     { path: 'notfound', component: Notfound },
     { path: 'landing', component: Landing },
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
-        { path: '**', redirectTo: '/notfound' }
+    { path: '**', redirectTo: '/notfound' }
 ];

@@ -20,7 +20,7 @@ public class VoteService implements IVoteService {
     @Override
     public Vote create(Vote vote) {
         //TODO: add vote to the users list
-        var user = userService.findById(vote.getUser().getUserId());
+        var user = userService.retrieveUser(vote.getUser().getUserId());
         vote.setUser(user);
         return voteRepository.save(vote);
     }

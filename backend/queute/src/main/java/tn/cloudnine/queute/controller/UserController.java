@@ -10,15 +10,15 @@ import tn.cloudnine.queute.model.forum.Vote;
 import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.service.forum.IVoteService;
 import tn.cloudnine.queute.service.user.IUserService;
-
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("user")
+//
+//@RestController
+//@RequiredArgsConstructor
+//@RequestMapping("user")
 public class UserController {
 
-    public final IUserService userService;
-    @PostMapping("create-user")
-    public ResponseEntity<User> createVote(@RequestBody User user) {
-        return ResponseEntity.ok().body(userService.create(user));
-    }
+//    public final IUserService userService;
+//    @PostMapping("create-user")
+//    public ResponseEntity<User> createVote(@RequestBody User user) {
+//        return ResponseEntity.ok().body(userService.addUser(user));
+//    }
 }

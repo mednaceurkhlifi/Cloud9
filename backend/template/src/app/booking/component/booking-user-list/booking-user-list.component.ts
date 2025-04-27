@@ -45,7 +45,7 @@ export class BookingUserListComponent implements OnInit {
     error: string | null = null;
     currentUser: User = {
         userId: 1, // Static user ID for now
-        full_name: 'John Doe',
+        fullName: 'John Doe',
         email: 'john.doe@example.com'
     };
 

@@ -19,9 +19,9 @@ public interface IUserService {
     public String resetpwd(String email);
     String resetPasswordWithToken(String token, String newPassword);
 
-    public User create(User user);
-    public User update(User user);
-    public User delete(long id);
-    public User findById(Long id);
-    public List<User> findAll();
+//    public User create(User user);
+//    public User update(User user);
+//    public User delete(long id);
+//    public User findById(Long id);
+//    public List<User> findAll();
 }
