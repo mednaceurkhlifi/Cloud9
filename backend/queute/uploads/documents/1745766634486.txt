@@ -1,0 +1,38 @@
+Cahier des charges : Application Web de Livraison
+
+1. **Titre du projet :** Application Web de Livraison
+
+2. **Objectif du projet :** Développer une application web fonctionnelle et robuste pour une société de livraison, permettant la gestion des utilisateurs, des commandes et leur suivi.
+
+3. **Description fonctionnelle :** L'application web permettra aux utilisateurs de créer un compte, de se connecter, de passer des commandes, de suivre leurs livraisons en temps réel et d'accéder à l'historique de leurs commandes.  Le personnel de la société aura accès à un tableau de bord pour gérer les commandes, attribuer les livraisons et suivre l'activité des livreurs.
+
+4. **Modules et leurs objectifs :**
+
+    * **Module 1 : Authentification Utilisateur :**  Mettre en place les fonctionnalités d'inscription et de connexion des utilisateurs, garantissant la sécurité et la confidentialité des données.
+
+    * **Module 2 : Gestion des Commandes :** Permettre aux clients de passer des commandes, suivre leur statut, et au personnel de les gérer efficacement. Cela inclut la création, le suivi et la gestion des commandes par le personnel.
+
+5. **Tâches par module :**
+
+    * **Module 1 : Authentification Utilisateur :**
+        * Conception de l'interface utilisateur pour les formulaires d'inscription et de connexion.
+        * Implémentation de la logique back-end pour l'inscription et la connexion des utilisateurs.
+        * Tests approfondis du module d'authentification.
+
+    * **Module 2 : Gestion des Commandes :**
+        * Implémentation de la fonctionnalité de passation de commandes par les clients.
+        * Implémentation du suivi des commandes pour les clients et le personnel.
+        *  Implémentation des fonctionnalités de gestion des commandes pour le personnel (attribution des livraisons, modification du statut des commandes, etc.).
+
+
+6. **Dates importantes :**
+
+    * **Date de début du projet :** 29 Avril 2025
+    * **Date limite du projet :** 29 Avril 2026
+    * **Date limite Module 1 :** 29 Mai 2025
+    * **Date limite Module 2 :** 29 Juillet 2025
+    *  Dates intermédiaires pour les tâches de chaque module sont détaillées dans la section tâches par module.
+
+7. **Statut initial :** Non commencé
+
+8. **Contraintes ou remarques :**  Le cahier des charges est sujet à modifications.  Une attention particulière doit être portée à la sécurité des données utilisateur et à la performance de l'application.  Des tests rigoureux seront nécessaires à chaque étape du développement.  Des réunions régulières seront planifiées pour suivre l'avancement du projet et traiter les éventuels problèmes.

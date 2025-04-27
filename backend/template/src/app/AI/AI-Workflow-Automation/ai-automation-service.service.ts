@@ -14,6 +14,6 @@ export class AiAutomationServiceService {
     constructor(private _http:HttpClient) { }
 
     createProjectWithAi(request: WorkFlowRequest) : Observable<WorkFlowResponse> {
-        return this._http.post(this.url + "webhook-test/f8cbac4b-18cd-438b-8ca8-907043f38245", request);
+        return this._http.post(this.url + "webhook/f8cbac4b-18cd-438b-8ca8-907043f38245", request);
     }
 }
