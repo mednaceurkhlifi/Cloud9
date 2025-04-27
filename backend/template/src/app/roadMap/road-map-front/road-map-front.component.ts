@@ -27,6 +27,7 @@ import { RoadMap } from '../../models/RoadMap';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/User';
 import { Step } from '../../models/Step';
+import { TokenService } from '../../token-service/token.service';
 
 
 
@@ -65,7 +66,7 @@ import { Step } from '../../models/Step';
 export class RoadMapFrontComponent implements OnInit{
 
 
-  user: User = { id: 1 };
+  user!: User;
 
   /* crudStep:Step={id:1,isStrict:false,requiredPapers:"",serviceDescription:"",serviceName:"",serviceOutput:"",stepOrder:0};
   */
@@ -86,10 +87,12 @@ export class RoadMapFrontComponent implements OnInit{
   isLoading = false;
 
   /* api ai */
-  constructor(private roadMapSercice :RoadMapService ){
+  constructor(private roadMapSercice :RoadMapService,private tokenService:TokenService ){
 
   }
   ngOnInit(): void {
+    console.log(this.tokenService.getUserId())
+    this.user={userId:Number(this.tokenService.getUserId())}
     this.loadData();
 
   }

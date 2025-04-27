@@ -22,6 +22,7 @@ import { CustomImage } from '../editor/customImage';
 import { TrendingService } from '../../services/trending.service';
 import { Trending } from '../../models/Trending';
 import ListItem from '@tiptap/extension-list-item';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-news-details',
@@ -33,8 +34,8 @@ import ListItem from '@tiptap/extension-list-item';
 export class NewsDetailsComponent {
   htmlcontent!:any;
   news!:News;
-  constructor(private newsService:NewsService, private sanitizer: DomSanitizer,private ac:ActivatedRoute,
-    private trendingService:TrendingService
+  constructor(private newsService:NewsService, private sanitizer: DomSanitizer,private ac:ActivatedRoute,private tokenService:TokenService,
+        private trendingService:TrendingService
   ){}
   ngOnInit()
   {
@@ -45,7 +46,7 @@ export class NewsDetailsComponent {
     this.ac.paramMap.subscribe((res)=>{this.newsService.getNewsById(Number(res.get('id'))).subscribe((res)=>{this.news=res as News
       let trending=new Trending()
       trending.type='visit';
-      trending.user={id:1}
+      trending.user={userId:Number(this.tokenService.getUserId())}
       trending.news={newsId:this.news.newsId}
       this.trendingService.addAction(trending).subscribe(res=>console.log(res))
 

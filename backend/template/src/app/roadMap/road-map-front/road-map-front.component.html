@@ -57,7 +57,7 @@
                   <p-card class="pointer-cursor col-span-12 md:col-span-12 lg:col-span-4 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0 ml-3 mr-3" [style]="{ overflow: 'hidden' }" (click)="showDetail(roadMap)" >
                      
                      <ng-template #header>
-                        <img alt="Card" class="w-full h-[90px] " src="assets/road-map-assets/1.jpg" />
+                        <img alt="Card" class="w-full h-[90px] " src="1.jpg" />
                     </ng-template>
                     
                         <h2>Creator : {{roadMap.creator.firstName}} </h2>
@@ -112,7 +112,7 @@
 <p-dialog [(visible)]="detailVisible" [style]="{ width: '600px' }" header="Road Map Detail" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
-            <img class="h-[120px] p-[2px] rounded-[10px]" src="assets/road-map-assets/1.jpg">
+            <img class="h-[120px] p-[2px] rounded-[10px]" src="1.jpg">
             <div>
                 <label  class="block font-bold mb-3">title :</label>
                <span>{{selectedRoadMap.title}}</span>

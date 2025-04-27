@@ -20,6 +20,7 @@ import { FooterWidget } from '../../pages/landing/components/footerwidget';
 import { Trending } from '../../models/Trending';
 import { TrendingService } from '../../services/trending.service';
 import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-news',
@@ -30,10 +31,10 @@ import { TopbarWidget } from '../../pages/landing/components/topbarwidget.compon
   styleUrl: './news.component.css'
 })
 export class NewsComponent {
-  constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService){}
+  constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService,private tokenService:TokenService){}
   listchecked:Boolean[]=[];
   listNews:News[]=[];
-  user:User={id:1}
+  user!:User;
   reactionClickedCheckList:Boolean[]=[]
   reactionList:Reaction[]=[]
   overlayToggle:Boolean=false;
@@ -46,6 +47,7 @@ export class NewsComponent {
 
   ngOnInit()
   {
+    this.user={userId:Number(this.tokenService.getUserId())}
         this.newsService.getAllNews().subscribe(res=>{this.listNews=res as News[]
       this.listNews.forEach(element => {
         this.newsService.getImage(element.image!).subscribe(
@@ -59,7 +61,7 @@ export class NewsComponent {
         element.content=JSON.parse(element.content).content?.map((item:any)=>item.content?.map((contentItem:any)=> contentItem.text).join('')).filter((text:any)=>text).slice(0)
      } )
 
-     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.id!,news.newsId!))
+     const check=this.listNews.map(news=>this.newsService.getChecked(this.user.userId!,news.newsId!))
      forkJoin(check).subscribe(results=>{  //el fork join testanna el api calls yekmlou mba3d tlanci el subscribe bech mayjiwnich les elements mta3 tableau listNews kol marra kfifech khater el subscribe matestanech li 9balha
       this.listchecked=results.map(res=> res ==1)
 
@@ -158,13 +160,13 @@ export class NewsComponent {
   addReaction($event:any,nId:Number)
 {
    let trending=new Trending()
-        trending.user={id:1}
+        trending.user=this.user
         trending.news={newsId:nId}
         trending.type=$event;
 
   let reaction:Reaction;
   this.trendingService.addAction(trending).subscribe()
-  this.reactionService.getReactionByUserAndNews(this.user.id!,nId).subscribe((res:any)=>
+  this.reactionService.getReactionByUserAndNews(this.user.userId!,nId).subscribe((res:any)=>
   {
 
     if(res!==null) //ma3neha deja reacta
@@ -217,7 +219,7 @@ export class NewsComponent {
       else
       {
 
-      this.newsService.removeChecked(this.user.id!,newsId).subscribe(rest=>this.listchecked[index]=false)
+      this.newsService.removeChecked(this.user.userId!,newsId).subscribe(rest=>this.listchecked[index]=false)
       }
 
   }

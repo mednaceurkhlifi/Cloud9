@@ -31,10 +31,12 @@ export class AppMenu {
             {
                 label: 'UI Components',
                 items: [
-                    { label: 'Editor', icon: 'pi pi-fw pi-check-square', routerLink: ['/stepper'] },
-                    { label: 'Organisation News', icon: 'pi pi-fw pi-check-square', routerLink: ['/organisationNews'] },
-                    { label: 'Sats', icon: 'pi pi-fw pi-check-square', routerLink: ['/allStats'] },
-                    { label: 'Road Map', icon: 'pi pi-fw pi-check-square', routerLink: ['/roadmap'] },
+                    { label: 'Editor', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/stepper'] },
+                    { label: 'Organisation News', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/organisationNews'] },
+                    { label: 'Bookings', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/bookings'] },
+                    { label: 'Forum', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/forumDashboard'] },
+                    { label: 'Sats', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/allStats'] },
+                    { label: 'Road Map', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/roadmap'] },
 
                     { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
                     { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
