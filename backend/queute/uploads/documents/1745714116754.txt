@@ -1,0 +1,38 @@
+**Cahier des charges : Projet d'application Web**
+
+**1. Titre du projet :** Développement d'une application Web
+
+**2. Objectif du projet :**  Développer une application web complète, incluant un module frontend et un module backend fonctionnels et testés.
+
+**3. Description fonctionnelle :** Le projet vise à créer une application web accessible via un navigateur internet.  L'application comprendra une interface utilisateur intuitive (frontend) et une logique métier robuste (backend).  La description détaillée des fonctionnalités spécifiques sera fournie dans un document séparé.
+
+**4. Modules et leurs objectifs :**
+
+* **Module Backend :** Développement de l'API REST et de la base de données de l'application.  Objectif : Fournir une interface stable et performante pour la gestion des données et des interactions avec le frontend.
+
+* **Module Frontend :** Développement de l'interface utilisateur de l'application. Objectif : Fournir une expérience utilisateur intuitive et agréable,  accessible et fonctionnelle sur différents navigateurs.
+
+
+**5. Tâches par module :**
+
+**Module Backend :**
+
+* **Tâche 1 : Conception de la base de données:** Conception du schéma relationnel de la base de données, incluant la définition des tables, des clés et des relations.  Délai : 28/08/2024
+* **Tâche 2 : Développement de l'API REST:** Développement des interfaces de programmation (API) RESTful pour permettre les interactions entre le frontend et le backend. Délai : 28/10/2024
+* **Tâche 3 : Tests du Backend:**  Tests unitaires et d'intégration du backend afin de garantir la fiabilité et la performance de l'API. Délai : 28/11/2024
+
+**Module Frontend :**
+
+* **Tâche 1 : Conception de l'interface utilisateur (UI):** Création de maquettes et de prototypes de l'interface utilisateur, en tenant compte de l'expérience utilisateur. Délai : 28/08/2024
+* **Tâche 2 : Développement du Frontend:** Développement du code frontend de l'application, en utilisant les technologies appropriées. Délai : 28/10/2024
+* **Tâche 3 : Tests du Frontend:** Tests unitaires et d'intégration du frontend pour garantir la qualité et la fiabilité de l'interface utilisateur. Délai : 28/11/2024
+
+
+**6. Dates importantes :**
+
+* **Date de début du projet :** 28/07/2024
+* **Date limite du projet :** 28/12/2024
+
+**7. Statut initial :**  Non commencé
+
+**8. Contraintes ou remarques :**  Des contraintes techniques ou des ajustements de planning pourront être nécessaires en fonction de l'évolution du projet.  Une communication régulière sera maintenue tout au long du projet afin de gérer au mieux les imprévus.  Des spécifications détaillées concernant les technologies utilisées (langages de programmation, bases de données, frameworks) seront fournies ultérieurement.

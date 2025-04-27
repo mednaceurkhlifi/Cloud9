@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import tn.cloudnine.queute.dto.workspace.NotificationDTO;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
 import tn.cloudnine.queute.dto.workspace.projections.ProjectUserProjection;
 import tn.cloudnine.queute.dto.workspace.responses.ProjectUserResponse;
@@ -32,6 +34,7 @@ public class ProjectUserService implements IProjectUserService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public UserDTO addProjectManager(ProjectUser projectUser) {
@@ -132,7 +135,12 @@ public class ProjectUserService implements IProjectUserService {
         projectUser.setRole(role);
 
         repository.save(projectUser);
-
+        String title = role + "Affectation";
+        String description = "Your added as " + role + " to " + project.getName() + " project";
+        NotificationDTO notification = new NotificationDTO(
+                title, description
+        );
+        messagingTemplate.convertAndSendToUser(user.getEmail(), "wknotif", notification);
         return new UserDTO(user.getFullName(), user.getEmail(), user.getImage(), role);
     }
 

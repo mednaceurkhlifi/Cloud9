@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" *ngIf="isAdmin">
             <p-table
                 #dt2
                 [value]="workspaceResponse.projectResponse?.projection!"

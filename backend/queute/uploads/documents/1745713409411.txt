@@ -1,0 +1,39 @@
+Cahier des charges : Développement d'une application web
+
+1. **Titre du projet:** Développement d'une application web
+
+2. **Objectif du projet:** Développer une application web complète, comprenant un backend et un frontend distincts, fonctionnelle et performante.
+
+3. **Description fonctionnelle:** Le projet consiste à créer une application web accessible via un navigateur internet.  L'application sera composée d'une interface utilisateur (frontend) interactive et d'une couche serveur (backend) assurant la gestion des données et la logique métier.  Les détails fonctionnels spécifiques seront définis ultérieurement dans des documents complémentaires.
+
+4. **Modules et leurs objectifs:**
+
+    * **Module Backend Development:**  Développement des services backend de l'application web.  L'objectif est de créer des API RESTful robustes et fiables pour la gestion des données et des interactions avec le frontend.
+
+    * **Module Frontend Development:** Développement de l'interface utilisateur de l'application web. L'objectif est de créer une interface intuitive, ergonomique et visuellement attrayante pour l'utilisateur final, utilisant la technologie React.
+
+
+5. **Tâches par module:**
+
+    * **Module Backend Development:**
+        * **Base de données :** Conception et implémentation du schéma de base de données (15/03/2024 - 29/03/2024).
+        * **API :** Développement des API RESTful (30/03/2024 - 20/04/2024).
+        * **Tests Backend :** Tests complets des services backend (21/04/2024 - 15/05/2024).
+
+    * **Module Frontend Development:**
+        * **Design UI :** Conception de l'interface utilisateur (15/03/2024 - 05/04/2024).
+        * **Implémentation UI :** Implémentation de l'interface utilisateur avec React (06/04/2024 - 25/05/2024).
+        * **Tests Frontend :** Tests complets de l'interface utilisateur (26/05/2024 - 15/06/2024).
+
+
+6. **Dates importantes:**
+
+    * **Date de début du projet:** 15 Mars 2024
+    * **Date limite du projet:** 15 Juin 2024
+    * **Date limite Module Backend:** 15 Mai 2024
+    * **Date limite Module Frontend:** 15 Juin 2024
+    *(Les dates spécifiques pour chaque tâche sont détaillées dans la section 5)*
+
+7. **Statut initial:** Le projet est actuellement en phase de démarrage (NOT_STARTED).
+
+8. **Contraintes ou remarques:**  Des contraintes spécifiques, telles que des limitations technologiques ou des dépendances externes, seront identifiées et documentées ultérieurement.  Une communication régulière et transparente est essentielle pour le succès du projet.  La documentation détaillée de chaque étape est requise.

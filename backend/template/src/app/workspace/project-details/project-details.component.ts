@@ -118,12 +118,13 @@ export class ProjectDetailsComponent implements OnInit {
                 project_id: parseInt(this.projectId)
             }).subscribe({
                 next: (result) => {
-                    this.projectUser = result
+                    this.projectUser = result;
+                    if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
+                        this.isManagerOrAdmin = true;
                 },
                 error: err => {}
             });
-            if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
-                this.isManagerOrAdmin = true;
+
             if(this.userRole.includes('ADMIN'))
                 this.isAdmin = true;
         }

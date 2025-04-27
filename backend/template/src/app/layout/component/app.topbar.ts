@@ -20,6 +20,7 @@ import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Toast } from 'primeng/toast';
 import { TokenService } from '../../token-service/token.service';
+import { NotificationDto } from '../../services/models/notification-dto';
 
 @Component({
     selector: 'app-topbar',
@@ -107,7 +108,7 @@ import { TokenService } from '../../token-service/token.service';
             </div>
         </div>
         <p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
-            <ng-template let-message #message>
+            <ng-template *ngIf="isMessage" let-message #message>
                 <div class="flex flex-col items-start flex-auto">
                     <div class="flex items-center gap-2">
                         <p-avatar *ngIf="this.comingMessage.sender?.image == 'default_user.jpg'"
@@ -120,6 +121,13 @@ import { TokenService } from '../../token-service/token.service';
                     <div class="font-medium text-lg my-4">{{ message.summary }}</div>
                     <p-button severity="success" size="small" label="{{ this.roomName }}" (click)="onConfirm()" />
                 </div>
+            </ng-template>
+                <ng-template *ngIf="!isMessage" let-message #message>
+                    <div class="flex flex-col items-start flex-auto">
+                        <span class="font-bold">{{ this.notification.title }}</span>
+                        <div class="font-medium text-lg my-4">{{ message.summary }}</div>
+                        <p-button severity="success" size="small" label="Profile" (click)="onConfirm()" />
+                    </div>
             </ng-template>
         </p-toast>
     `
@@ -138,6 +146,8 @@ export class AppTopbar implements OnInit {
     target: number = 0;
     targetId: number = 0;
     roomName: string = "";
+    notification: NotificationDto = {};
+    isMessage: boolean = true;
 
     constructor(
         public layoutService: LayoutService,
@@ -167,6 +177,7 @@ export class AppTopbar implements OnInit {
                     // treat errors
                 }
             });
+
         this._projectUserService
             .getUserProjectsByEmail({
                 user_email: this.user_email!
@@ -176,6 +187,7 @@ export class AppTopbar implements OnInit {
                     this.projects = response;
                 }
             });
+
         this._taskService.getAllTasksByUserEmail({ user_email: this.user_email! }).subscribe({
             next: (response) => {
                 this.tasks = response;
@@ -194,8 +206,10 @@ export class AppTopbar implements OnInit {
         this.socketClient = Stomp.over(socket);
         this.socketClient.connect({}, () => {
             console.log('Connected to WebSocket');
+
             let topic = `/user/${this.workspace.workspaceId!}/workspace`;
             this.socketClient.subscribe(topic, (message: any) => {
+                this.isMessage = true;
                 this.comingMessage = JSON.parse(message.body);
                 this.target = 1;
                 this.targetId = this.workspace.workspaceId!;
@@ -207,9 +221,11 @@ export class AppTopbar implements OnInit {
                     }
                 }
             });
+
             this.projects.forEach((project) => {
                 topic = `/user/${project.project?.projectId}/project`;
                 this.socketClient.subscribe(topic, (message: any) => {
+                    this.isMessage = true;
                     this.comingMessage = JSON.parse(message.body);
                     this.target = 2;
                     this.targetId = project.project?.projectId!;
@@ -222,9 +238,11 @@ export class AppTopbar implements OnInit {
                     }
                 });
             });
+
             this.modules.forEach((module) => {
                 topic = `/user/${module.moduleId}/module`;
                 this.socketClient.subscribe(topic, (message: any) => {
+                    this.isMessage = true;
                     this.comingMessage = JSON.parse(message.body);
                     this.target = 3;
                     this.targetId = module.moduleId!;
@@ -237,9 +255,11 @@ export class AppTopbar implements OnInit {
                     }
                 });
             });
+
             this.tasks.forEach((task) => {
                 topic = `/user/${task.taskId}/task`;
                 this.socketClient.subscribe(topic, (message: any) => {
+                    this.isMessage = true;
                     this.comingMessage = JSON.parse(message.body);
                     this.target = 4;
                     this.targetId = task.taskId!;
@@ -252,6 +272,18 @@ export class AppTopbar implements OnInit {
                     }
                 });
             });
+            topic = `/user/${this.user_email}/wknotif`;
+            this.socketClient.subscribe(topic, (message: any) => {
+                this.isMessage = false;
+                this.notification = JSON.parse(message.body);
+                if (this.comingMessage.sender?.email != this.user_email) {
+                    if (!this.visible) {
+                        this.messageService.add({ key: 'confirm', sticky: true, severity: 'success', summary: this.notification.description });
+                        this.visible = true;
+                    }
+                }
+            });
+
         });
     }
 
@@ -270,10 +302,14 @@ export class AppTopbar implements OnInit {
     }
 
     onConfirm() {
-        if(this.getTargetName() == "workspace")
-            this.router.navigate(['/workspace']);
-        else {
-            this.router.navigate(['/workspace/'+this.getTargetName(), this.targetId]);
+        if(this.isMessage) {
+            if(this.getTargetName() == "workspace")
+                this.router.navigate(['/workspace']);
+            else {
+                this.router.navigate(['/workspace/'+this.getTargetName(), this.targetId]);
+            }
+        } else {
+            this.router.navigate(['/workspace/profile']);
         }
     }
 

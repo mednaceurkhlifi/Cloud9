@@ -1,0 +1,35 @@
+Cahier des charges : Application Web E-commerce
+
+1. **Titre du projet:** Développement d'une application web e-commerce
+
+2. **Objectif du projet:**  Développer une application web e-commerce entièrement fonctionnelle, permettant aux utilisateurs de parcourir, sélectionner et acheter des produits en ligne.
+
+3. **Description fonctionnelle:** L'application devra permettre aux utilisateurs de naviguer sur un catalogue de produits, d'ajouter des articles à un panier d'achat, de gérer leur compte client (inscription, connexion, gestion des informations personnelles, historique des commandes), et de finaliser leurs achats via une passerelle de paiement.  Le système devra gérer les stocks, les commandes et les informations de livraison.
+
+4. **Modules et leurs objectifs:**
+
+    * **Module 1 : Développement Frontend:** Développer l'interface utilisateur et l'expérience utilisateur du site e-commerce.  Objectif : créer une interface intuitive et attractive pour une navigation fluide et une expérience d'achat agréable.
+
+    * **Module 2 : Développement Backend:** Développer la logique côté serveur et la base de données de l'application e-commerce. Objectif : assurer la gestion robuste des données, la sécurité des transactions et la scalabilité du système.
+
+5. **Tâches par module:**
+
+    * **Module 1 : Développement Frontend:**
+        * Conception de la page d'accueil : Design de la mise en page et des éléments visuels de la page d'accueil (Date butoir : 08/05/2025).
+        * Développement de la page de liste des produits : Développement de la page affichant les produits (Date butoir : 09/06/2025).
+        * Implémentation du panier d'achat : Implémentation de la fonctionnalité du panier d'achat (Date butoir : 10/07/2025).
+
+    * **Module 2 : Développement Backend:**
+        * Configuration de la base de données : Configuration du schéma de la base de données et remplissage avec des données d'exemple (Date butoir : 08/11/2025).
+        * Développement des points de terminaison API : Développement des points de terminaison REST API pour l'application e-commerce (Date butoir : 09/12/2025).
+        * Implémentation de l'intégration de la passerelle de paiement : Intégration avec une passerelle de paiement pour traiter les paiements (Date butoir : 10/01/2026).
+
+
+6. **Dates importantes:**
+
+    * Date de début du projet : 28/04/2025
+    * Date de fin du projet : 28/04/2026
+
+7. **Statut initial:** Le projet est en phase de démarrage (NOT_STARTED).
+
+8. **Contraintes ou remarques:**  Le cahier des charges est susceptible d'évoluer en fonction des besoins et des contraintes techniques.  Une attention particulière devra être portée à la sécurité des données et à la conformité aux réglementations en vigueur (ex: RGPD).  L'intégration avec une passerelle de paiement devra être choisie en fonction des coûts et des fonctionnalités offertes.

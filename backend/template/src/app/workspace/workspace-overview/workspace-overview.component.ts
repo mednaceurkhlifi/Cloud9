@@ -364,9 +364,12 @@ export class WorkspaceOverviewComponent implements OnInit {
 
     processAiCreatingProject() {
         this.waitingForAiResponse = true;
+        let now = new Date();
+        let isoString = now.toISOString().slice(0, 19);
         let request: WorkFlowRequest = {
             input: this.aiCreatePrForm.get('description')?.value,
-            workspace_id: this.workspaceResponse.projection?.workspaceId
+            workspace_id: this.workspaceResponse.projection?.workspaceId,
+            today: isoString
         };
         this._aiAutoService.createProjectWithAi(request).subscribe({
             next: (response) => {

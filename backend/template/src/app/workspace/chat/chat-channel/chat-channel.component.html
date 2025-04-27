@@ -40,19 +40,19 @@
                     text="Please write a message.">
                 </p-message>
             </div>
-            <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
-                          [multiple]="true"
-                          maxFileSize="1000000"
-                          mode="advanced">
-                <ng-template #empty>
-                    <div>Drag and drop files to here to upload.</div>
-                </ng-template>
-                <ng-template #content>
-                    <ul *ngIf="uploadedFiles.length">
-                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-                    </ul>
-                </ng-template>
-            </p-fileupload>
+<!--            <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"-->
+<!--                          [multiple]="true"-->
+<!--                          maxFileSize="1000000"-->
+<!--                          mode="advanced">-->
+<!--                <ng-template #empty>-->
+<!--                    <div>Drag and drop files to here to upload.</div>-->
+<!--                </ng-template>-->
+<!--                <ng-template #content>-->
+<!--                    <ul *ngIf="uploadedFiles.length">-->
+<!--                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>-->
+<!--                    </ul>-->
+<!--                </ng-template>-->
+<!--            </p-fileupload>-->
             <p-button icon="pi pi-send" label="Send message" iconPos="right" type="submit" [disabled]="msgForm.invalid"/>
         </form>
     </div>

@@ -133,26 +133,7 @@
     <div class=" flex flex-col mb-4 p-8 gap-4">
         <span class="text-lg font-bold">My meetings</span>
         <div *ngIf="userMeeting.totalElements! > 0; else show_empty_my">
-            <p-card *ngFor="let m of userMeeting.meetings" styleClass="cursor-pointer">
-                <div class="flex flex-col gap-2">
-                    <div class="flex flex-row justify-between">
-                        <p class="m-0 text-lg"><strong>{{ m.title }}</strong></p>
-                        <p-button icon="pi pi-video" label="Join now" (click)="joinUserMeet(m.meetingId)"></p-button>
-                    </div>
-                    <p class="m-0">
-                        <strong>Organized by : You</strong></p>
-                    <p class="m-0">
-                        {{ m.description }}
-                    </p>
-                    <div class="flex flex-row justify-between items-center">
-<span class="flex flex-row gap-2 items-center text-xs font-bold">
-  <i class="pi pi-calendar"></i>
-    {{ m.beginDate | date: 'mediumDate' }} {{ m.beginDate | date: 'HH:mm' }} to {{ m.endDate | date: 'HH:mm' }}
-</span>
-                        <p-button icon="pi pi-trash" severity="danger" (click)="deleteMeeting(m.meetingId)"></p-button>
-                    </div>
-                </div>
-            </p-card>
+            <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
         <ng-template #show_empty_my>
             <p-message
@@ -160,33 +141,12 @@
                 text="No meeting found.">
             </p-message>
         </ng-template>
-        <p-paginator (onPageChange)="onPageChangeUserMeeting($event)" [first]="page_no_my * size_my" [rows]="size_my"
-                     [totalRecords]="userMeeting.totalElements!!"
-                     [rowsPerPageOptions]="[5, 10, 25]" [showFirstLastIcon]="false"></p-paginator>
     </div>
 
     <div class=" flex flex-col mb-4 p-8 gap-4">
         <span class="text-lg font-bold">Invitaions</span>
         <div *ngIf="invitedMeeting.totalElements! > 0; else show_empty_inv">
-            <p-card *ngFor="let m of invitedMeeting.meetings" styleClass="cursor-pointer">
-                <div class="flex flex-col gap-2">
-                    <div class="flex flex-row justify-between">
-                        <p class="m-0 text-lg"><strong>{{ m.title }}</strong></p>
-                        <p-button icon="pi pi-video" label="Join now" (click)="joinInvitedMeet(m.meetingId)"></p-button>
-                    </div>
-                    <p class="m-0">
-                        <strong>Organized by : You</strong></p>
-                    <p class="m-0">
-                        {{ m.description }}
-                    </p>
-                    <span class="flex flex-row gap-2 items-center text-xs font-bold">
-  <i class="pi pi-calendar"></i>
-                        {{ m.beginDate | date: 'mediumDate' }} {{ m.beginDate | date: 'HH:mm' }}
-                        to {{ m.endDate | date: 'HH:mm' }}
-</span>
-
-                </div>
-            </p-card>
+            <full-calendar [options]="calendarOptionsInvited"></full-calendar>
         </div>
         <ng-template #show_empty_inv>
             <p-message
@@ -194,9 +154,5 @@
                 text="No meeting found.">
             </p-message>
         </ng-template>
-        <p-paginator (onPageChange)="onPageChangeInvMeeting($event)" [first]="page_no_other * size_other"
-                     [rows]="size_other"
-                     [totalRecords]="invitedMeeting.totalElements!!"
-                     [rowsPerPageOptions]="[5, 10, 25]" [showFirstLastIcon]="false"></p-paginator>
     </div>
 </div>
