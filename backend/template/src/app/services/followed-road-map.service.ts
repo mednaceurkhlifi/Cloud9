@@ -27,4 +27,8 @@ export class FollowedRoadMapService {
       update(followedRoadMap :FollowedRoadMap):Observable<any>{
         return this.http.put(this.url+"/update/"+followedRoadMap.id,followedRoadMap);
       }
+      unfollow(id:number):Observable<any>{
+        return this.http.delete(this.url+"/unfollow/"+id)
+      }
     }
+

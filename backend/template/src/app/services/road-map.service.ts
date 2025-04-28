@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
 import { RoadMap } from '../models/RoadMap';
@@ -21,8 +21,9 @@ export class RoadMapService {
       return this.http.get<RoadMapCreatorScore[]>(this.url+"/scores");
   }
     
-    add(roadMap :RoadMap) : Observable<any>{
-      return this.http.post<Observable<any>>(this.url+"/add",roadMap);
+    add(roadMap :RoadMap,enhance:boolean) : Observable<any>{
+      const params = new HttpParams().set('enhance', enhance.toString());
+      return this.http.post<Observable<any>>(this.url+"/add",roadMap,{params});
     }
 
     deleteById(id:number) : Observable<any>{

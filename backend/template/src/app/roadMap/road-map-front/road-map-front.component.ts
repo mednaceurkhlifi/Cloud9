@@ -168,7 +168,7 @@ generateRange(n: number): number[] {
 saveRoadMap(){
   this.crudRoadMap.creator=this.user;
   console.log(this.crudRoadMap);
-  this.roadMapSercice.add(this.crudRoadMap)
+  this.roadMapSercice.add(this.crudRoadMap,this.enhance)
                       .subscribe(res=>{console.log(res);
                                 console.log("***")
                                 this.loadData();

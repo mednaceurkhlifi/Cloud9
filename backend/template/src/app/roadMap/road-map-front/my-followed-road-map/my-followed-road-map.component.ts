@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -32,7 +33,7 @@ import { FollowedRoadMapService } from '../../../services/followed-road-map.serv
 })
 export class MyFollowedRoadMapComponent implements OnInit {
 
-  constructor(private followedRoadMapService :FollowedRoadMapService,private ac:ActivatedRoute){}
+  constructor(private router: Router,private followedRoadMapService :FollowedRoadMapService,private ac:ActivatedRoute){}
 
  followedRoadMapList :FollowedRoadMap[]=[];
  selected:FollowedRoadMap= new FollowedRoadMap();
@@ -69,5 +70,21 @@ id:any;
     res=>{console.log("here"+res)},
     err=>{console.log(err)}
   )
+ }
+
+ unfollow(id:number|null){
+  if(id==null)
+    console.log("id can not be null")
+  else{
+  this.followedRoadMapService.unfollow(id).subscribe(
+    res=>{console.log(res),this.loadData(this.id),this.firstSelection=false},
+    err=>{console.log(err)}
+
+  );
+  }
+
+ }
+ goBack(){
+  this.router.navigate(['/road-map-front']);
  }
 }
