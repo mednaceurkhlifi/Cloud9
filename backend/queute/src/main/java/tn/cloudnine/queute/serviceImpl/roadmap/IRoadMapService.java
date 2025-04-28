@@ -2,15 +2,16 @@ package tn.cloudnine.queute.serviceImpl.roadmap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.cloudnine.queute.model.roadmap.RoadMap;
-import tn.cloudnine.queute.model.roadmap.RoadMapApproval;
-import tn.cloudnine.queute.model.roadmap.Step;
+import tn.cloudnine.queute.model.roadmap.*;
 import tn.cloudnine.queute.model.user.User;
+import tn.cloudnine.queute.repository.roadmap.FollowedRoadMapRepository;
 import tn.cloudnine.queute.repository.roadmap.RoadMapRepository;
 import tn.cloudnine.queute.service.roadmap.RoadMapService;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -18,16 +19,19 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.stream.Collectors;
 
 @Service
 public class IRoadMapService implements RoadMapService {
 
     private final RoadMapRepository roadMapRepository ;
     private final RoadMapGeminiService textClarifier ;
+    private final FollowedRoadMapRepository followedRoadMapRepository ;
     @Autowired
-    public IRoadMapService(RoadMapRepository roadMapRepository,RoadMapGeminiService textClarifier){
+    public IRoadMapService(FollowedRoadMapRepository followedRoadMapRepository,RoadMapRepository roadMapRepository,RoadMapGeminiService textClarifier){
         this.roadMapRepository=roadMapRepository;
         this.textClarifier=textClarifier;
+        this.followedRoadMapRepository=followedRoadMapRepository;
 
     }
 
@@ -60,6 +64,59 @@ public class IRoadMapService implements RoadMapService {
     @Override
     public List<RoadMap> getAll() {
         return this.roadMapRepository.findAll();
+    }
+
+    @Override
+    public List<RoadMapCreatorScore> getScores() {
+
+        List<RoadMap> allRoadMaps = roadMapRepository.findAll();
+
+        List<FollowedRoadMap> allFollowedRoadMaps = followedRoadMapRepository.findAll();
+
+
+        Map<User, RoadMapCreatorScore> creatorScoresMap = new HashMap<>();
+
+
+        for (RoadMap roadMap : allRoadMaps) {
+            User creator = roadMap.getCreator();
+
+            RoadMapCreatorScore score = creatorScoresMap.computeIfAbsent(creator,
+                    k -> new RoadMapCreatorScore(creator, 0, 0, 0, 0L));
+
+
+            score.setTotlaNbrRoadMap(score.getTotlaNbrRoadMap() + 1);
+
+
+            score.setTotaleNbrApprovalls(score.getTotaleNbrApprovalls() + roadMap.getNbrApprove());
+        }
+
+
+        for (FollowedRoadMap followed : allFollowedRoadMaps) {
+
+            RoadMap originalRoadMap = roadMapRepository.findById(followed.getRoadMapId()).orElse(null);
+            if (originalRoadMap != null) {
+                User creator = originalRoadMap.getCreator();
+
+                RoadMapCreatorScore score = creatorScoresMap.computeIfAbsent(creator,
+                        k -> new RoadMapCreatorScore(creator, 0, 0, 0, 0L));
+
+
+                score.setTotaleNbrFollow(score.getTotaleNbrFollow() + 1);
+            }
+        }
+
+
+        List<RoadMapCreatorScore> result = creatorScoresMap.values().stream()
+                .peek(score -> {
+
+                    long calculatedScore = score.getTotlaNbrRoadMap() * 10L
+                            + score.getTotaleNbrApprovalls() * 5L
+                            + score.getTotaleNbrFollow() * 2L;
+                    score.setScore(calculatedScore);
+                }).sorted((s1, s2) -> Long.compare(s2.getScore(), s1.getScore()))
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     @Override
@@ -123,6 +180,7 @@ public class IRoadMapService implements RoadMapService {
         this.roadMapRepository.save(roadMap_opt.get());
         return true;
     }
+
 
     @Override
     public RoadMap clarifyRoadMapTexts(RoadMap roadMap) {

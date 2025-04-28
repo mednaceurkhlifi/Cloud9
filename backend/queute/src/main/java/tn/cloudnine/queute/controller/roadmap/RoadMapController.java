@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.model.roadmap.RoadMap;
+import tn.cloudnine.queute.model.roadmap.RoadMapCreatorScore;
 import tn.cloudnine.queute.model.roadmap.Step;
 import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.service.roadmap.RoadMapService;
@@ -45,6 +46,7 @@ public class RoadMapController {
 //                    .body("Error processing roadmap: " + e.getMessage());
 //        }
 //    }
+
 
     @PostMapping("/clarify-texts")
     public ResponseEntity<RoadMap> clarifyRoadMapTexts(@RequestBody RoadMap roadMap) {
@@ -149,6 +151,10 @@ public class RoadMapController {
             return ResponseEntity.status(HttpStatus.OK).build();
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    @GetMapping("scores")
+    public ResponseEntity<List<RoadMapCreatorScore>> getScores(){
+        return ResponseEntity.ok(this.roadMapService.getScores());
     }
 
 }

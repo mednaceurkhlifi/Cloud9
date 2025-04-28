@@ -31,6 +31,7 @@ import { User } from '../../models/User';
 import { Step } from '../../models/Step';
 import { FollowedRoadMap } from '../../models/FollowedRoadMap';
 import { FollowedRoadMapService } from '../../services/followed-road-map.service';
+import { RoadMapCreatorScore } from '../../models/RoadMapCreatorScore';
 
 
 
@@ -75,9 +76,11 @@ export class RoadMapFrontComponent implements OnInit{
   */ 
   
   roadMapList :RoadMap []=[];
+  scoreList: RoadMapCreatorScore[]=[]
   detailVisible =false;
   addVisible =false;
   followVisible=false;
+  scoreBoardVisible=false;
   enhance=false;
   selectedRoadMap:RoadMap=new RoadMap();
   crudRoadMap:RoadMap= new RoadMap();
@@ -137,6 +140,13 @@ showFollowDialog(id:number|null){
   }else{this.followedRoadMap.roadMapId=id;
     this.followedRoadMap.user=this.user;
     this.followVisible=true;}
+}
+showScoreBoard(){
+  this.roadMapSercice.getScores().subscribe(
+    ress=>{console.log(ress);
+      this.scoreList=ress,this.scoreBoardVisible=true},
+      err=>{console.log(err)}
+  );
 }
 
 
