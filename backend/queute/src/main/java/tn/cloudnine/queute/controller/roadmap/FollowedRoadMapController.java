@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerMapping;
 import tn.cloudnine.queute.model.roadmap.FollowedRoadMap;
 import tn.cloudnine.queute.model.roadmap.RoadMap;
 import tn.cloudnine.queute.model.roadmap.StepProgress;
@@ -21,10 +22,13 @@ import java.util.Optional;
 public class FollowedRoadMapController {
     private final FollowedRoadMapService followedRoadMapService;
     private final StepProgressService stepProgressService;
+    private final HandlerMapping resourceHandlerMapping;
+
     @Autowired
-    public FollowedRoadMapController(FollowedRoadMapService followedRoadMapService, StepProgressService stepProgressService) {
+    public FollowedRoadMapController(FollowedRoadMapService followedRoadMapService, StepProgressService stepProgressService, HandlerMapping resourceHandlerMapping) {
         this.followedRoadMapService = followedRoadMapService;
         this.stepProgressService = stepProgressService;
+        this.resourceHandlerMapping = resourceHandlerMapping;
     }
     @GetMapping("get-all")
     public ResponseEntity<List<FollowedRoadMap>> getAll() {
@@ -74,6 +78,11 @@ public class FollowedRoadMapController {
     @PutMapping("update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,@RequestBody FollowedRoadMap followedRoadMap) {
         this.followedRoadMapService.update(id, followedRoadMap);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("unfollow/{id}")
+    public ResponseEntity<?> unfollow(@PathVariable Long id) {
+        this.followedRoadMapService.delete(id);
         return ResponseEntity.ok().build();
     }
 
