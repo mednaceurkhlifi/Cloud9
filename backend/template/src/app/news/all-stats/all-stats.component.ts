@@ -5,6 +5,7 @@ import { ChartModule } from 'primeng/chart';
 import { NewsService } from '../../services/news.service';
 import { Organisation } from '../../models/Organisation';
 import { MonthlyStatsDTO } from '../../models/MonthlyStatsDTO';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-all-stats',
@@ -15,10 +16,11 @@ import { MonthlyStatsDTO } from '../../models/MonthlyStatsDTO';
 export class AllStatsComponent {
   data: any;
   options: any;
-  org:Organisation={organizationId:1,name:'myorg'}
+  org!:Organisation;
   chartData:any;
-  constructor(private newsService:NewsService){}
+  constructor(private newsService:NewsService,private tokenService:TokenService){}
   ngOnInit() {
+    this.org={organizationId:1,name:'myorg'}
     this.initChart();
 }
 

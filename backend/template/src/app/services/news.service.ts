@@ -36,9 +36,9 @@ export class NewsService {
   {
     return this.http.post(this.url+"/addNews",formData);
   }
-  getArticleTypes()
+  getArticleCategories()
   {
-    return this.http.get(this.url+"/getArticleType");
+    return this.http.get(this.url+"/getArticleCategories");
   }
   getAllNews()
   {

@@ -19,8 +19,8 @@ public class News implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long newsId;
     private String title;
-    @Enumerated(EnumType.STRING)
-    private ArticleCategory articleCategory;
+
+    private String articleCategory;
     @Column(columnDefinition = "json")
     private String articleType;
     @Column(columnDefinition = "json")

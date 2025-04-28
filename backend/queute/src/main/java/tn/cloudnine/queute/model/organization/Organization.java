@@ -59,7 +59,6 @@ public class Organization {
                 ", email='" + email + '\'' +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +
-                ", news=" + news +
                 '}';
     }
 }

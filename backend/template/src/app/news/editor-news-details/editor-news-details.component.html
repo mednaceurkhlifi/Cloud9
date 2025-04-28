@@ -70,7 +70,7 @@
                 Select Tags
             </span>
             <div class="p-4 flex flex-wrap gap-1">
-                <p-chip  (click)="chipSelected(i)" [style]="{cursor:'pointer'}" *ngFor="let at of articleTypes;let i=index" [label]="at" />
+                <p-chip  (click)="chipSelected(i)" [style]="{cursor:'pointer'}" *ngFor="let at of articleCategories;let i=index" [label]="at" />
             </div>
         
         </div>
@@ -80,7 +80,7 @@
         Tags
     </span>
     <div class="p-4 flex flex-wrap gap-1">
-        <p-chip (onRemove)="removeSelection(i)"  *ngFor="let st of selectedTypes ;let i=index" [label]="st" removable="true" />
+        <p-chip (onRemove)="removeSelection(i)"  *ngFor="let st of selectedCategories ;let i=index" [label]="st" removable="true" />
 
     </div>
 

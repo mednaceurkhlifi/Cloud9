@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
 import { HeroWidget } from '../../pages/landing/components/herowidget';
 import { FeaturesWidget } from '../../pages/landing/components/featureswidget';
@@ -22,11 +23,15 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ToggleButtonModule } from 'primeng/togglebutton'
+import { ToolbarModule } from 'primeng/toolbar';
 import { RoadMapService } from '../../services/road-map.service';
 import { RoadMap } from '../../models/RoadMap';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/User';
 import { Step } from '../../models/Step';
+import { FollowedRoadMap } from '../../models/FollowedRoadMap';
+import { FollowedRoadMapService } from '../../services/followed-road-map.service';
+import { RoadMapCreatorScore } from '../../models/RoadMapCreatorScore';
 import { TokenService } from '../../token-service/token.service';
 
 
@@ -39,7 +44,6 @@ import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-road-map-front',
-    standalone: true,
   imports: [RouterModule,
             TopbarWidget,
             FooterWidget,
@@ -58,7 +62,8 @@ import { TokenService } from '../../token-service/token.service';
             FormsModule,
             AccordionModule,
             ToggleSwitchModule,
-            ToggleButtonModule],
+            ToggleButtonModule,
+            ToolbarModule],
   templateUrl: './road-map-front.component.html',
   styleUrl: './road-map-front.component.scss'
 })
@@ -72,13 +77,17 @@ export class RoadMapFrontComponent implements OnInit{
   */
 
   roadMapList :RoadMap []=[];
+  scoreList: RoadMapCreatorScore[]=[]
   detailVisible =false;
   addVisible =false;
+  followVisible=false;
+  scoreBoardVisible=false;
   enhance=false;
   selectedRoadMap:RoadMap=new RoadMap();
   crudRoadMap:RoadMap= new RoadMap();
 /*   crudStep:Step = new Step(); */
   stepsCount=0;
+  followedRoadMap :FollowedRoadMap =new FollowedRoadMap();
 
   /* api ai */
 
@@ -87,11 +96,10 @@ export class RoadMapFrontComponent implements OnInit{
   isLoading = false;
 
   /* api ai */
-  constructor(private roadMapSercice :RoadMapService,private tokenService:TokenService ){
+  constructor(private roadMapSercice :RoadMapService ,private followedService:FollowedRoadMapService, public router :Router,private tokenService:TokenService ){
 
   }
   ngOnInit(): void {
-    console.log(this.tokenService.getUserId())
     this.user={userId:Number(this.tokenService.getUserId())}
     this.loadData();
 
@@ -128,6 +136,21 @@ this.addVisible=true;
 this.stepsCount=0;
 }
 
+showFollowDialog(id:number|null){
+  if(id==null){
+    console.log("error")
+  }else{this.followedRoadMap.roadMapId=id;
+    this.followedRoadMap.user=this.user;
+    this.followVisible=true;}
+}
+showScoreBoard(){
+  this.roadMapSercice.getScores().subscribe(
+    ress=>{console.log(ress);
+      this.scoreList=ress,this.scoreBoardVisible=true},
+      err=>{console.log(err)}
+  );
+}
+
 
 addStep(){
   this.stepsCount++;
@@ -147,7 +170,7 @@ generateRange(n: number): number[] {
 saveRoadMap(){
   this.crudRoadMap.creator=this.user;
   console.log(this.crudRoadMap);
-  this.roadMapSercice.add(this.crudRoadMap)
+  this.roadMapSercice.add(this.crudRoadMap,this.enhance)
                       .subscribe(res=>{console.log(res);
                                 console.log("***")
                                 this.loadData();
@@ -202,6 +225,18 @@ approve(id:number|null){
       );
 
     }
+    }
+
+    savefollowedRoadMap(){
+      console.log(this.followedRoadMap);
+     this.followedService.add(this.followedRoadMap).subscribe(
+      res=>{this.followVisible=false;
+            this.followedRoadMap=new FollowedRoadMap();
+      },
+      err=>{console.log(err)}
+
+     );
+
     }
 
 

@@ -16,22 +16,30 @@ import { CardModule } from 'primeng/card';
 import { Empty } from "../../pages/empty/empty";
 import { TotalLikesComponent } from '../total-likes/total-likes.component';
 import { Footer } from 'primeng/api';
-import { FooterWidget } from '../../pages/landing/components/footerwidget';
+import { DropdownModule } from 'primeng/dropdown';
 import { Trending } from '../../models/Trending';
 import { TrendingService } from '../../services/trending.service';
-import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { TokenService } from '../../token-service/token.service';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-news',
     standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ReactionsListComponent, ReactComponent, ButtonModule, CardModule,
-    Empty, TotalLikesComponent],
+  imports: [CommonModule, FormsModule, RouterModule, ReactionsListComponent, ReactComponent, ButtonModule, CardModule,InputIconModule, IconFieldModule, InputTextModule, FloatLabelModule,
+    Empty, TotalLikesComponent,DropdownModule],
   templateUrl: './news.component.html',
   styleUrl: './news.component.css'
 })
 export class NewsComponent {
   constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService,private tokenService:TokenService){}
+  categories: any[] | undefined;
+
+  selectedCategory: { name: string, code: string } | undefined;
+  originalList: News[] = [];
+    search!:string;
   listchecked:Boolean[]=[];
   listNews:News[]=[];
   user!:User;
@@ -44,11 +52,18 @@ export class NewsComponent {
   totalLikes:number[]=[];
   images: { [key: string]: string } = {};
 
-
+ 
   ngOnInit()
   {
+    this.newsService.getArticleCategories().subscribe(res => {
+      this.categories = (res as any)?.map((cat: string) => ({
+        name: cat,
+        code: cat.toUpperCase().slice(0, 2)
+      }));
+    });
     this.user={userId:Number(this.tokenService.getUserId())}
         this.newsService.getAllNews().subscribe(res=>{this.listNews=res as News[]
+          this.originalList=this.listNews;
       this.listNews.forEach(element => {
         this.newsService.getImage(element.image!).subscribe(
           (response: Blob) => {
@@ -222,6 +237,29 @@ export class NewsComponent {
       this.newsService.removeChecked(this.user.userId!,newsId).subscribe(rest=>this.listchecked[index]=false)
       }
 
+  }
+
+  onSearchChange(search:string)
+  {
+    if(search.length>0)
+    {
+      this.listNews=this.originalList.filter(n=>n.title?.toLowerCase().includes(search.toLowerCase()))
+    }
+    else
+    this.listNews=this.originalList
+    
+  }
+
+  onSelectedCategory(eve:any)
+  {
+  
+    if(eve.value)
+    {
+    if(eve.value.name)
+    this.listNews=this.originalList.filter(n=>n.articleCategory?.toLowerCase().includes(eve.value.name.toLowerCase()))
+    }
+    else
+    this.listNews=this.originalList
   }
 
 }

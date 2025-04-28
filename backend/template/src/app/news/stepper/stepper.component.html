@@ -1,4 +1,4 @@
-
+<ng-container *ngIf="isOrgExists; else create_org">
 <p-stepper [value]="1" class="basis-[50rem]" [linear]="true">
     <p-step-list>
         <p-step [value]="1" >Create Article</p-step>
@@ -40,4 +40,13 @@
         </p-step-panel>
     </p-step-panels>
 </p-stepper>
-
+</ng-container>
+    
+<ng-template #create_org>
+    <div class="card !mb-8">
+        <p-message
+            severity="warn"
+            text="Please create an organisation first.">
+        </p-message>
+    </div>
+</ng-template>

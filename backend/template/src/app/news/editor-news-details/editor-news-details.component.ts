@@ -33,8 +33,8 @@ export class EditorNewsDetailsComponent {
   value1:any
   totalSize = 0;
 totalSizePercent = 0;
-articleTypes:string[]=[];
-selectedTypes:string[]=[];
+articleCategories:string[]=[];
+selectedCategories:string[]=[];
 loading = false;
 selectedFile: File | null = null;
 
@@ -56,28 +56,28 @@ ngOnInit()
   if(this.news.newsId!=null || this.news.title!=null){
     //console.log(this.news.title)
     this.title=this.news.title!;
-    this.selectedTypes=this.safeStringToArray(this.news.articleType || "[]") as string[];
+    this.selectedCategories=this.safeStringToArray(this.news.articleCategory || "[]") as string[];
    
   }
   
    
 
-  this.newsService.getArticleTypes().subscribe(element=>{this.articleTypes=element as string[]
-    this.articleTypes=this.articleTypes.filter(item=>!this.selectedTypes.includes(item))}
+  this.newsService.getArticleCategories().subscribe(element=>{this.articleCategories=element as string[]
+    this.articleCategories=this.articleCategories.filter(item=>!this.selectedCategories.includes(item))}
   )
 }
 
 chipSelected(i:number)
 {
-  this.selectedTypes.push(this.articleTypes[i])
-  this.articleTypes.splice(i,1)
+  this.selectedCategories.push(this.articleCategories[i])
+  this.articleCategories.splice(i,1)
 }
 removeSelection(i:number)
 {
-  this.articleTypes.push(this.selectedTypes[i])
-  console.log(this.articleTypes)
+  this.articleCategories.push(this.selectedCategories[i])
+  console.log(this.articleCategories)
 
-  this.selectedTypes.splice(i,1)
+  this.articleCategories.splice(i,1)
 }
 onTemplatedUpload() {
   // Handle upload complete
@@ -121,8 +121,8 @@ setUpNews()
 {
   if(this.title.length==0)
     this.title="No-Title"
-this.news.articleCategory="SHORTPOST";
-this.news.articleType=JSON.stringify(this.selectedTypes);
+this.news.articleCategory=JSON.stringify(this.selectedCategories);
+//this.news.articleType="BlogPost";
 this.news.title=this.title.length>0 ? this.title : 'No-Title'
 }
 
