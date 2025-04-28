@@ -1,6 +1,6 @@
 
 
-  @if (listNews.length>0) {
+ 
   
         <body>
           <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: "Inter", "Segoe UI", sans-serif;'>
@@ -27,9 +27,46 @@
                       </div>
                     </div>
                   </div>
-    
-                  <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest news</h2>
-    
+                  <div style="display: inline-flex; align-items: baseline; justify-content: space-between; ">
+                    <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest news</h2>
+                    <div style=" background-color: transparent !important" class="card flex justify-content-center">
+                      <p-dropdown 
+                          [options]="categories"
+                          [(ngModel)]="selectedCategory"
+                          (onChange)="onSelectedCategory($event)"
+                          optionLabel="name"
+                          [filter]="true"
+                          filterBy="name"
+                          [showClear]="true"
+                          placeholder="Select a Category">
+                              <ng-template pTemplate="selectedItem" let-selectedOption>
+                                  <div class="flex align-items-center gap-2">
+                                      <img 
+                                          src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                          style="width: 18px" />
+                                      <div>{{ selectedOption.name }}</div>
+                                  </div>
+                              </ng-template>
+                              <ng-template let-country pTemplate="item">
+                                  <div class="flex align-items-center gap-2">
+                                      <img 
+                                          src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                                          style="width: 18px" />
+                                      <div>{{ country.name }}</div>
+                                  </div>
+                              </ng-template>
+                      </p-dropdown>
+                  </div>
+                  
+                    <p-floatlabel>
+                      <p-iconfield>
+                          <p-inputicon class="pi pi-search" />
+                          <input (ngModelChange)="onSearchChange($event)"  pInputText id="over_label" [(ngModel)]="search" autocomplete="off" />
+                      </p-iconfield>
+                      <label for="over_label">Search Up</label>
+                  </p-floatlabel>
+                  </div>
+                  @if (listNews.length>0) {
                   <div *ngFor="let n of listNews; index as i" class="p-4">
                     
                     <div class="flex flex-col items-stretch justify-start rounded-lg xl:flex-row xl:items-start">
@@ -95,7 +132,16 @@
                     </div>
 
                   </div>
-    
+     }
+     @else {
+      <app-empty>
+        <div>
+          <p>
+            "No News were found would you like to add some ?"
+          </p>
+        </div>
+      </app-empty>
+    }
                 </div>
                 
               </div>
@@ -104,7 +150,7 @@
         </body>
     
     
-  }
+ 
  <!--
 @if(listNews.length>0){
  <div  class="allContainer">  
@@ -169,15 +215,7 @@
 
 </div>
 }!-->
-@else {
-  <app-empty>
-    <div>
-      <p>
-        "No News were found would you like to add some ?"
-      </p>
-    </div>
-  </app-empty>
-}
+
 
 
 
