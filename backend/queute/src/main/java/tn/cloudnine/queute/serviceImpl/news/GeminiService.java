@@ -36,7 +36,7 @@ public class GeminiService {
 
     public String generateContent(String description) {
 
-        List<String> imageUrls = generateImagesForDescription(description, 5); // Generate up to 5 images
+        List<String> imageUrls = generateImagesForDescription(description, 2); // Generate up to 5 images
 
 
         // Construct the prompt

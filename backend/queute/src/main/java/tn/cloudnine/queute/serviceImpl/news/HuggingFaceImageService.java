@@ -23,7 +23,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.Base64;
 @Service
 public class HuggingFaceImageService implements IHuggingFaceImageService {
 
@@ -49,33 +54,33 @@ public class HuggingFaceImageService implements IHuggingFaceImageService {
         try {
             String apiUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
 
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("inputs", prompt);
+            // ➔ Simple direct JSON with the prompt you provide
+            String requestBody = "{\"inputs\": \"" + prompt + "\"}";
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer " + apiKey);
-            headers.set("Content-Type", "application/json");
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "image/png")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
 
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+            HttpResponse<byte[]> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofByteArray());
 
-            ResponseEntity<byte[]> response = restTemplate.exchange(
-                    apiUrl,
-                    HttpMethod.POST,
-                    entity,
-                    byte[].class
-            );
-
-            byte[] imageBytes = response.getBody();
-            if (imageBytes == null) return null;
-
-            return Base64.getEncoder().encodeToString(imageBytes);
-
+            if (response.statusCode() == 200) {
+                return Base64.getEncoder().encodeToString(response.body());
+            } else {
+                System.err.println("API Error - Status: " + response.statusCode());
+                System.err.println("Response: " + new String(response.body()));
+                return null;
+            }
         } catch (Exception e) {
-            System.out.println("Error generating image from HuggingFace API: " + e.getMessage());
+            System.err.println("Error generating image: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
-
     // Generate and store image, return the external URL
     public String generateAndStoreImage(String prompt) {
         String base64 = generateImageBase64(prompt);
