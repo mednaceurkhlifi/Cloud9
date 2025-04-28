@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
 import { RoadMap } from '../models/RoadMap';
+import { RoadMapCreatorScore } from '../models/RoadMapCreatorScore';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,9 @@ export class RoadMapService {
     getAll() : Observable<RoadMap[]>{
         return this.http.get<RoadMap[]>(this.url+"/get-all");
     }
+    getScores() : Observable<RoadMapCreatorScore[]>{
+      return this.http.get<RoadMapCreatorScore[]>(this.url+"/scores");
+  }
     
     add(roadMap :RoadMap) : Observable<any>{
       return this.http.post<Observable<any>>(this.url+"/add",roadMap);
