@@ -32,18 +32,23 @@ import { ImageModule } from 'primeng/image';
 import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
+import { Organisation } from '../../models/Organisation';
+import { TokenService } from '../../token-service/token.service';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-editor',
   imports: [ InputTextModule,CommonModule,OverlayPanelModule,
     StepperModule,ButtonModule,Dialog,ImageModule,FormsModule,TextareaModule,FloatLabel
-
+    ,MessageModule
   ],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
  
 })
 export class EditorComponent {
+  organisation!:Organisation;
+  
   visible!: boolean
   showNewPage!:boolean
   description!:string;
@@ -67,14 +72,15 @@ export class EditorComponent {
     this.setupImageClickHandler();
   }
   @ViewChild('editorElement', { static: true }) editorElement!: ElementRef<HTMLDivElement>;
-  constructor(private newsService:NewsService,private router:Router,private ac:ActivatedRoute){}
+  constructor(private newsService:NewsService,private router:Router,private ac:ActivatedRoute,private tokenService:TokenService){}
   //newsToModify= this.newsService.getNewsToUpdate() //jey mel organisation news
   //newsToModify=this.router.getCurrentNavigation()?.extras.state
   newsToModify?:News;
   content=`<p>Hello</p>`
   ngOnInit() {
-
-  
+   
+    this.organisation={organizationId:Number( this.tokenService.getOrganizationId()),name:''};
+   
    
       this.showNewPage = false;
       this.description="";
@@ -196,7 +202,7 @@ else{
     
     this.news=new News();
     this.news.content=this.getContent();
-    this.news.organisation={organizationId:1,name:"test"};
+    this.news.organisation=this.organisation;
     if(type.toLowerCase()=='persisting')
     {
     if(this.newsToModify!=null)
@@ -232,7 +238,7 @@ else{
     {
       let news=new News();
         news.content=this.getContent();
-        news.organisation={organizationId:1,name:"test"};   
+        news.organisation=this.organisation;  
         news.status='Draft';
         news.title="No-Title"
         

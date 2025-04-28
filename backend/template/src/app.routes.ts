@@ -71,6 +71,8 @@ export const appRoutes: Routes = [
     {
         path: 'road-map-front', loadChildren: () => import('./app/roadMap/road-map-front/road-map-front-routes.module')
     },
+    { path: 'readLater', loadChildren: () => import('./app/news/read-later-list/read-later-routes') },
+
     {
         path: 'workspace',
         component: WorkspaceComponent,

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.cloudnine.queute.dto.newsDTO.MonthlyStatsDTO;
+import tn.cloudnine.queute.enums.newsAndOffers.ArticleCategory;
 import tn.cloudnine.queute.enums.newsAndOffers.ArticleType;
 import tn.cloudnine.queute.enums.newsAndOffers.NewsStatus;
 import tn.cloudnine.queute.enums.newsAndOffers.SavedStatus;
@@ -39,7 +40,8 @@ public class NewsController {
     public News addNews(@RequestPart News news, @RequestPart(value = "image", required = false) MultipartFile image)
 
     {
-
+        System.out.println("yo");
+        System.out.println(news);
         if (image != null && !image.isEmpty()) {
             news.setImage(fileUploader.saveImage(image));
         } else {
@@ -136,6 +138,20 @@ public class NewsController {
         for (ArticleType articleType:articleTypes)
         {
             list.add(articleType.toString());
+        }
+        System.out.println(list);
+        return list;
+
+    }
+
+    @GetMapping("/getArticleCategories")
+    public List<String> getArticleCategories()
+    {
+        ArticleCategory[] articleCategory=ArticleCategory.values();
+        List<String> list=new ArrayList();
+        for (ArticleCategory articleC:articleCategory)
+        {
+            list.add(articleC.toString());
         }
         System.out.println(list);
         return list;

@@ -1,4 +1,4 @@
-<div class="master-container">
+<!-- <div class="master-container">
     <div class="card cart" >
       <label class="title">Your cart</label>
       <div class="products" *ngFor="let rl of listReadLater;index as i">
@@ -27,5 +27,43 @@
   
   
   </div>
+  !-->
+  <div class="bg-surface-0 dark:bg-surface-900">
+    <div id="home" class="landing-wrapper overflow-hidden">
+  <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
   
-  
+  <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Newsreader, "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+     
+      <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight min-w-72">Reading list</p></div>
+         
+          <div *ngFor="let rl of listReadLater; index as i" class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 justify-between">
+            <div class="flex items-center gap-4">
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                [ngStyle]="{ 'background-image': 'url(' + images[rl.news.image!] + ')' }">
+                ></div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e141b] text-base font-medium leading-normal line-clamp-1">{{rl.news.title}}</p>
+                <p class="text-[#4e7397] text-sm font-normal leading-normal line-clamp-2">{{rl.news.content}}</p>
+              </div>
+            </div>
+            <div class="shrink-0">
+              <div class="text-[#0e141b] flex size-7 items-center justify-center" data-icon="X" data-size="24px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer-widget />
+  </div>
+</div>

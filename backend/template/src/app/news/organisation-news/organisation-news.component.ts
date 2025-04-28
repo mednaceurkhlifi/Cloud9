@@ -6,6 +6,7 @@ import { NewsService } from '../../services/news.service';
 import { News } from '../../models/News';
 import { Organisation } from '../../models/Organisation';
 import { Card } from 'primeng/card';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-organisation-news',
@@ -14,11 +15,12 @@ import { Card } from 'primeng/card';
   styleUrl: './organisation-news.component.scss'
 })
 export class OrganisationNewsComponent {
-  constructor(private newsService:NewsService,private router:Router){}
+  constructor(private newsService:NewsService,private router:Router,private tokenService:TokenService){}
   listNews:News[]=[];
-  organisation:Organisation={organizationId:1,name:"test"}
+  organisation!:Organisation;
   ngOnInit()
   {
+    this.organisation={organizationId:Number(this.tokenService.getOrganizationId()),name:""}
       this.newsService.getOrganisationNews(this.organisation.organizationId).subscribe((res)=>{
         this.listNews=res as News[]
      /* this.listNews.forEach(element => {

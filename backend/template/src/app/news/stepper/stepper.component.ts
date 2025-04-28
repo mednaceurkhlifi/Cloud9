@@ -5,10 +5,13 @@ import { EditorComponent } from '../editor/editor.component';
 import { EditorNewsDetailsComponent } from '../editor-news-details/editor-news-details.component';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { News } from '../../models/News';
+import { TokenService } from '../../token-service/token.service';
+import { CommonModule } from '@angular/common';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-stepper',
-  imports: [ButtonModule, StepperModule, EditorComponent, EditorNewsDetailsComponent,],
+  imports: [ButtonModule, StepperModule, EditorComponent, EditorNewsDetailsComponent,CommonModule,MessageModule],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss',
   animations: [
@@ -28,12 +31,23 @@ export class StepperComponent {
   @ViewChild(EditorComponent) editor!:EditorComponent;
   @ViewChild(EditorNewsDetailsComponent) editorNewsDetails!:EditorNewsDetailsComponent;
 
+  constructor(private tokenService:TokenService){}
+  
+  orgId=-1;
+  isOrgExists=false;
   currentStep = 1;
   previousStep = 1;
    allDetails=new Map();
    @Input()
     news!:News;
     news2!:News;
+
+    ngOnInit()
+    {
+      this.orgId=Number(this.tokenService.getOrganizationId())
+      if(this.orgId!=-1)
+        this.isOrgExists=true;
+    }
   onStepChange(newStep: number) {
     this.previousStep = this.currentStep;
     this.currentStep = newStep;

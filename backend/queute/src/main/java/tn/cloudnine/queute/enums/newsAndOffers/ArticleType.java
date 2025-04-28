@@ -2,7 +2,14 @@ package tn.cloudnine.queute.enums.newsAndOffers;
 
 public enum ArticleType {
 
-    IT,
-    MEDICAL,
-    FINANCIAL
+    BlogPost,
+    NewsArticle,
+    Opinion,
+    Research,
+    HowTo,
+    Interview,
+    Review,
+    CaseStudy,
+    Editorial,
+    Announcement
 }

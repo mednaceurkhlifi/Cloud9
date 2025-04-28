@@ -23,11 +23,13 @@ import { TrendingService } from '../../services/trending.service';
 import { Trending } from '../../models/Trending';
 import ListItem from '@tiptap/extension-list-item';
 import { TokenService } from '../../token-service/token.service';
+import { FooterWidget } from '../../pages/landing/components/footerwidget';
+import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
 
 @Component({
   selector: 'app-news-details',
     standalone: true,
-  imports: [CommonModule, Empty],
+  imports: [CommonModule,FooterWidget,TopbarWidget],
   templateUrl: './news-details.component.html',
   styleUrl: './news-details.component.css'
 })
