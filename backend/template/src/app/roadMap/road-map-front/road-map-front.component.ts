@@ -70,7 +70,7 @@ import { RoadMapCreatorScore } from '../../models/RoadMapCreatorScore';
 export class RoadMapFrontComponent implements OnInit{
  
   
-  user: User = new User({ userId: 1 });
+  user: User = new User({ userId: 2 });
 
   /* crudStep:Step={id:1,isStrict:false,requiredPapers:"",serviceDescription:"",serviceName:"",serviceOutput:"",stepOrder:0};    
   */ 
