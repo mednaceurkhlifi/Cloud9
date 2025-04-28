@@ -10,28 +10,24 @@ import org.hibernate.annotations.OnDeleteAction;
 import tn.cloudnine.queute.model.user.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoadMapApproval {
+
+public class FollowedRoadMap {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id ;
-    private boolean isApproved;
-    private LocalDateTime date;
+    private String frTitle;
+    private String frDescription;
+
     @ManyToOne
     private User user;
-
-    @Override
-    public String toString() {
-        return "RoadMapApproval{" +
-                "id=" + id +
-                ", isApproved=" + isApproved +
-                ", date=" + date +
-                ", user=" + user +
-                '}';
-    }
+    private Long roadMapId;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StepProgress>stepProgressList;
 }

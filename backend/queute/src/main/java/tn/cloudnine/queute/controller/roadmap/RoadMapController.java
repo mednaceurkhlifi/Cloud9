@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.model.roadmap.RoadMap;
+import tn.cloudnine.queute.model.roadmap.RoadMapCreatorScore;
 import tn.cloudnine.queute.model.roadmap.Step;
 import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.service.roadmap.RoadMapService;
 import tn.cloudnine.queute.service.roadmap.StepService;
+import tn.cloudnine.queute.serviceImpl.roadmap.RoadMapGeminiService;
 
 import java.util.List;
 import java.util.Map;
@@ -22,13 +24,40 @@ import java.util.Optional;
 public class RoadMapController {
 
     private final RoadMapService roadMapService ;
-    private final StepService stepService ;
+    private final RoadMapGeminiService roadMapGeminiService ;
     @Autowired
     public  RoadMapController (RoadMapService roadMapService,
-                               StepService stepService){
+                               RoadMapGeminiService roadMapGeminiServic){
         this.roadMapService=roadMapService;
-        this.stepService=stepService;
+        this.roadMapGeminiService=roadMapGeminiServic;
     }
+
+//    @GetMapping("/gemini")
+//    public ResponseEntity<String>  testGemini(@RequestBody RoadMap roadMap) {
+//        return ResponseEntity.ok(roadMapGeminiService.clarifyRoadmapJson(roadMap));
+//    }
+//    @GetMapping("/gemini")
+//    public ResponseEntity<String> clarifyRoadmap(@RequestBody RoadMap roadMap) {
+//        try {
+//            String clarifiedJson = roadMapGeminiService.clarifyText(roadMap.getDescription());
+//            return ResponseEntity.ok(clarifiedJson);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error processing roadmap: " + e.getMessage());
+//        }
+//    }
+
+
+    @PostMapping("/clarify-texts")
+    public ResponseEntity<RoadMap> clarifyRoadMapTexts(@RequestBody RoadMap roadMap) {
+        try {
+            RoadMap clarified = roadMapService.clarifyRoadMapTexts(roadMap);
+            return ResponseEntity.ok(clarified);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping("get-all")
     public ResponseEntity<List<RoadMap>> getAll(){
         return  ResponseEntity.ok(this.roadMapService.getAll());
@@ -56,8 +85,14 @@ public class RoadMapController {
         }
     }
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody RoadMap roadMap){
-        System.out.println(roadMap);
+    public ResponseEntity<?> add(@RequestBody RoadMap roadMap,
+                                 @RequestParam(required = false, defaultValue = "false") boolean enhance){
+
+        if (enhance) {
+
+            roadMap = roadMapService.clarifyRoadMapTexts(roadMap);
+        }
+
         this.roadMapService.add(roadMap);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "status","success" ,
@@ -122,6 +157,10 @@ public class RoadMapController {
             return ResponseEntity.status(HttpStatus.OK).build();
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    @GetMapping("scores")
+    public ResponseEntity<List<RoadMapCreatorScore>> getScores(){
+        return ResponseEntity.ok(this.roadMapService.getScores());
     }
 
 }
