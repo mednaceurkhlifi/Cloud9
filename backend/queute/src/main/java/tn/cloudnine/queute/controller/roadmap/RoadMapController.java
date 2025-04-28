@@ -88,12 +88,17 @@ public class RoadMapController {
     public ResponseEntity<?> add(@RequestBody RoadMap roadMap,
                                  @RequestParam(required = false, defaultValue = "false") boolean enhance){
 
+       RoadMap enhancedRoadMap = new RoadMap();
         if (enhance) {
 
-            roadMap = roadMapService.clarifyRoadMapTexts(roadMap);
+            enhancedRoadMap = roadMapService.clarifyRoadMapTexts(roadMap);
+            this.roadMapService.add(enhancedRoadMap);
+        }
+        else{
+            this.roadMapService.add(roadMap);
         }
 
-        this.roadMapService.add(roadMap);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "status","success" ,
                 "data",roadMap

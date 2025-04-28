@@ -11,7 +11,7 @@ import { RoadMapCreatorScore } from '../models/RoadMapCreatorScore';
 export class RoadMapService {
 
 
-    url : string = "http://localhost:8000/api/v1/road-map";
+    url : string = "http://localhost:8082/api/v1/road-map";
     constructor(private http:HttpClient) {}
 
     getAll() : Observable<RoadMap[]>{

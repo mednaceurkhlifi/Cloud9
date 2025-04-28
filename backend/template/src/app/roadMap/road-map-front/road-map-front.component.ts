@@ -32,6 +32,7 @@ import { Step } from '../../models/Step';
 import { FollowedRoadMap } from '../../models/FollowedRoadMap';
 import { FollowedRoadMapService } from '../../services/followed-road-map.service';
 import { RoadMapCreatorScore } from '../../models/RoadMapCreatorScore';
+import { TokenService } from '../../token-service/token.service';
 
 
 
@@ -70,7 +71,7 @@ import { RoadMapCreatorScore } from '../../models/RoadMapCreatorScore';
 export class RoadMapFrontComponent implements OnInit{
 
 
-  user: User = new User({ userId: 2 });
+  user!: User;
 
   /* crudStep:Step={id:1,isStrict:false,requiredPapers:"",serviceDescription:"",serviceName:"",serviceOutput:"",stepOrder:0};
   */
@@ -95,10 +96,11 @@ export class RoadMapFrontComponent implements OnInit{
   isLoading = false;
 
   /* api ai */
-  constructor(private roadMapSercice :RoadMapService ,private followedService:FollowedRoadMapService, public router :Router ){
+  constructor(private roadMapSercice :RoadMapService ,private followedService:FollowedRoadMapService, public router :Router,private tokenService:TokenService ){
 
   }
   ngOnInit(): void {
+    this.user={userId:Number(this.tokenService.getUserId())}
     this.loadData();
 
   }
