@@ -13,7 +13,8 @@ import { DropdownModule } from 'primeng/dropdown';
   selector: 'app-comment-list',
   imports: [CommentComponent,ProgressSpinnerModule,CommonModule,FormsModule,ButtonModule,DropdownModule],
   templateUrl: './comment-list.component.html',
-  styleUrl: './comment-list.component.scss'
+  styleUrl: './comment-list.component.scss',
+    standalone: true
 })
 export class CommentListComponent implements OnInit{
 

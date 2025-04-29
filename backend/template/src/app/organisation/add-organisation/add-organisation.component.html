@@ -83,8 +83,8 @@
             <td>{{ org.phone_number }}</td>
             <td>{{ org.address }}</td>
             <td>
-                <p-button icon="pi pi-pencil" class="mr-2" (click)="editOrganization(org)" />
-                <p-button icon="pi pi-trash" severity="danger" (click)="deleteOrganization(org)" />
+                <p-button *ngIf="isOwner(org)" icon="pi pi-pencil" class="mr-2" (click)="editOrganization(org)" />
+                <p-button *ngIf="isOwner(org)" icon="pi pi-trash" severity="danger" (click)="deleteOrganization(org)" />
                 <p-button
                     label="View Offices"
                     icon="pi pi-info-circle"

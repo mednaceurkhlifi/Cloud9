@@ -15,10 +15,11 @@ import { ExploreTopicComponent } from "../explore-topic/explore-topic.component"
   imports: [TopbarWidget, CommonModule, FooterWidget, CommonModule, FormsModule, RouterModule, ExploreTopicComponent],
   templateUrl: './all-news.component.html',
   styleUrls: ['./all-news.component.scss'],
-  
+    standalone: true
+
 })
 export class AllNewsComponent {
   constructor(private router:Router,private route: ActivatedRoute){}
-  selectedTab: 'all' | 'trending' = 'all';
-  
+  selectedTab: 'all' | 'trending' | 'saved' = 'all';
+
 }

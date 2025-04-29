@@ -3,7 +3,7 @@
 <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
 
   <body >
-      
+
   <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Newsreader, "Noto Sans", sans-serif;'>
     <div class="layout-container flex h-full grow flex-col">
       <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf3] px-10 py-3">
@@ -47,25 +47,25 @@
               />
             </div>
           </label>
-         
+
         </div>
       </header>
-      
+
       <div class="px-40 flex flex-1 justify-center py-5">
         <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
           <div class="pb-3">
               <div class="flex border-b border-[#d0dbe7] px-4 gap-8">
-                
-               
-                
-                
+
+
+
+
                 <a
                 (click)="selectedTab = 'all'"
                 [ngClass]="{
                   'border-b-[3px] border-b-[#1980e6] text-[#0e141b]': selectedTab === 'all',
                   'border-b-transparent text-[#4e7397]': selectedTab !== 'all'
                 }"
-                 routerLink="all"    
+                 routerLink="all"
                  class="flex flex-col items-center justify-center pb-[13px] pt-4"
                  style="cursor: pointer;" (click)="selectedTab='all'">
                  <p class="text-sm font-bold leading-normal tracking-[0.015em]">All News</p>
@@ -82,18 +82,31 @@
                    style="cursor: pointer;" (click)="selectedTab='trending'">
                    <p class="text-sm font-bold leading-normal tracking-[0.015em]">Trending</p>
                   </a>
-               
+
+                  <a
+                      (click)="selectedTab = 'saved'"
+
+                      routerLink="saved"
+                      [ngClass]="{
+                  'border-b-[3px] border-b-[#1980e6] text-[#0e141b]': selectedTab === 'saved',
+                  'border-b-transparent text-[#4e7397]': selectedTab !== 'saved'
+                }"
+                      class="flex flex-col items-center justify-center pb-[13px] pt-4"
+                      style="cursor: pointer;" (click)="selectedTab='saved'">
+                      <p class="text-sm font-bold leading-normal tracking-[0.015em]">Saved</p>
+                  </a>
+
               </div>
             </div>
-      
-        
-         
-       
-       
-          
-          
+
+
+
+
+
+
+
         </div>
-        
+
       </div>
       <router-outlet></router-outlet>
       <app-explore-topic></app-explore-topic>

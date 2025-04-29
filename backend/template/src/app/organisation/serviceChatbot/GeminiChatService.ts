@@ -16,6 +16,9 @@ export class GeminiChatService {
             'Content-Type': 'application/json',
         });
 
+
+//* Prompt pour le modèle Gemini 2.0 Flash */
+
         const prompt = `
     Tu es un assistant expert uniquement en Organisation, Services et Bureaux.
     Réponds uniquement aux questions concernant ces sujets.

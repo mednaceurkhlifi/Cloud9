@@ -31,6 +31,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException  {
+        // Skip authentication for endpoints that don't require JWT filtering
+        if (shouldSkipFilter(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -58,5 +64,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }catch (Exception ex) {logger.error("cannot set user auth :{}",ex);}
         filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Determines whether the filter should be skipped for certain paths.
+     */
+    private boolean shouldSkipFilter(HttpServletRequest request) {
+        return request.getServletPath().contains("/api/v1/");
     }
 }

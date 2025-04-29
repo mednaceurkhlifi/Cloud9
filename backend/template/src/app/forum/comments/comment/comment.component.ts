@@ -19,7 +19,8 @@ import { CommentControllerService, CommentDTO, User, Vote, VoteControllerService
   imports: [ButtonModule,CommonModule,AvatarModule,PanelModule,MenuModule,ToastModule,ConfirmDialogModule,FormsModule,MarkdownModule,TagModule],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss',
-  providers:[ConfirmationService,MessageService,provideMarkdown()]
+  providers:[ConfirmationService,MessageService,provideMarkdown()],
+    standalone: true
 })
 export class CommentComponent  implements OnInit{
     comment! : CommentDTO

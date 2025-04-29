@@ -1,41 +1,38 @@
-<div class="profile-container">
-    <app-sidebar></app-sidebar>
-    <app-topbar></app-topbar>
+
+  <app-sidebar></app-sidebar>
+    <app-client-top-bar></app-client-top-bar>
     
-    <div class="layout-topbar" *ngIf="isAuthenticated && user">
-      <div class="layout-topbar-logo-container">
-        <!-- Your logo and menu toggle button -->
-      </div>
-  
-      <div class="layout-topbar-actions">
-        <!-- Profile button -->
-        <button (click)="toggleProfile()">Profile</button>
-  
-        <!-- Simple modal or dropdown for user info -->
-        <div *ngIf="showProfile" class="profile-popup">
-          <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
-          <p><strong>Email:</strong> {{ user.email }}</p>
-          <button (click)="logout()">Logout</button>
+    <div class="admin-profile-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="avatar-container">
+            <i class="pi pi-user" style="font-size: 3rem"></i>
+          </div>
+          <h2>{{connectedUser.firstName}} {{connectedUser.lastName}}</h2>
+          <p class="role">{{connectedUser.role}}</p>
+        </div>
+    
+        <div class="profile-details">
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{connectedUser.email}}</span>
+          </div>
+      
+          <div class="detail-row">
+            <span class="detail-label">Account Created:</span>
+            <span class="detail-value">{{connectedUser.created_at | date}}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">BirthDate:</span>
+            <span class="detail-value">{{connectedUser.birthDate | date}}</span>
+          </div>
+        
+        </div>
+        
+        <div class="profile-actions">
+          <button pButton type="button" label="Edit Profile" icon="pi pi-pencil" class="p-button-rounded" (click)="toggleProfile()"></button>
+          <button pButton type="button" label="Change Password" icon="pi pi-lock" class="p-button-rounded p-button-outlined" (click)="updatePassword()"></button>
         </div>
       </div>
     </div>
-  
-    <div class="profile-content">
-      <h2>Your Profile</h2>
-      <div *ngIf="user" class="profile-details">
-        <div class="profile-field">
-          <label>First Name:</label>
-          <span>{{ user.firstName }}</span>
-        </div>
-        <div class="profile-field">
-          <label>Last Name:</label>
-          <span>{{ user.lastName }}</span>
-        </div>
-        <div class="profile-field">
-          <label>Email:</label>
-          <span>{{ user.email }}</span>
-        </div>
-        <!-- Add more fields as needed -->
-      </div>
-    </div>
-  </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReadLater } from '../../models/ReadLater';
 import { User } from '../../models/User';
 import { NewsService } from '../../services/news.service';
@@ -11,9 +11,11 @@ import { FooterWidget } from '../../pages/landing/components/footerwidget';
   selector: 'app-read-later-list',
   imports: [CommonModule,TopbarWidget,FooterWidget],
   templateUrl: './read-later-list.component.html',
-  styleUrl: './read-later-list.component.scss'
+  styleUrl: './read-later-list.component.scss',
+    standalone: true
 })
-export class ReadLaterListComponent {
+export class ReadLaterListComponent implements OnInit{
+
   constructor(private newsService:NewsService,private tokenService:TokenService){}
 
   images: { [key: string]: string } = {};
@@ -21,11 +23,11 @@ export class ReadLaterListComponent {
   listReadLater:ReadLater[]=[]
   user!:User;
   toggleState:boolean[]=[];
+
   ngOnInit()
-  { 
-    this.user={userId:Number(this.tokenService.getOrganizationId())}
-   this.getReadLater()
-    
+  {
+    this.user={userId:Number(this.tokenService.getUserId())}
+   this.getReadLater();
   }
 
   getReadLater()
@@ -41,14 +43,14 @@ export class ReadLaterListComponent {
         );
         element.news.content=JSON.parse(element.news.content).content?.map((item:any)=>item.content?.map((contentItem:any)=> contentItem.text).join('')).filter((text:any)=>text).slice(0)
      } )
-   
+
     console.log(this.listReadLater.length);
-    
+
     /*for(let i=0;i<this.listReadLater.length;i++)
       this.toggleState[i]=false;*/
   }
 
-   
+
   )
   }
   removeReadLater(readLaterId:Number,i:number)
@@ -61,9 +63,9 @@ export class ReadLaterListComponent {
             this.toggleState.splice(i,1)
           }
           )
-         
+
     },500)
- 
+
     //this.newsService.removeReadLater(readLaterId).subscribe()
   }
 

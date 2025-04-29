@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   selector: 'app-explore-topic',
   imports: [CommonModule],
   templateUrl: './explore-topic.component.html',
-  styleUrl: './explore-topic.component.scss'
+  styleUrl: './explore-topic.component.scss',
+    standalone: true
 })
 export class ExploreTopicComponent {
   constructor(private newsService:NewsService,private router:Router){}

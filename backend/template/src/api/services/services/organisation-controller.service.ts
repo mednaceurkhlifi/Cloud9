@@ -66,7 +66,7 @@ export class OrganisationControllerService extends BaseService {
   }
 
   /** Path part for operation `createOrganisation()` */
-  static readonly CreateOrganisationPath = '/organisations';
+  static readonly CreateOrganisationPath = '/organisations/{user_email}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

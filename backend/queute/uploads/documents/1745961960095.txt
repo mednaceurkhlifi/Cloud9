@@ -1,0 +1,37 @@
+Cahier des charges : Projet d'application web
+
+1. **Titre du projet:** Développement d'une nouvelle application web
+
+2. **Objectif du projet:**  Développer une application web fonctionnelle et performante répondant aux besoins utilisateurs définis ultérieurement dans le cahier des charges détaillé.
+
+3. **Description fonctionnelle:** Le projet vise à créer une application web complète, incluant une interface utilisateur intuitive et un système backend robuste.  La description fonctionnelle détaillée sera fournie dans un document séparé après analyse des besoins utilisateurs.
+
+4. **Modules et leurs objectifs:**
+
+    * **Module 1 : Développement Frontend:**  Développer l’interface utilisateur (UI) et l’expérience utilisateur (UX) de l’application web, en garantissant une navigation fluide et une ergonomie optimale.
+
+    * **Module 2 : Développement Backend:** Développer la logique côté serveur et la base de données de l'application, en assurant la sécurité, la performance et la scalabilité du système.
+
+
+5. **Tâches par module:**
+
+    * **Module 1 : Développement Frontend:**
+        * **Conception de l'UI:** Création du design de l'interface utilisateur (date butoir : 30/05/2025).
+        * **Développement de l'UI:** Développement de l'interface utilisateur selon la conception approuvée (date butoir : 30/09/2025).
+
+    * **Module 2 : Développement Backend:**
+        * **Conception de la base de données:** Conception du schéma de la base de données (date butoir : 30/06/2025).
+        * **Développement de l'API:** Développement de l'API RESTful (date butoir : 31/12/2025).
+
+
+6. **Dates importantes:**
+
+    * **Date de début du projet:** 30/04/2025
+    * **Date de fin du projet:** 30/04/2026
+    * **Dates butoirs des modules et tâches:**  Cf. Section 5.
+
+
+7. **Statut initial:** Le projet est actuellement en phase de démarrage (NOT_STARTED).
+
+
+8. **Contraintes ou remarques:**  Des contraintes techniques ou des modifications de spécifications pourront survenir et seront gérées via un processus de changement formel.  Un cahier des charges détaillé sera établi afin de préciser les fonctionnalités, les spécifications techniques et les exigences non-fonctionnelles de l'application.  La gestion de projet suivra une méthodologie agile afin de s'adapter aux changements et aux besoins évolutifs.  Des points réguliers seront organisés pour suivre l'avancement et gérer les problèmes potentiels.

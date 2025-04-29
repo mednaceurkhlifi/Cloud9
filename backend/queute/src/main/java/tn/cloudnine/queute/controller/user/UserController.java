@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.config.user.UserToUserDetails;
@@ -27,13 +28,17 @@ public class UserController {
     private final UserServiceImpl userService;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     public UserController(UserServiceImpl userService,
                           UserRepository userRepository,
-                          JwtService jwtService)
+                          JwtService jwtService,
+                          PasswordEncoder passwordEncoder)
     {this.userService=userService;
     this.jwtService=jwtService;
-    this.userRepository=userRepository;}
+    this.userRepository=userRepository;
+    this.passwordEncoder = passwordEncoder;
+    }
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         logger.info("Received user creation request for email: {}", user.getEmail());
@@ -75,10 +80,13 @@ public class UserController {
     {
         UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
         UserToUserDetails connected = (UserToUserDetails) userDetails;
-        String token = jwtService.generateToken(userDetails.getAuthorities().toString(),
-                userDetails.getUsername(), connected.getUserId(), connected.getOrganizationId());
-        System.out.println(token);
-        return ResponseEntity.ok(Map.of("token",token));
+        if(passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())){
+            String token = jwtService.generateToken(userDetails.getAuthorities().toString(),
+                    userDetails.getUsername(), connected.getUserId(), connected.getOrganizationId());
+            logger.info(token);
+            return ResponseEntity.ok(Map.of("token",token));}
+        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("message", "Invalid email or password"));
 
     }
     @GetMapping("/findByEmail/{email}")

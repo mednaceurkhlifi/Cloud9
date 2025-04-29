@@ -48,7 +48,7 @@ public class OrganisationService implements IOrganisationService {
         return organisationRepository.findById(id);
     }
 
-    public Organization createOrganization(Organization requestDTO, MultipartFile imageFile) {
+    public Organization createOrganization(Organization requestDTO, MultipartFile imageFile, String user_email) {
         // Construction de l'entité
         Organization organization = Organization.builder()
                 .name(requestDTO.getName())
@@ -61,7 +61,13 @@ public class OrganisationService implements IOrganisationService {
         // Gestion du fichier image
         handleImageUpload(organization, imageFile);
 
-        return organisationRepository.save(organization);
+        requestDTO = organisationRepository.save(organization);
+        User user = userRepository.findByEmailEquals(user_email).orElseThrow(
+                () -> new IllegalArgumentException("user not found")
+        );
+        user.setOrganization(requestDTO);
+        userRepository.save(user);
+        return requestDTO;
     }
 
     private void handleImageUpload(Organization organization, MultipartFile imageFile) {
@@ -115,10 +121,12 @@ public class OrganisationService implements IOrganisationService {
             officesRepository.deleteAll(organization.getOffices());
         }
 
-        if (organization.getUsers() != null && !organization.getUsers().isEmpty()) {
-            userRepository.deleteAll(organization.getUsers());
+        Optional<User> optional = userRepository.findByOrganizationOrganizationId(organization.getOrganizationId());
+        if(optional.isPresent()) {
+            User user = optional.get();
+            user.setOrganization(null);
+            userRepository.save(user);
         }
-
         // Now delete the organization itself
         organisationRepository.deleteById(id);
 
@@ -176,14 +184,14 @@ public class OrganisationService implements IOrganisationService {
         return organizations.stream().map(organization -> {
             int officeCount = organization.getOffices() != null ? organization.getOffices().size() : 0;
             int feedbackCount = organization.getFeedbacks() != null ? organization.getFeedbacks().size() : 0;
-            int userCount = organization.getUsers() != null ? organization.getUsers().size() : 0;
+
 
             return new OrganizationEntityCountsDTO(
                     organization.getOrganizationId(),
                     organization.getName(),
                     officeCount,
                     feedbackCount,
-                    userCount
+                    0
             );
         }).toList();
     }

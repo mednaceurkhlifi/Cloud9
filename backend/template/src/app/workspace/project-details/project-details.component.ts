@@ -370,6 +370,9 @@ export class ProjectDetailsComponent implements OnInit {
                 image: member.image
             }
         });
+        this.userRole = this._tokenService.getCurrentUserRole();
+        if(this.userRole.includes('ADMIN') || this.projectUser.role == 'MANAGER')
+            this.isManagerOrAdmin = true;
         this.isCreatingManager = false;
         this.isCreatingMember = false;
     }

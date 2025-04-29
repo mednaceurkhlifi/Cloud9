@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganisationControllerService } from '../../../api/services/services/organisation-controller.service';
 import { OrganizationEntityCountsDto } from '../../../api/services/models/organization-entity-counts-dto';
-import { ChartModule } from 'primeng/chart'; // Import des modules nécessaires
+import { ChartModule } from 'primeng/chart';
 
 @Component({
     selector: 'app-statics-organisation',

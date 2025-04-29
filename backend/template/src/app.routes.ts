@@ -79,7 +79,8 @@ export const appRoutes: Routes = [
         children: [
             { path: '', component: AddOrganisationComponent },
             { path: 'offices/:organizationId', component: OfficeComponent },
-            { path: 'services/:officeId', component: ServicesComponent }
+            { path: 'services/:officeId', component: ServicesComponent },
+            { path: 'stats', component: StaticsOrganisationComponent },
         ]
     },
 

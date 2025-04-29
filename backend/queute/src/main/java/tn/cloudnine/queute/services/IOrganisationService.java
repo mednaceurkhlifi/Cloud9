@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IOrganisationService {
     List<Organization> findAll();
     Optional<Organization> findById(Long id);
-    Organization createOrganization(Organization organisation, MultipartFile imageFile);
+    Organization createOrganization(Organization organisation, MultipartFile imageFile, String user_email);
     Organization updateOrganisation(Long id, Organization organisation, MultipartFile imageFile);
 
 

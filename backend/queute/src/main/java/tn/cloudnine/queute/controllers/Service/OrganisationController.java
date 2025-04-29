@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import tn.cloudnine.queute.config.user.UserToUserDetails;
 import tn.cloudnine.queute.dto.UserRoleDTO;
 import tn.cloudnine.queute.dto.requests.OrganizationCreationRequest;
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.OrganizationEntityCountsDTO;
+import tn.cloudnine.queute.service.user.JwtService;
+import tn.cloudnine.queute.service.user.UserServiceImpl;
 import tn.cloudnine.queute.serviceImpl.FeedbackService;
 import tn.cloudnine.queute.serviceImpl.OrganisationService;
 import org.springframework.core.io.Resource;
@@ -30,6 +34,7 @@ public class OrganisationController {
     private OrganisationService organisationService;
     @Autowired
     private FeedbackService feedbackService;
+
     // Récupérer toutes les organisations
     @GetMapping
     public List<Organization> getAllOrganisations() {
@@ -43,13 +48,14 @@ public class OrganisationController {
     }
 
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{user_email}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Organization> createOrganisation(
             @ModelAttribute Organization requestDTO,
+            @PathVariable("user_email") String user_email,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
 
         try {
-            Organization saved = organisationService.createOrganization(requestDTO, imageFile);
+            Organization saved = organisationService.createOrganization(requestDTO, imageFile, user_email);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -11,6 +11,7 @@ import { RequestBuilder } from '../../request-builder';
 import { Organization } from '../../models/organization';
 
 export interface CreateOrganisation$Params {
+    user_email: string;
       body?: {
 'requestDTO'?: Organization;
 'imageFile'?: Blob;
@@ -20,6 +21,7 @@ export interface CreateOrganisation$Params {
 export function createOrganisation(http: HttpClient, rootUrl: string, params?: CreateOrganisation$Params, context?: HttpContext): Observable<StrictHttpResponse<Organization>> {
   const rb = new RequestBuilder(rootUrl, createOrganisation.PATH, 'post');
   if (params) {
+      rb.path('user_email', params.user_email, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
@@ -33,4 +35,4 @@ export function createOrganisation(http: HttpClient, rootUrl: string, params?: C
   );
 }
 
-createOrganisation.PATH = '/organisations';
+createOrganisation.PATH = '/organisations/{user_email}';

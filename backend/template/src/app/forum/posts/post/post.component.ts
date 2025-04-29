@@ -132,39 +132,24 @@ export class PostComponent implements OnInit{
                 label: 'Delete',
                 severity: 'danger',
             },
-
             accept: () => {
                 if(this.post.id!=undefined){
                     this.postController.deletePost(this.post.id).subscribe({
                         next: () => {
                             this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Post deleted' });
 
-                            if(this.frontOffice){
-                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                    this.router.navigate(['/postList']);
-                                });
-                            }
-                            else{
-                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                    this.router.navigate(['/posts']);
-                                });
-                            }
+                            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                this.router.navigate(['/postList']);
+                            });
                         },
                         error: err => {
                             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete post' });
-                            if(this.frontOffice){
-                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                    this.router.navigate(['/postList']);
-                                });
-                            }
-                            else{
-                                this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                                    this.router.navigate(['/posts']);
-                                });
-                            }
-                            console.error('Delete error:', err);
+                            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                                this.router.navigate(['/postList']);
+                            });
                         }
-                    });}
+                    });
+                }
             },
             reject: () => {
                 this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });

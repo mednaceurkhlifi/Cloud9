@@ -16,7 +16,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { Feedback } from '../../../api/services/models/feedback';
+
+import { StaticsOrganisationComponent } from '../statics-organisation/statics-organisation.component';
 import { NotificationService } from '../../socket/NotificationService';
+import { TokenService } from '../../token-service/token.service';
 
 @Component({
   selector: 'app-add-organisation',
@@ -32,7 +35,8 @@ import { NotificationService } from '../../socket/NotificationService';
     TextareaModule,
     SelectModule,
     ToastModule,
-    RouterModule
+    RouterModule,
+    StaticsOrganisationComponent
   ],
   templateUrl: './add-organisation.component.html',
   styleUrls: ['./add-organisation.component.scss'],
@@ -62,16 +66,19 @@ export class AddOrganisationComponent implements OnInit {
 
 
 notificationDialogVisible: boolean = false;
+user_email: string = '';
 
   constructor(
     private service: OrganisationControllerService,
     private messageService: MessageService,
     private feedbackService: FeedbackControllerService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private _tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
+      this.user_email = this._tokenService.getUserEmail();
     this.loadOrganizations();
     this.notificationService.getNotifications().subscribe((msg) => {
       this.notifications.push(msg);
@@ -80,6 +87,7 @@ notificationDialogVisible: boolean = false;
   }
     filteredOrganizations: Organization[] = [];
     searchTerm: string = '';
+
     filterOrganizations() {
         const term = this.searchTerm.toLowerCase();
         this.filteredOrganizations = this.organizations.filter(
@@ -95,7 +103,7 @@ notificationDialogVisible: boolean = false;
     this.notificationDialogVisible = false;
   }
     navigateToCharts(): void {
-        this.router.navigate(['/dashboard/organisation-stats']); // Naviguer vers la route des graphiques
+      this.router.navigate(['/Organisation/stats']);
     }
 
   initOrganization(): Organization {
@@ -216,6 +224,7 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
       } else {
         // Création
         this.service.createOrganisation({
+            user_email: this.user_email,
           body: requestBody
         }).subscribe({
           next: (org) => {
@@ -349,4 +358,8 @@ viewFeedbacks(organisationId: number): void {
       }
     });
   }
+
+    isOwner(org: Organization) {
+        return org.organizationId == Number(this._tokenService.getOrganizationId());
+    }
 }

@@ -82,10 +82,4 @@ public class Organization  implements Serializable {
 
     private float averageRate;
 
-
-    ////////////////////liste users avec role/////////////////////
-    @OneToMany(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL}, orphanRemoval = true)
-    @JsonIgnore
-    private List<User> users;
-
 }

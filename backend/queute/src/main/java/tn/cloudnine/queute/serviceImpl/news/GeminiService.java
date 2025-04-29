@@ -85,7 +85,7 @@ public class GeminiService {
                 "Generate a detailed, engaging article about: **%s**. Return a **strictly valid Tiptap v2 JSON** with proper formatting (headings, bold, lists, etc.) and **only working images**.\n\n" +
                         "### **TIPTAP FORMATTING (MUST INCLUDE):**\n" +
                         "- Use **headings** (`\"type\": \"heading\"` with `\"attrs\": {\"level\": 1|2|3}`)\n" +
-                        "- Include **bold** (`{\"type\": \"strong\"}`), *italic* (`{\"type\": \"italic\"}`), <u>underline</u> (`{\"type\": \"underline\"}`) via the `\"marks\"` array within text nodes.\n" +
+                        "- Include **bold** (`{\"type\": \"bold\"}`), *italic* (`{\"type\": \"italic\"}`), <u>underline</u> (`{\"type\": \"underline\"}`) via the `\"marks\"` array within text nodes.\n" +
                         "- Use `{\"type\": \"blockquote\"}`, `{\"type\": \"codeBlock\"}`, `{\"type\": \"bulletList\"}` (with `{\"type\": \"listItem\"}` children containing `{\"type\": \"paragraph\"}`) and `{\"type\": \"orderedList\"}` where relevant.\n" +
                         "- For images, use **exactly this structure** (no extra fields):\n\n" +
                         "{\n  \"type\": \"image\",\n  \"attrs\": {\n    \"src\": \"https://example.com/valid-image.jpg\",\n    \"alt\": \"Clear description of the image\",\n    \"class\": \"responsive-image\"\n  }\n}\n\n" +
