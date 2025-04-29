@@ -1,8 +1,8 @@
 package tn.cloudnine.queute.service.workspace;
 
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.MessageDto;
-import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.MessageResponse;
 import tn.cloudnine.queute.model.workspace.WorkspaceMessage;
 

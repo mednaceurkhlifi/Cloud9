@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.cloudnine.queute.dto.workspace.requests.WorkspaceRequest;
+import tn.cloudnine.queute.dto.requests.WorkspaceRequest;
 import tn.cloudnine.queute.dto.workspace.responses.WorkspaceResponse;
 import tn.cloudnine.queute.model.workspace.Workspace;
 import tn.cloudnine.queute.service.workspace.IWrokspaceService;

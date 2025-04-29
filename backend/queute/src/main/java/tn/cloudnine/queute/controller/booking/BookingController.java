@@ -2,6 +2,7 @@ package tn.cloudnine.queute.controller.booking;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.cloudnine.queute.dto.booking.requests.BookingRequestDTO;
@@ -18,7 +19,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class BookingController {
+    @Autowired
     private final BookingService bookingService;
+    @Autowired
     private final BlockchainService blockchainService;
 
     @PostMapping

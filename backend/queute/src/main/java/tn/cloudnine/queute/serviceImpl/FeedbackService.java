@@ -61,7 +61,7 @@ public class FeedbackService {
         organizationRepository.save(organisation);
 
         // Envoyer la notification
-        String userName = staticUser.getFull_name();
+        String userName = staticUser.getFullName();
         String message = feedback.getComment();
         String notification = "Nouvelle feedback de " + userName + " : " + message;
         messagingTemplate.convertAndSend("/topic/notifications", notification);

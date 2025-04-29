@@ -16,6 +16,7 @@ import tn.cloudnine.queute.model.ServiceAndFeedback.feedback.Feedback;
 import tn.cloudnine.queute.model.ServiceAndFeedback.office.Office;
 import tn.cloudnine.queute.model.user.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Organization {
+public class Organization  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

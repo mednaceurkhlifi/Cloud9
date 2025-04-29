@@ -2,9 +2,8 @@ package tn.cloudnine.queute.service.workspace;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.UserDTO;
-import tn.cloudnine.queute.dto.workspace.projections.TaskProjection;
-import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
 import tn.cloudnine.queute.dto.workspace.responses.TaskResponse;
 import tn.cloudnine.queute.model.workspace.Task;
 

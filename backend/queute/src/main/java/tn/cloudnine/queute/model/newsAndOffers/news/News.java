@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import tn.cloudnine.queute.enums.newsAndOffers.ArticleCategory;
 import tn.cloudnine.queute.enums.newsAndOffers.NewsStatus;
-import tn.cloudnine.queute.model.organization.Organization;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
 
 import java.io.Serializable;
 

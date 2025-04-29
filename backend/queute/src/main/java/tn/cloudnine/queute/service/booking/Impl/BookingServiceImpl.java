@@ -1,12 +1,13 @@
 package tn.cloudnine.queute.service.booking.Impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.cloudnine.queute.dto.booking.requests.BookingRequestDTO;
 import tn.cloudnine.queute.dto.booking.response.BookingResponseDTO;
 import tn.cloudnine.queute.model.booking.Booking;
-import tn.cloudnine.queute.repository.Service.ServiceRepository;
 import tn.cloudnine.queute.repository.booking.BookingRepository;
+import tn.cloudnine.queute.repository.serviceRepo.ServiceRepository;
 import tn.cloudnine.queute.repository.user.UserRepository;
 import tn.cloudnine.queute.service.blockchain.BlockchainService;
 import tn.cloudnine.queute.service.booking.BookingService;
@@ -19,10 +20,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-
+    @Autowired
     private final BookingRepository bookingRepository;
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final ServiceRepository serviceRepository;
+    @Autowired
     private final BlockchainService blockchainService;
 
     @Override
@@ -37,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setReference(UUID.randomUUID().toString());
         booking.setStatus(request.getStatus());
         booking.setUser(user);
-        booking.setService(service);
+        booking.setServices(service);
         booking.setCreated_at(LocalDateTime.now());
         booking.setUpdated_at(LocalDateTime.now());
 
@@ -102,14 +106,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingResponseDTO> getBookingsByUserId(Long userId) {
-        return bookingRepository.findBookingsByUserId(userId).stream()
+        return bookingRepository.findBookingsByUser_UserId(userId).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<BookingResponseDTO> getBookingsByServiceId(Long serviceId) {
-        return bookingRepository.findBookingByServiceId(serviceId).stream()
+        return bookingRepository.findBookingsByServices_ServiceId(serviceId).stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -121,8 +125,8 @@ public class BookingServiceImpl implements BookingService {
         dto.setStatus(booking.getStatus());
         dto.setUserId(booking.getUser().getUserId());
         dto.setUserName(booking.getUser().getFullName());
-        dto.setServiceId(booking.getService().getId());
-        dto.setServiceName(booking.getService().getServiceName());
+        dto.setServiceId(booking.getServices().getServiceId());
+        dto.setServiceName(booking.getServices().getServiceName());
         dto.setCreatedAt(booking.getCreated_at());
         dto.setUpdatedAt(booking.getUpdated_at());
         

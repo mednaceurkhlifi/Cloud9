@@ -95,7 +95,7 @@ notificationDialogVisible: boolean = false;
     this.notificationDialogVisible = false;
   }
     navigateToCharts(): void {
-        this.router.navigate(['/organisation-stats']); // Naviguer vers la route des graphiques
+        this.router.navigate(['/dashboard/organisation-stats']); // Naviguer vers la route des graphiques
     }
 
   initOrganization(): Organization {

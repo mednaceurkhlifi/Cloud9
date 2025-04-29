@@ -32,54 +32,34 @@ export const appRoutes: Routes = [
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },
-            {
-                path: 'bookings', loadChildren: () => import('./app/booking/booking.routes').then(m => m.bookingRoutes)
-            },
-            //forum
-            { path: 'post/:id',component: PostComponent},
-            { path: 'forumDashboard',component: DashboardComponent},
+            { path: 'organisation-stats', component: StaticsOrganisationComponent },
+            { path: 'bookings', loadChildren: () => import('./app/booking/booking.routes').then(m => m.bookingRoutes) },
+            { path: 'post/:id', component: PostComponent },
+            { path: 'forumDashboard', component: DashboardComponent },
             {
                 path: 'posts',
-                component: PostListComponent ,
-                children:[
-                    {
-                        path:"post",
-                        component:CreatePostComponent,
-                        outlet:"create"
-                    },
-                    {
-                        path:"post/:id",
-                        component:CreatePostComponent,
-                        outlet:"create"
-                    },
-                    {
-                        path: 'view/:id',
-                        component: PostComponent                     }
-
+                component: PostListComponent,
+                children: [
+                    { path: "post", component: CreatePostComponent, outlet: "create" },
+                    { path: "post/:id", component: CreatePostComponent, outlet: "create" },
+                    { path: 'view/:id', component: PostComponent }
                 ]
-
             },
 
-            //end forum
+
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
             { path: 'documentation', component: Documentation },
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
             { path: 'stepper', loadChildren: () => import('./app/news/stepper/stepper-routes') },
             { path: 'organisationNews', loadChildren: () => import('./app/news/organisation-news/organisation-news-routes') },
-            { path:'allStats',loadChildren:()=>import('./app/news/all-stats/all-stats-routes')},
-            {
-              path: 'roadmap', loadChildren: () => import('./app/roadMap/road-map-list-component/road-map-routes.module')
-            },
-
+            { path: 'allStats', loadChildren: () => import('./app/news/all-stats/all-stats-routes') },
+            { path: 'roadmap', loadChildren: () => import('./app/roadMap/road-map-list-component/road-map-routes.module') }
         ]
     },
-    {path:'news',loadChildren:()=>import('./app/news/all-news/allNews-routes')},
-    {path:'newsDetails/:id',loadChildren:()=>import('./app/news/news-details/news-details-routes')},
-    {
-        path: 'road-map-front', loadChildren: () => import('./app/roadMap/road-map-front/road-map-front-routes.module')
-    },
+    { path: 'news', loadChildren: () => import('./app/news/all-news/allNews-routes') },
+    { path: 'newsDetails/:id', loadChildren: () => import('./app/news/news-details/news-details-routes') },
+    { path: 'road-map-front', loadChildren: () => import('./app/roadMap/road-map-front/road-map-front-routes.module') },
     { path: 'readLater', loadChildren: () => import('./app/news/read-later-list/read-later-routes') },
-
     {
         path: 'workspace',
         component: WorkspaceComponent,
@@ -88,82 +68,40 @@ export const appRoutes: Routes = [
             { path: 'project/:project_id', component: ProjectDetailsComponent },
             { path: 'module/:module_id', component: ModuleDetailsComponent },
             { path: 'task/:task_id', component: TaskDetailsComponent },
-            {
-                path: 'profile', component: ProfileComponent
-            },
+            { path: 'profile', component: ProfileComponent },
             { path: 'documentation', component: Documentation },
-            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
-            { path: 'organisation-stats', component: StaticsOrganisationComponent }
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ]
-    }
-    ,{
+    },
+    {
         path: 'Organisation',
         component: OrganisationComponent,
         children: [
             { path: '', component: AddOrganisationComponent },
-            { path: 'offices/:organizationId', component: OfficeComponent }, // Route dynamique
-            { path: 'services/:officeId', component: ServicesComponent },
+            { path: 'offices/:organizationId', component: OfficeComponent },
+            { path: 'services/:officeId', component: ServicesComponent }
         ]
-    }
+    },
 
-    ,
-    { path: '', component: Landing },
+    { path: 'organisation-stats', component: StaticsOrganisationComponent },
     { path: 'organisation', loadChildren: () => import('./app/organisation/organisation-fo/organisationFO-routes') },
-    { path: 'organisation/:id/offices', component: OfficeFOComponent }, // Route dynamique
+    { path: 'organisation/:id/offices', component: OfficeFOComponent },
     { path: 'offices/:officeId/services', component: ServicesFOComponent },
-
-    { path: 'notfound', component: Notfound },
-
-    ,
-    {
-        path: 'meeting/:room_id/:user_id/:username',
-        component: MeetComponent
-    },
-    {
-        path: 'auth',
-        loadChildren: () => import('./app/user/user.routes').then(m => m.default)  // Lazy loading user-related routes
-    },
-    {
-        path: 'user-bookings',
-        component: BookingUserListComponent,
-        title: 'User Bookings'
-    },
-    {
-        path: 'app-map',
-        component: MapComponent,
-        title: 'App Map'
-    },
-
-
-    { path: 'landing', component: Landing },
-    //forum
+    { path: 'meeting/:room_id/:user_id/:username', component: MeetComponent },
+    { path: 'auth', loadChildren: () => import('./app/user/user.routes').then(m => m.default) },
+    { path: 'user-bookings', component: BookingUserListComponent, title: 'User Bookings' },
+    { path: 'app-map', component: MapComponent, title: 'App Map' },
     {
         path: 'postList',
-        component: PostListComponent ,
-        children:[
-            {
-                path:"post",
-                component:CreatePostComponent,
-                outlet:"create"
-            },
-            {
-                path:"post/:id",
-                component:CreatePostComponent,
-                outlet:"create"
-            },
-            {
-                path: 'view/:id',
-                component: PostComponent
-
-            }
-
+        component: PostListComponent,
+        children: [
+            { path: "post", component: CreatePostComponent, outlet: "create" },
+            { path: "post/:id", component: CreatePostComponent, outlet: "create" },
+            { path: 'view/:id', component: PostComponent }
         ]
-
     },
     { path: 'postInfo/:id', component: PostComponent },
-    //end forum
-    { path: 'notfound', component: Notfound },
     { path: 'landing', component: Landing },
-    { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
+    { path: 'notfound', component: Notfound },
     { path: '**', redirectTo: '/notfound' }
 ];

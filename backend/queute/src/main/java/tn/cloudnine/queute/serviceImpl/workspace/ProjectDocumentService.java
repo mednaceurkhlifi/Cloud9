@@ -3,8 +3,8 @@ package tn.cloudnine.queute.serviceImpl.workspace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
-import tn.cloudnine.queute.enums.DocumentType;
+
+import tn.cloudnine.queute.dto.requests.DocumentRequest;
 import tn.cloudnine.queute.model.workspace.Project;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.model.workspace.ProjectModule;

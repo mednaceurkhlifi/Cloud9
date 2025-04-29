@@ -52,7 +52,7 @@ public class BlockchainServiceImpl implements BlockchainService {
                     booking.getReference(),
                     booking.getStatus(),
                     BigInteger.valueOf(booking.getUser().getUserId()),
-                    BigInteger.valueOf(booking.getService().getId())
+                    BigInteger.valueOf(booking.getServices().getServiceId())
                 ).sendAsync(),
                 maxRetryAttempts,
                 retryDelaySeconds,

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.cloudnine.queute.dto.workspace.requests.DocumentRequest;
-import tn.cloudnine.queute.enums.DocumentType;
+
+import tn.cloudnine.queute.dto.requests.DocumentRequest;
 import tn.cloudnine.queute.model.workspace.ProjectDocument;
 import tn.cloudnine.queute.service.workspace.IProjectDocumentService;
 import org.springframework.core.io.Resource;

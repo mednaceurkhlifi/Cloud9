@@ -8,11 +8,11 @@ import tn.cloudnine.queute.enums.DocumentType;
 
 public interface IFileUploader {
     String saveImage(@Nonnull MultipartFile sourceFile);
+
     String saveDocument(@Nonnull MultipartFile sourceFile);
+
     ResponseEntity<Resource> serveFile(String subFolder, String filename,
                                        String fallbackMediaType);
 
     boolean deleteFile(String filePath, DocumentType type);
-    ResponseEntity<Resource> serveFile(String subFolder, String filename,
-                                       String fallbackMediaType);
 }
