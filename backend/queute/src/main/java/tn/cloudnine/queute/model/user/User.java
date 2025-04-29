@@ -9,6 +9,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import tn.cloudnine.queute.enums.roles.Role;
 import tn.cloudnine.queute.model.organization.Organization;
+import tn.cloudnine.queute.enums.Role;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
+
 
 import java.io.Serializable;
 import java.time.LocalDate;

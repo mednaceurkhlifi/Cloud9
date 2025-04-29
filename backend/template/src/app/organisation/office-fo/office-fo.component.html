@@ -1,0 +1,58 @@
+<div class="bg-surface-0 dark:bg-surface-900">
+    <div id="home" class="landing-wrapper overflow-hidden">
+        <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
+
+        <div class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
+            <div class="grid">
+                <div class="col-12">
+                    <div class="card">
+                        <h5 class="text-2xl font-bold mb-4">Liste des Bureaux</h5>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div *ngFor="let office of offices"
+                                 class="p-4 bg-surface-0 dark:bg-surface-900 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+
+                                <div class="space-y-2">
+                                    <h3 class="text-xl font-semibold text-surface-900 dark:text-surface-0">{{office.name}}</h3>
+
+                                    <div class="flex items-center text-surface-600 dark:text-surface-300">
+                                        <i class="pi pi-map-marker mr-2"></i>
+                                        <span>{{office.location || 'Localisation non disponible'}}</span>
+                                    </div>
+
+                                    <div class="flex items-center text-surface-600 dark:text-surface-300">
+                                        <i class="pi pi-phone mr-2"></i>
+                                        <span>{{office.phoneNumber || 'Téléphone non disponible'}}</span>
+                                    </div>
+
+                                    <!-- Bouton pour naviguer vers les services -->
+
+                                    <div class="mt-4">
+                                          <button pButton
+                                          (click)="navigateToServices(office.officeId)"
+                                          icon="pi pi-list"
+                                          label="Voir les services"
+                                          class="w-full p-button">
+                                          </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <p-paginator [rows]="rows"
+                                    [totalRecords]="totalRecords"
+                                    [first]="first"
+                                    (onPageChange)="onPageChange($event)"
+                                    [rowsPerPageOptions]="[6,12,24]"
+                                    class="mt-4"></p-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer-widget></footer-widget>
+    </div>
+  </div>

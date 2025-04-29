@@ -1,5 +1,6 @@
 package tn.cloudnine.queute.utils;
 
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -122,4 +123,17 @@ public class EmailService implements IEmailService {
 
         mailSender.send(mimeMessage);
     }
+
+
+    public void sendSimpleEmail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
+    }
 }
+
+
+
+

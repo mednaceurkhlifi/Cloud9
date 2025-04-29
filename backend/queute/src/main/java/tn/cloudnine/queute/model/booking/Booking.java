@@ -28,10 +28,9 @@ public class Booking implements Serializable {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private User id_user;
     @ManyToOne
-    private Service service;
+    private Services id_service;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

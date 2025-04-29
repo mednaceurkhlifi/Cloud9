@@ -29,6 +29,14 @@ export class AppMenu {
                 items: [{ label: 'Workspace', icon: 'pi pi-fw pi-briefcase', routerLink: ['/workspace'] }]
             },
             {
+                label: 'Organisation',
+                items: [{ label: 'Organisation', icon: 'pi pi-fw pi-briefcase', routerLink: ['/Organisation'] }]
+            },
+
+
+
+
+            {
                 label: 'UI Components',
                 items: [
                     { label: 'Editor', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/stepper'] },

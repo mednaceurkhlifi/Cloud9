@@ -4,6 +4,13 @@ import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
+import { OrganisationComponent } from './app/organisation/organisation/organisation.component';
+import { AddOrganisationComponent } from './app/organisation/add-organisation/add-organisation.component';
+import { OfficeComponent } from './app/office/office.component';
+import { ServicesComponent } from './app/services/services.component';
+import {OfficeFOComponent} from "./app/organisation/office-fo/office-fo.component";
+import {ServicesFOComponent} from "./app/services-fo/services-fo.component";
+import {StaticsOrganisationComponent} from "./app/organisation/statics-organisation/statics-organisation.component";
 import { BookingUserListComponent } from './app/booking/component/booking-user-list/booking-user-list.component';
 import { MapComponent } from './app/map/map.component';
 import { WorkspaceComponent } from './app/workspace/workspace/workspace.component';
@@ -85,9 +92,29 @@ export const appRoutes: Routes = [
                 path: 'profile', component: ProfileComponent
             },
             { path: 'documentation', component: Documentation },
-            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
+            { path: 'organisation-stats', component: StaticsOrganisationComponent }
         ]
-    },
+    }
+    ,{
+        path: 'Organisation',
+        component: OrganisationComponent,
+        children: [
+            { path: '', component: AddOrganisationComponent },
+            { path: 'offices/:organizationId', component: OfficeComponent }, // Route dynamique
+            { path: 'services/:officeId', component: ServicesComponent },
+        ]
+    }
+
+    ,
+    { path: '', component: Landing },
+    { path: 'organisation', loadChildren: () => import('./app/organisation/organisation-fo/organisationFO-routes') },
+    { path: 'organisation/:id/offices', component: OfficeFOComponent }, // Route dynamique
+    { path: 'offices/:officeId/services', component: ServicesFOComponent },
+
+    { path: 'notfound', component: Notfound },
+
+    ,
     {
         path: 'meeting/:room_id/:user_id/:username',
         component: MeetComponent
@@ -106,6 +133,8 @@ export const appRoutes: Routes = [
         component: MapComponent,
         title: 'App Map'
     },
+
+
     { path: 'landing', component: Landing },
     //forum
     {

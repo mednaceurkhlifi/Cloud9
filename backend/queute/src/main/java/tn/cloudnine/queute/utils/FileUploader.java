@@ -11,6 +11,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import tn.cloudnine.queute.enums.DocumentType;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +25,8 @@ import java.io.IOException;
 
 import static java.io.File.separator;
 
-@Component
+
+@Service
 public class FileUploader implements IFileUploader{
 
     @Value("${file.upload.path}")
@@ -61,10 +67,12 @@ public class FileUploader implements IFileUploader{
         return uploadFile(sourceFile, fileUploadSubPath);
     }
 
-        public String saveDocument(@Nonnull MultipartFile sourceFile) {
+    public String saveDocument(@Nonnull MultipartFile sourceFile) {
         final String fileUploadSubPath = "documents" + separator;
         return uploadFile(sourceFile, fileUploadSubPath);
     }
+
+
 
     private String uploadFile(@Nonnull MultipartFile sourceFile, @Nonnull String fileUploadSubPath) {
         final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath;
@@ -105,6 +113,7 @@ public class FileUploader implements IFileUploader{
             return false;
         }
     }
+
 
     private String getFileExtension(String originalFilename) {
         if(originalFilename == null || originalFilename.isEmpty()){
