@@ -119,3 +119,23 @@
     opacity: 0.2;
   }
 } 
+
+/* filepath: d:\pi\pi_4arctic_cloud-nine\backend\template\src\app\map\map.component.scss */
+.distance-options {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+button {
+  margin: 5px;
+}
+/* filepath: d:\pi\pi_4arctic_cloud-nine\backend\template\src\app\map\map.component.scss */
+.ai-response {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+}

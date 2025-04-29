@@ -79,7 +79,7 @@ export class BookingListComponent implements OnInit {
     }
 
     updateBooking(id: number): void {
-        this.router.navigate(['/bookings', id]);
+        this.router.navigate(['/dashboard/bookings', id]);
     }
 
     getSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {

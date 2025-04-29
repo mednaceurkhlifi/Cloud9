@@ -54,8 +54,8 @@ export class ServicesFOComponent {
   
   bookService(service: Services): void {
     this.bookingService.createBooking({
-        userId: +this.tokenService.getUserId(), // This should be replaced with the actual user ID
-        serviceId: service.serviceId!, // Assuming service has an id property
+        userId: +this.tokenService.getUserId(), 
+        serviceId: service.serviceId!, 
         status: 'PENDING'
     }).subscribe({
         next: (booking) => {

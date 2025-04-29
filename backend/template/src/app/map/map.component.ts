@@ -1,9 +1,13 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import * as L from 'leaflet';
+import { StyleClassModule } from 'primeng/styleclass';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { GoogleGenAI , Type } from "@google/genai";
 
 interface Location {
     lat: number;
@@ -19,7 +23,10 @@ interface Location {
         CommonModule,
         RouterModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
+        StyleClassModule,
+        ButtonModule,
+        RippleModule
     ],
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss']
@@ -31,14 +38,13 @@ export class MapComponent implements OnInit, AfterViewInit {
     private currentLocationMarker: L.Marker | null = null;
     private routes: L.Polyline[] = [];
 
-    // Example locations - replace with your actual data
     private locations: Location[] = [
         { lat: 36.860943, lng: 10.153157, title: 'Location 1' },
         { lat: 36.760943, lng: 10.253157, title: 'Location 2' },
         { lat: 36.660943, lng: 10.353157, title: 'Location 3' }
     ];
 
-    constructor() { }
+    constructor(public router: Router) { }
 
     ngOnInit(): void {
         this.getCurrentLocation();
@@ -98,7 +104,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private calculateDistances(): void {
+    public calculateDistances(): void {
         if (!this.currentLocation) return;
 
         // Calculate distance to each location
@@ -128,6 +134,55 @@ export class MapComponent implements OnInit, AfterViewInit {
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c; // Distance in km
+    }
+
+    aiResponseText: string | undefined = '';
+    async calculateDistancesWithAI(): Promise<void> {
+        if (!this.currentLocation) {
+            console.error('Current location is not available.');
+            return;
+        }
+
+        const ai = new GoogleGenAI({ apiKey: "AIzaSyDVEMpClTJWr36QgeBZjx1fNRw2H9S2Mjg" }); 
+    
+        const apiKey = 'AIzaSyDVEMpClTJWr36QgeBZjx1fNRw2H9S2Mjg'; 
+    
+        const response = await ai.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: "Given the current location: \
+                        36°53'55.7\"N 10°11'20.8\"E and the following locations: \
+                        lat: 36.660943, lng: 10.353157, \
+                        lat: 36.860943, lng: 10.153157, \
+                        calculate the distances and return the coordinates of the closest one.\
+                        just return the location like this {x,y} \
+                        DONT SHOW ANYTHING ELSE, JUST THE LOCATION PLEASE.",
+            // config: {
+            //     responseMimeType: 'application/json',
+            //     responseSchema: {
+            //         type: Type.ARRAY,
+            //         items: {
+            //             type: Type.OBJECT,
+            //             properties: {
+            //                 'LocationCoordinates': {
+            //                     type: Type.STRING,
+            //                     description: 'location coordinates',
+            //                     example: '{x,y}',
+            //                     nullable: false,
+            //                 },
+            //             },
+            //             required: ['LocationCoordinates'],
+            //         },
+            //     },
+            // } 
+        });
+
+         // Parse the response if it's JSON
+        //this.aiResponseText = JSON.stringify(response.text, null, 2); // Format for display
+        
+          
+        this.aiResponseText = response.text;
+        console.log(response.text);
+
     }
 
     private deg2rad(deg: number): number {

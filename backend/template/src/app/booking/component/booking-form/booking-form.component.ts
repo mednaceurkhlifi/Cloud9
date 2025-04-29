@@ -105,7 +105,7 @@ export class BookingFormComponent implements OnInit {
 
             request$.subscribe({
                 next: () => {
-                    this.router.navigate(['/bookings']);
+                    this.router.navigate(['/dashboard/bookings']);
                 },
                 error: (err) => {
                     this.error = this.isEdit ? 'Failed to update booking' : 'Failed to create booking';

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -15,6 +15,7 @@ import { QRCodeComponent } from 'angularx-qrcode';
 import { BookingService, Booking, BookingRequest } from '../../service/booking.service';
 import { User } from '../../../services/models/user';
 import { TokenService } from '../../../token-service/token.service';
+import { StyleClassModule } from 'primeng/styleclass';
 
 @Component({
     selector: 'app-booking-user-list',
@@ -32,7 +33,9 @@ import { TokenService } from '../../../token-service/token.service';
         RippleModule,
         InputIconModule,
         IconFieldModule,
-        QRCodeComponent
+        QRCodeComponent,
+        StyleClassModule,
+        ButtonModule,
     ],
     providers: [DatePipe],
     templateUrl: './booking-user-list.component.html',
@@ -50,7 +53,7 @@ export class BookingUserListComponent implements OnInit {
     //     email: 'john.doe@example.com'
     // };
 
-    constructor(
+    constructor(public router:Router,
         private bookingService: BookingService,
         private tokenService: TokenService
     ) { }
