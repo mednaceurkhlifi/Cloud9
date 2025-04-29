@@ -7,11 +7,11 @@ export interface Organization {
   averageRate?: number;
   created_at?: string;
   email?: string;
-  id?: number;
   image?: string;
   is_deleted?: boolean;
   lastModifiedBy?: number;
   name?: string;
+  organizationId?: number;
   phone_number?: string;
   updated_at?: string;
 }

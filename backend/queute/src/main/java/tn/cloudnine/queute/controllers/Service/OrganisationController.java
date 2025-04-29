@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import tn.cloudnine.queute.dto.UserRoleDTO;
+import tn.cloudnine.queute.dto.requests.OrganizationCreationRequest;
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.OrganizationEntityCountsDTO;
 import tn.cloudnine.queute.serviceImpl.FeedbackService;
 import tn.cloudnine.queute.serviceImpl.OrganisationService;
 import org.springframework.core.io.Resource;
@@ -56,6 +58,7 @@ public class OrganisationController {
 
 
 
+
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Organization> updateOrganisation(
             @PathVariable Long id,
@@ -77,8 +80,8 @@ public class OrganisationController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Supprimer une organisation par ID
-    @DeleteMapping("/{id}")
+
+    @DeleteMapping("IsDeleted/{id}")
     public ResponseEntity<Void> deleteOrganisation(@PathVariable Long id) {
         if (organisationService.existsById(id)) {
             organisationService.deleteOrganisation(id);
@@ -105,6 +108,11 @@ public class OrganisationController {
     }
 
 
+    @GetMapping("/counts")
+    public ResponseEntity<List<OrganizationEntityCountsDTO>> getAllOrganizationsEntityCounts() {
+        List<OrganizationEntityCountsDTO> counts = organisationService.getAllOrganizationsEntityCounts();
+        return ResponseEntity.ok(counts);
+    }
 
 
 }

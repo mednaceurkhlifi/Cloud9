@@ -29,4 +29,4 @@ export function deleteOrganisation(http: HttpClient, rootUrl: string, params: De
   );
 }
 
-deleteOrganisation.PATH = '/organisations/{id}';
+deleteOrganisation.PATH = '/organisations/IsDeleted/{id}';

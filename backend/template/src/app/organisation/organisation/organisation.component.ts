@@ -5,11 +5,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AppFooter } from '../../layout/component/app.footer';
 import { AppTopbar } from '../../layout/component/app.topbar';
 
-import { StatsWidget } from '../../pages/dashboard/components/statswidget';
-import { RecentSalesWidget } from '../../pages/dashboard/components/recentsaleswidget';
-import { BestSellingWidget } from '../../pages/dashboard/components/bestsellingwidget';
-import { RevenueStreamWidget } from '../../pages/dashboard/components/revenuestreamwidget';
-import { NotificationsWidget } from '../../pages/dashboard/components/notificationswidget';
+
 import { filter, Subscription } from 'rxjs';
 import { LayoutService } from '../../layout/service/layout.service';
 

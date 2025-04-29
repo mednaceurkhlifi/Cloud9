@@ -10,13 +10,15 @@ import java.util.List;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-    List<Feedback> findByOrganisationId(Long organisationId);
+    List<Feedback> findByOrganisation_OrganizationId(Long organisationId);
 
 
-    @Query("SELECT AVG(f.note) FROM Feedback f WHERE f.organisation.id = :organizationId")
+    boolean existsByUser_UserIdAndOrganisation_OrganizationId(Long userId, Long organisationId);
+
+
+    @Query("SELECT AVG(f.note) FROM Feedback f WHERE f.organisation.organizationId = :organizationId")
     Double findAverageRateByOrganizationId(Long organizationId);
 
 
     List<Feedback> findFeedbacksByUser(User user);
-
 }

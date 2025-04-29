@@ -7,7 +7,7 @@ import { User } from '../models/user';
 export interface Feedback {
   comment?: string;
   createdDate?: string;
-  id?: number;
+  feedbackId?: number;
   lastModifiedDate?: string;
   note?: number;
   organisation?: Organization;

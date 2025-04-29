@@ -5,8 +5,8 @@
 export interface Services {
   created_at?: string;
   description?: string;
-  id?: number;
   lastModifiedBy?: number;
+  serviceId?: number;
   serviceName?: string;
   type?: string;
   updated_at?: string;

@@ -11,23 +11,30 @@ export class GeminiChatService {
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(message: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+    sendMessage(message: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
 
-    const body = {
-      contents: [
-        {
-          parts: [
-            {
-              text: message, // Le message utilisateur est placé ici
-            },
-          ],
-        },
-      ],
-    };
+        const prompt = `
+    Tu es un assistant expert uniquement en Organisation, Services et Bureaux.
+    Réponds uniquement aux questions concernant ces sujets.
+    Si une question est hors sujet, dis simplement : "Je ne suis spécialisé que dans l'Organisation, le Service et le Bureau."
+    Voici la question de l'utilisateur : "${message}"
+  `;
 
-    return this.http.post(`${this.apiUrl}?key=${this.apiKey}`, body, { headers });
-  }
+        const body = {
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: prompt,
+                        },
+                    ],
+                },
+            ],
+        };
+        return this.http.post(`${this.apiUrl}?key=${this.apiKey}`, body, { headers });
+    }
+
 }

@@ -30,7 +30,7 @@ import java.util.List;
 public class Office implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long officeId;
 
     @Column()
     private String name;

@@ -7,7 +7,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import tn.cloudnine.queute.enums.Role;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
 
 
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class User  {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long user_id;
+        private Long userId;
 
         private String first_name;
         private String last_name;
@@ -45,15 +46,24 @@ public class User  {
         @Column(unique = true)
         private String email;
 
-        private boolean accountis_locked;
-        private boolean accountis_enabled;
-
+        private boolean is_locked;
+        private boolean is_deleted;
+        @Enumerated(EnumType.STRING)
+        Role role;
+        String barCode;
+        boolean enabled;
         @CreatedDate
         @Column(nullable = false, updatable = false)
         private LocalDateTime created_at;
 
+
         @LastModifiedDate
         private LocalDateTime updated_at;
+
+
+
+        @ManyToOne
+        private Organization organization;
 
 
 

@@ -1,46 +1,86 @@
-<div class="bg-surface-0 dark:bg-surface-900">
-  <div id="home" class="landing-wrapper overflow-hidden">
-      <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="New Service" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="openNew()" />
+    </ng-template>
+</p-toolbar>
 
-      <div class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
-          <div class="grid">
-              <div class="col-12">
-                  <div class="card">
-                      <h5 class="text-2xl font-bold mb-4">Liste des Services</h5>
+<p-table
+    [value]="services"
+    [rows]="10"
+    [paginator]="true"
+    [(selection)]="selectedServices"
+    [tableStyle]="{ 'min-width': '75rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-service>
+        <tr>
+            <td>{{ service.serviceName }}</td>
+            <td>{{ service.type }}</td>
+            <td>{{ service.description }}</td>
+            <td>
+                <p-button icon="pi pi-pencil" class="mr-2" (click)="editService(service)" />
+                <p-button icon="pi pi-trash" severity="danger" (click)="deleteService(service)" />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
 
-                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          <div *ngFor="let service of services" 
-                               class="p-4 bg-surface-0 dark:bg-surface-900 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                              
-                              <!-- Informations du service -->
-                              <div class="space-y-2">
-                                  <h3 class="text-xl font-semibold text-surface-900 dark:text-surface-0">{{service.serviceName}}</h3>
-                                  
-                                  <div class="flex items-center text-surface-600 dark:text-surface-300">
-                                      <i class="pi pi-info-circle mr-2"></i>
-                                      <span>{{service.description || 'Description non disponible'}}</span>
-                                  </div>
+<p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Service Details" [modal]="true">
+    <ng-template pTemplate="content">
+        <div class="flex flex-col gap-4">
+            <!-- Service Name -->
+            <div>
+                <label for="serviceName" class="block font-bold mb-2">Name</label>
+                <input
+                    type="text"
+                    pInputText
+                    id="serviceName"
+                    [(ngModel)]="service.serviceName"
+                    name="serviceName"
+                    required
+                    autofocus
+                />
+                <small class="text-red-500" *ngIf="submitted && !service.serviceName">Name is required.</small>
+            </div>
 
-                                  <div class="flex items-center text-surface-600 dark:text-surface-300">
-                                      <i class="pi pi-tag mr-2"></i>
-                                      <span>{{service.type || 'Type non disponible'}}</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+            <!-- Type -->
+            <div>
+                <label for="type" class="block font-bold mb-2">Type</label>
+                <input type="text" pInputText id="type" [(ngModel)]="service.type" name="type" required />
+                <small class="text-red-500" *ngIf="submitted && !service.type">Type is required.</small>
+            </div>
 
-                      <!-- Pagination -->
-                      <p-paginator [rows]="rows" 
-                                  [totalRecords]="totalRecords" 
-                                  [first]="first"
-                                  (onPageChange)="onPageChange($event)"
-                                  [rowsPerPageOptions]="[6,12,24]"
-                                  class="mt-4"></p-paginator>
-                  </div>
-              </div>
-          </div>
-      </div>
 
-      <footer-widget />
-  </div>
-</div>
+
+
+            <div>
+                <label for="description" class="block font-bold mb-2">Description</label>
+                <textarea
+                    id="description"
+                    pTextarea
+                    [(ngModel)]="service.description"
+                    name="description"
+                    rows="3"
+                    required>
+          </textarea>
+                <small class="text-red-500" *ngIf="submitted && !service.description">Description is required.</small>
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="saveService()" />
+    </ng-template>
+</p-dialog>
+
+
+<p-toast></p-toast>
+

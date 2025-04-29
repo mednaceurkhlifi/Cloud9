@@ -35,14 +35,19 @@ public class FeedbackService {
     private UserRepository userRepository;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
     public Feedback addFeedbackToOrganization(Long organisationId, Feedback feedback) {
         // Récupérer l'organisation
         Organization organisation = organizationRepository.findById(organisationId)
                 .orElseThrow(() -> new RuntimeException("Organization not found with ID: " + organisationId));
 
-        // Récupérer un utilisateur statique
         User staticUser = userRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Static user not found with ID: 1"));
+
+        boolean alreadyExists = feedbackRepository.existsByUser_UserIdAndOrganisation_OrganizationId(staticUser.getUserId(), organisationId);
+        if (alreadyExists) {
+            throw new RuntimeException("User has already submitted feedback for this organization.");
+        }
 
         feedback.setUser(staticUser);
         feedback.setOrganisation(organisation);
@@ -50,24 +55,23 @@ public class FeedbackService {
 
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
+        // Mettre à jour la moyenne
         Double avgRate = feedbackRepository.findAverageRateByOrganizationId(organisationId);
         organisation.setAverageRate(avgRate != null ? avgRate.floatValue() : 0f);
         organizationRepository.save(organisation);
 
-
+        // Envoyer la notification
         String userName = staticUser.getFull_name();
         String message = feedback.getComment();
-
         String notification = "Nouvelle feedback de " + userName + " : " + message;
         messagingTemplate.convertAndSend("/topic/notifications", notification);
-
 
         return savedFeedback;
     }
 
 
     public List<Feedback> getFeedbacksByOrganization(Long organisationId) {
-        return feedbackRepository.findByOrganisationId(organisationId);
+        return feedbackRepository.findByOrganisation_OrganizationId(organisationId);
     }
 
     public Feedback markFeedbackAsRead(Long feedbackId) {
@@ -91,7 +95,7 @@ public class FeedbackService {
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         return feedbackRepository.findFeedbacksByUser(user).stream()
-                .map(f -> new FeedBackDTO(f.getId(), f.getNote(), f.getComment(),f.isRead()))
+                .map(f -> new FeedBackDTO(f.getFeedbackId(), f.getNote(), f.getComment(),f.isRead()))
                 .collect(Collectors.toList());
     }
 

@@ -17,6 +17,8 @@ import { deleteOrganisation } from '../fn/organisation-controller/delete-organis
 import { DeleteOrganisation$Params } from '../fn/organisation-controller/delete-organisation';
 import { getAllOrganisations } from '../fn/organisation-controller/get-all-organisations';
 import { GetAllOrganisations$Params } from '../fn/organisation-controller/get-all-organisations';
+import { getAllOrganizationsEntityCounts } from '../fn/organisation-controller/get-all-organizations-entity-counts';
+import { GetAllOrganizationsEntityCounts$Params } from '../fn/organisation-controller/get-all-organizations-entity-counts';
 import { getAverageRate } from '../fn/organisation-controller/get-average-rate';
 import { GetAverageRate$Params } from '../fn/organisation-controller/get-average-rate';
 import { getGlobalStatistics } from '../fn/organisation-controller/get-global-statistics';
@@ -28,6 +30,7 @@ import { GetOfficesCountByOrganization$Params } from '../fn/organisation-control
 import { getOrganisationById } from '../fn/organisation-controller/get-organisation-by-id';
 import { GetOrganisationById$Params } from '../fn/organisation-controller/get-organisation-by-id';
 import { Organization } from '../models/organization';
+import { OrganizationEntityCountsDto } from '../models/organization-entity-counts-dto';
 import { updateOrganisation } from '../fn/organisation-controller/update-organisation';
 import { UpdateOrganisation$Params } from '../fn/organisation-controller/update-organisation';
 
@@ -109,31 +112,6 @@ export class OrganisationControllerService extends BaseService {
   getOrganisationById(params: GetOrganisationById$Params, context?: HttpContext): Observable<Organization> {
     return this.getOrganisationById$Response(params, context).pipe(
       map((r: StrictHttpResponse<Organization>): Organization => r.body)
-    );
-  }
-
-  /** Path part for operation `deleteOrganisation()` */
-  static readonly DeleteOrganisationPath = '/organisations/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `deleteOrganisation()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  deleteOrganisation$Response(params: DeleteOrganisation$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return deleteOrganisation(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `deleteOrganisation$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  deleteOrganisation(params: DeleteOrganisation$Params, context?: HttpContext): Observable<void> {
-    return this.deleteOrganisation$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
@@ -279,6 +257,56 @@ export class OrganisationControllerService extends BaseService {
 [key: string]: {
 };
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllOrganizationsEntityCounts()` */
+  static readonly GetAllOrganizationsEntityCountsPath = '/organisations/counts';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllOrganizationsEntityCounts()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllOrganizationsEntityCounts$Response(params?: GetAllOrganizationsEntityCounts$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<OrganizationEntityCountsDto>>> {
+    return getAllOrganizationsEntityCounts(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllOrganizationsEntityCounts$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllOrganizationsEntityCounts(params?: GetAllOrganizationsEntityCounts$Params, context?: HttpContext): Observable<Array<OrganizationEntityCountsDto>> {
+    return this.getAllOrganizationsEntityCounts$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<OrganizationEntityCountsDto>>): Array<OrganizationEntityCountsDto> => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteOrganisation()` */
+  static readonly DeleteOrganisationPath = '/organisations/IsDeleted/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteOrganisation()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteOrganisation$Response(params: DeleteOrganisation$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deleteOrganisation(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteOrganisation$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteOrganisation(params: DeleteOrganisation$Params, context?: HttpContext): Observable<void> {
+    return this.deleteOrganisation$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

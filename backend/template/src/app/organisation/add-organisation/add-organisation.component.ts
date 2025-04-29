@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 
-import { MessageService } from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 import { FeedbackControllerService, OrganisationControllerService } from '../../../api/services/services';
 import { Organization } from '../../../api/services/models/organization';
 
@@ -32,7 +32,6 @@ import { NotificationService } from '../../socket/NotificationService';
     TextareaModule,
     SelectModule,
     ToastModule,
-    RouterOutlet,
     RouterModule
   ],
   templateUrl: './add-organisation.component.html',
@@ -53,8 +52,8 @@ export class AddOrganisationComponent implements OnInit {
   rows = 10;
   selectedImageFile?: File;
   toastService: any;
-  
-  searchText: string = '';
+
+    globalFilter: string = '';
 
   feedbackDialog = false;
   feedbacks: Feedback[] = [];
@@ -63,11 +62,13 @@ export class AddOrganisationComponent implements OnInit {
 
 
 notificationDialogVisible: boolean = false;
+
   constructor(
     private service: OrganisationControllerService,
     private messageService: MessageService,
     private feedbackService: FeedbackControllerService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -77,10 +78,25 @@ notificationDialogVisible: boolean = false;
       this.notificationDialogVisible = true;
     });
   }
+    filteredOrganizations: Organization[] = [];
+    searchTerm: string = '';
+    filterOrganizations() {
+        const term = this.searchTerm.toLowerCase();
+        this.filteredOrganizations = this.organizations.filter(
+            (org) =>
+                org.name?.toLowerCase().includes(term) ||
+                org.address?.toLowerCase().includes(term) ||
+                org.email?.toLowerCase().includes(term)
+        );
+
+    }
   clearNotifications() {
     this.notifications = [];
     this.notificationDialogVisible = false;
   }
+    navigateToCharts(): void {
+        this.router.navigate(['/organisation-stats']); // Naviguer vers la route des graphiques
+    }
 
   initOrganization(): Organization {
     return {
@@ -91,7 +107,7 @@ notificationDialogVisible: boolean = false;
       is_deleted: false,
       image: ''
     };
-    
+
   }
 
     ouvrerNotificationDialog() {
@@ -111,7 +127,7 @@ notificationDialogVisible: boolean = false;
       }
     });
   }
-  
+
 
   onPageChange(event: any): void {
     this.first = event.first;
@@ -133,7 +149,7 @@ notificationDialogVisible: boolean = false;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   }
-  
+
   isValidPhone(phone: string): boolean {
     const phonePattern = /^[0-9]{8,15}$/;
     return phonePattern.test(phone);
@@ -182,10 +198,10 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
         requestBody.imageFile = imageFile;
       }
 
-      if (this.organization.id) {
+      if (this.organization.organizationId) {
         // Mise à jour
         this.service.updateOrganisation({
-          id: this.organization.id,
+          id: this.organization.organizationId,
           body: requestBody
         }).subscribe({
           next: () => {
@@ -221,13 +237,13 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
       });
     }
   }
- 
+
 
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file && this.isValidImage(file)) {
       this.selectedImageFile = file; // on garde le fichier avec son nom et extension
-  
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.organization.image = e.target.result; // base64
@@ -237,13 +253,13 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
       alert('Please select a valid image file');
     }
   }
-  
-  
+
+
   isValidImage(file: File): boolean {
     const allowedExtensions = ['image/jpeg', 'image/png', 'image/gif'];
     return allowedExtensions.includes(file.type); // Vérifie si le type MIME correspond à une image
   }
-  
+
 
   dataURLToBlob(dataURL: string): Blob {
     const byteString = atob(dataURL.split(',')[1]);
@@ -262,11 +278,11 @@ formData.append('is_deleted', String(this.organization.is_deleted)); // Convert 
   }
 
   deleteOrganization(org: Organization): void {
-    if (!org.id) return;
+    if (!org.organizationId) return;
 
-    this.service.deleteOrganisation({ id: org.id }).subscribe({
+    this.service.deleteOrganisation({ id: org.organizationId }).subscribe({
       next: () => {
-        this.organizations = this.organizations.filter(o => o.id !== org.id);
+        this.organizations = this.organizations.filter(o => o.organizationId !== org.organizationId);
         this.messageService.add({ severity: 'success', summary: 'Supprimée', detail: 'Organisation supprimée.' });
       },
       error: () => {
@@ -301,12 +317,12 @@ viewFeedbacks(organisationId: number): void {
       this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Invalid feedback ID.' });
       return;
     }
-  
+
     if (!response || response.trim() === '') {
       this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Response cannot be empty.' });
       return;
     }
-  
+
     this.feedbackService.respondToFeedback({ feedbackId, body: response }).subscribe({
       next: (res) => {
         console.log('API Response:', res); // Affichez la réponse brute
@@ -315,7 +331,7 @@ viewFeedbacks(organisationId: number): void {
           summary: 'Response Sent',
           detail: res['message'] || 'Response sent successfully' // Extract a string property or provide a fallback
         });
-        this.closeFeedbackDialog() 
+        this.closeFeedbackDialog()
       },
       error: (err) => {
         console.error('API Error:', err); // Vérifiez l'erreur ici

@@ -2,6 +2,7 @@
   <div id="home" class="landing-wrapper overflow-hidden">
     <topbar-widget class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static"></topbar-widget>
 
+
     <div class="flex justify-end mb-4">
       <button
         pButton
@@ -78,12 +79,12 @@
                       label="Rate"
                       icon="pi pi-star"
                       class="p-button-rounded p-button-warning"
-                      (click)="openRateDialog(org)"
+                          (click)="openRateDialog(org)"
                     ></p-button>
 
                     <button
                       pButton
-                      (click)="navigateToOffices(org.id)"
+                      (click)="navigateToOffices(org.organizationId)"
                       icon="pi pi-building"
                       label="Voir les bureaux"
                       class="w-full"
@@ -118,7 +119,7 @@
           <p-rating [(ngModel)]="feedback.rating" stars="5" cancel="false"></p-rating>
           <small class="text-red-500" *ngIf="submitted && !feedback.rating">Rating is required.</small>
         </div>
-  
+
         <!-- Comment -->
         <div>
           <label for="comment" class="block font-bold mb-2">Comment</label>
@@ -134,7 +135,7 @@
         </div>
       </div>
     </ng-template>
-  
+
     <ng-template pTemplate="footer">
       <p-button label="Cancel" icon="pi pi-times" text (click)="hideRateDialog()" />
       <p-button label="Submit" icon="pi pi-check" (click)="submitFeedback()" />
@@ -175,7 +176,7 @@
         [ngClass]="{ 'feedback-read': feedback.read, 'feedback-unread': !feedback.read }"
       >
         <div class="flex items-center justify-between">
-        
+
           <span
             class="px-3 py-1 text-sm rounded-full"
             [ngClass]="{
@@ -207,3 +208,4 @@
     <footer-widget></footer-widget>
   </div>
 </div>
+<p-toast></p-toast>

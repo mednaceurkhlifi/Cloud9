@@ -42,7 +42,7 @@ public class ServiceService implements IServiceService {
 
 
     public Services createService(Services service) {
-        Long officeId = service.getOffice().getId();
+        Long officeId = service.getOffice().getOfficeId();
         Office office = officeRepository.findById(officeId)
                 .orElseThrow(() -> new RuntimeException("Office not found"));
 

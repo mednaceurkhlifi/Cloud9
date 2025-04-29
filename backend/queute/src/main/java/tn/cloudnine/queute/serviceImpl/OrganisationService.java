@@ -3,10 +3,14 @@ package tn.cloudnine.queute.serviceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import tn.cloudnine.queute.dto.UserRoleDTO;
 import tn.cloudnine.queute.model.ServiceAndFeedback.organization.Organization;
+import tn.cloudnine.queute.model.ServiceAndFeedback.organization.OrganizationEntityCountsDTO;
+import tn.cloudnine.queute.model.user.User;
 import tn.cloudnine.queute.repository.serviceRepo.FeedbackRepository;
 import tn.cloudnine.queute.repository.serviceRepo.OfficeRepository;
 import tn.cloudnine.queute.repository.serviceRepo.OrganizationRepository;
+import tn.cloudnine.queute.repository.user.UserRepository;
 import tn.cloudnine.queute.services.IOrganisationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +33,8 @@ public class OrganisationService implements IOrganisationService {
     private FeedbackRepository feedbackRepository;
     @Autowired
     private OfficeRepository officesRepository;
-
+   @Autowired
+   private UserRepository userRepository;
 
 
     @Autowired
@@ -93,29 +98,38 @@ public class OrganisationService implements IOrganisationService {
         }).orElseThrow(() -> new RuntimeException("Organization not found with id: " + id));
     }
 
+
     @Transactional
     public void deleteOrganisation(Long id) {
         Organization organization = organisationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Organization not found"));
 
-        // 2. Supprimer tous les feedbacks liés
+        // Cascade delete feedbacks, offices, and users
+        // The @OneToMany cascade REMOVE annotation should handle this, but we can manually delete them to ensure data integrity
+
         if (organization.getFeedbacks() != null && !organization.getFeedbacks().isEmpty()) {
             feedbackRepository.deleteAll(organization.getFeedbacks());
         }
+
         if (organization.getOffices() != null && !organization.getOffices().isEmpty()) {
             officesRepository.deleteAll(organization.getOffices());
         }
 
-        // 3. Maintenant tu peux supprimer l'organisation
-        organisationRepository.delete(organization);
-    }
+        if (organization.getUsers() != null && !organization.getUsers().isEmpty()) {
+            userRepository.deleteAll(organization.getUsers());
+        }
 
-
-    /* public void deleteOrganisation(Long id) {
+        // Now delete the organization itself
         organisationRepository.deleteById(id);
+
     }
 
-    */
+
+
+
+
+
+
     public boolean existsById(Long id) {
         return organisationRepository.existsById(id);
     }
@@ -150,9 +164,31 @@ public class OrganisationService implements IOrganisationService {
 
         Map<Long, Integer> officesCount = new HashMap<>();
         for (Organization org : organizations) {
-            officesCount.put(org.getId(), org.getOffices().size());
+            officesCount.put(org.getOrganizationId(), org.getOffices().size());
         }
 
         return officesCount;
     }
+
+    public List<OrganizationEntityCountsDTO> getAllOrganizationsEntityCounts() {
+        List<Organization> organizations = organisationRepository.findAll();
+
+        return organizations.stream().map(organization -> {
+            int officeCount = organization.getOffices() != null ? organization.getOffices().size() : 0;
+            int feedbackCount = organization.getFeedbacks() != null ? organization.getFeedbacks().size() : 0;
+            int userCount = organization.getUsers() != null ? organization.getUsers().size() : 0;
+
+            return new OrganizationEntityCountsDTO(
+                    organization.getOrganizationId(),
+                    organization.getName(),
+                    officeCount,
+                    feedbackCount,
+                    userCount
+            );
+        }).toList();
+    }
+
+
+
+
 }

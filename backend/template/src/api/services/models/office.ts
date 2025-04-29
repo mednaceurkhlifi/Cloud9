@@ -4,10 +4,10 @@
 
 export interface Office {
   created_at?: string;
-  id?: number;
   lastModifiedBy?: number;
   location?: string;
   name?: string;
+  officeId?: number;
   phoneNumber?: string;
   updated_at?: string;
 }

@@ -27,13 +27,12 @@ import { ToolbarModule } from 'primeng/toolbar';
     TextareaModule,
     SelectModule,
     ToastModule,
-    RouterOutlet,
     RouterModule
   ],
   selector: 'app-office',
   templateUrl: './office.component.html',
   styleUrls: ['./office.component.scss'],
-  
+
   providers: [MessageService]
 })
 export class OfficeComponent implements OnInit {
@@ -58,14 +57,14 @@ export class OfficeComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const orgId = +params['organizationId'];  
+      const orgId = +params['organizationId'];
       if (orgId) {
         this.organisationId = orgId;
         this.loadOfficesForOrganization(this.organisationId);
       }
     });
   }
-  
+
 
   loadOfficesForOrganization(orgId: number) {
     this.officeService.getAllOfficesByOrganisationId({ organisationId: orgId })
@@ -91,7 +90,7 @@ export class OfficeComponent implements OnInit {
   }
 
   deleteOffice(office: Office) {
-    this.officeService.deleteOffice({ id: office.id! }).subscribe(
+    this.officeService.deleteOffice({ id: office.officeId! }).subscribe(
       () => {
         this.getOffices();
         this.messageService.add({severity: 'success', summary: 'Bureau supprimé', detail: 'Le bureau a été supprimé avec succès.'});
@@ -112,11 +111,11 @@ export class OfficeComponent implements OnInit {
       this.toastService.error('Please fill out all fields correctly.');
       return;
     }
-  
+
     if (!this.office.name || !this.office.location) return;
-  
-    if (this.office.id) {
-      this.officeService.updateOffice({ id: this.office.id, body: this.office }).subscribe(
+
+    if (this.office.officeId) {
+      this.officeService.updateOffice({ id: this.office.officeId, body: this.office }).subscribe(
         () => this.getOffices(),
         (error) => console.error(error)  // Ajoute un gestionnaire d'erreurs pour mieux voir ce qui ne va pas
       );
@@ -127,11 +126,11 @@ export class OfficeComponent implements OnInit {
           (error) => console.error(error)  // Ajoute un gestionnaire d'erreurs pour mieux voir ce qui ne va pas
         );
     }
-  
+
     this.productDialog = false;
     this.office = {};
   }
-  
+
 
   hideDialog() {
     this.productDialog = false;

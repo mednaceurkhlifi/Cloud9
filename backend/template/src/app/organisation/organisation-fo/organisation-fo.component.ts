@@ -17,38 +17,44 @@ import { FeedBackDto, Organization } from '../../../api/services/models';
 import { FeedbackControllerService, OrganisationControllerService } from '../../../api/services/services';
 import { ChatbotComponent } from '../chatbot/chatbot.component';
 import { AddFeedbackToOrganization$Params } from '../../../api/services/fn/feedback-controller/add-feedback-to-organization';
+import {MessageService} from "primeng/api";
+import {Toast} from "primeng/toast";
+
 
 @Component({
   selector: 'app-organisation-fo',
-  imports: [
-    ChatbotComponent,
-    CommonModule,
-    RouterModule,
-    TopbarWidget,
-    FooterWidget,
-    RippleModule,
-    StyleClassModule,
-    ButtonModule,
-    DividerModule,
-    PaginatorModule,
-    TableModule,
-    FormsModule,
-    RatingModule,
-    DialogModule, 
-    HttpClientModule
-  ],
+    imports: [
+        ChatbotComponent,
+        CommonModule,
+        RouterModule,
+        TopbarWidget,
+        FooterWidget,
+        RippleModule,
+        StyleClassModule,
+        ButtonModule,
+        DividerModule,
+        PaginatorModule,
+        TableModule,
+        FormsModule,
+        RatingModule,
+        DialogModule,
+        HttpClientModule,
+        Toast,
+
+    ],
   templateUrl: './organisation-fo.component.html',
-  styleUrl: './organisation-fo.component.scss'
+  styleUrl: './organisation-fo.component.scss',
+    providers: [MessageService]
 })
 export class OrganisationFOComponent {
   organizations: Organization[] = [];
-  filteredOrganizations: Organization[] = []; // Liste filtrée
+  filteredOrganizations: Organization[] = [];
   totalRecords: number = 0;
   rows: number = 10;
   first: number = 0;
-  searchTerm: string = ''; // Terme de recherche
+  searchTerm: string = '';
   isChatbotOpen: boolean = false;
-  rateDialog: boolean = false; // Contrôle de la visibilité du formulaire
+  rateDialog: boolean = false;
   submitted: boolean = false;
   feedback: { rating: number; comment: string; organizationId: number | null } = {
     rating: 0,
@@ -57,13 +63,14 @@ export class OrganisationFOComponent {
   };
 
   feedbacks: FeedBackDto[] = []; // Liste des feedbacks
-   showFeedbackDialog: boolean = false; 
+   showFeedbackDialog: boolean = false;
 
 
   constructor(
     private organisationService: OrganisationControllerService,
-    private feedbackService: FeedbackControllerService, 
-    private router: Router
+    private feedbackService: FeedbackControllerService,
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -89,7 +96,7 @@ export class OrganisationFOComponent {
     this.organisationService.getAverageRate({ organizationId }).subscribe({
       next: (rate) => {
         console.log(`Note moyenne pour l'organisation ${organizationId} :`, rate);
-        const org = this.organizations.find((o) => o.id === organizationId);
+        const org = this.organizations.find((o) => o.organizationId === organizationId);
         if (org) {
           org.averageRate = rate; // Ajouter la note moyenne à l'organisation
         }
@@ -105,8 +112,8 @@ export class OrganisationFOComponent {
 
   loadAllAverageRates(): void {
     this.organizations.forEach((org) => {
-      if (org.id) {
-        this.loadAverageRate(org.id);
+      if (org.organizationId) {
+        this.loadAverageRate(org.organizationId);
       }
     });
   }
@@ -119,7 +126,8 @@ export class OrganisationFOComponent {
         org.address?.toLowerCase().includes(term) ||
         org.email?.toLowerCase().includes(term)
     );
-    this.totalRecords = this.filteredOrganizations.length; // Mettre à jour le total
+    this.totalRecords = this.filteredOrganizations.length;
+    // Mettre à jour le total
   }
 
   navigateToOffices(organizationId: number | undefined) {
@@ -134,7 +142,7 @@ export class OrganisationFOComponent {
   }
 
   openRateDialog(org: Organization): void {
-    this.feedback.organizationId = org.id || null;
+    this.feedback.organizationId = org.organizationId || null;
     this.feedback.rating = 0;
     this.feedback.comment = '';
     this.rateDialog = true;
@@ -144,32 +152,57 @@ export class OrganisationFOComponent {
     this.rateDialog = false;
     this.submitted = false;
   }
-submitFeedback(): void {
-  this.submitted = true;
+    submitFeedback(): void {
+        this.submitted = true;
 
-  if (this.feedback.rating && this.feedback.comment && this.feedback.organizationId) {
-    const params: AddFeedbackToOrganization$Params = {
-      organisationId: this.feedback.organizationId, 
-      body: {
-        note: this.feedback.rating, // Note
-        comment: this.feedback.comment, // Commentaire
-      },
-    };
+        if (this.feedback.rating && this.feedback.comment && this.feedback.organizationId) {
+            const params: AddFeedbackToOrganization$Params = {
+                organisationId: this.feedback.organizationId,
+                body: {
+                    note: this.feedback.rating, // Note
+                    comment: this.feedback.comment, // Commentaire
+                },
+            };
 
-    this.feedbackService.addFeedbackToOrganization(params).subscribe({
-      next: () => {
-        console.log('Feedback submitted successfully');
-        this.loadAllAverageRates(); 
-        this.hideRateDialog(); 
-      },
-      error: (error) => {
-        console.error('Erreur lors de l\'envoi du feedback :', error);
-      },
-    });
-  }
-}
+            this.feedbackService.addFeedbackToOrganization(params).subscribe({
+                next: () => {
+                    console.log('Feedback submitted successfully');
+                    this.loadAllAverageRates();
+                    this.hideRateDialog();
+                },
+                error: (error) => {
+                    console.error('Erreur lors de l\'envoi du feedback :', error);
 
-toggleChatbot(): void {
+                    // Default error message
+                    let errorMessage = 'Une erreur inconnue est survenue.';
+
+                    // Handle 500 error (Internal Server Error)
+                    if (error.status === 500) {
+                        if (error.error && error.error.message && error.error.message.includes("already submitted")) {
+                            // Display specific message for already submitted feedback
+                            errorMessage = 'Vous avez déjà soumis un feedback pour cette organisation.';
+                        } else {
+                            // General message for unknown internal server errors
+                            errorMessage = 'Vous avez déjà soumis un feedback pour cette organisation.';
+                        }
+                    } else if (error.error && error.error.message) {
+                        // If the backend sends an error message, use that as the error message
+                        errorMessage = error.error.message;
+                    }
+
+                    // Show the error message using the messageService
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: errorMessage,
+                    });
+                },
+            });
+        }
+    }
+
+
+    toggleChatbot(): void {
   this.isChatbotOpen = !this.isChatbotOpen;
 }
 

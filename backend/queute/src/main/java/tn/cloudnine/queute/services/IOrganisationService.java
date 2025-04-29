@@ -11,7 +11,7 @@ public interface IOrganisationService {
     Optional<Organization> findById(Long id);
     Organization createOrganization(Organization organisation, MultipartFile imageFile);
     Organization updateOrganisation(Long id, Organization organisation, MultipartFile imageFile);
-    void deleteOrganisation(Long id);
+
 
     public boolean existsById(Long id);
 }

@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
-import { TopbarWidget } from '../pages/landing/components/topbarwidget.component';
-import { FooterWidget } from '../pages/landing/components/footerwidget';
+
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Office } from '../../api/services/models';
-import { OfficeControllerService } from '../../api/services/services';
+import {TopbarWidget} from "../../pages/landing/components/topbarwidget.component";
+import {FooterWidget} from "../../pages/landing/components/footerwidget";
+import {Office} from "../../../api/services/models/office";
+import {OfficeControllerService} from "../../../api/services/services/office-controller.service";
+
 
 @Component({
   selector: 'app-office-fo',

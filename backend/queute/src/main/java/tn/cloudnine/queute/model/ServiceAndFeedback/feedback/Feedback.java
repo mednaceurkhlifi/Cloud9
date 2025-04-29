@@ -21,12 +21,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE feedback f SET f.is_deleted = true WHERE f.feedback_id=? AND f.is_deleted = false ")
 public class Feedback implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long feedbackId;
 
     private Double note;
     private String comment;
@@ -35,7 +34,7 @@ public class Feedback implements Serializable {
     private boolean isRead;
 
     @ManyToOne
-    @JoinColumn(name = "organisation_id", nullable = false)
+    @JoinColumn(name = "organisationId", nullable = false)
 
     private Organization organisation;
 

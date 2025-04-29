@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
 import tn.cloudnine.queute.model.ServiceAndFeedback.feedback.Feedback;
 import tn.cloudnine.queute.model.ServiceAndFeedback.office.Office;
+import tn.cloudnine.queute.model.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,15 +28,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE organizations o SET o.is_deleted = true WHERE o.organization_id=? AND o.is_deleted = false ")
 public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "organization_id")
+    @Column(name = "organizationId")
 
     //organizationId bch nbadelha zeda fil front
-    private Long id;
+    private Long organizationId;
 
     @Column()
     private String name;
@@ -53,11 +53,11 @@ public class Organization {
     private String image;
 
 
-    // @OneToOne(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-   // @JsonManagedReference
-    //private Workspace workspace;
+      // @OneToOne(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+     // @JsonManagedReference
+    // private Workspace workspace;
 
-    private boolean is_deleted;
+   private boolean is_deleted;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -71,11 +71,11 @@ public class Organization {
     @Column(insertable = false)
     private  Integer lastModifiedBy;
 
-    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE,CascadeType.ALL}, orphanRemoval = true)
     @JsonIgnore
     private List<Office> offices;
 
-    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "organisation", cascade = {CascadeType.PERSIST, CascadeType.REMOVE,CascadeType.ALL}, orphanRemoval = true)
     @JsonIgnore
     private List<Feedback> feedbacks;
 
@@ -83,6 +83,8 @@ public class Organization {
 
 
     ////////////////////liste users avec role/////////////////////
-
+    @OneToMany(mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.ALL}, orphanRemoval = true)
+    @JsonIgnore
+    private List<User> users;
 
 }
