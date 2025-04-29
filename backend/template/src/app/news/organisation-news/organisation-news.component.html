@@ -3,7 +3,7 @@
 <div class="allContainer">
 <p-card *ngFor="let ln of listNews ;index as i" [style]="{ width: '25rem', overflow: 'hidden' }">
     <ng-template #header>
-        <img [style]="{cursor:'pointer'}" alt="Card" class="w-full" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" [routerLink]="['/dashboard/stepper',ln.newsId]" />
+        <img [style]="{cursor:'pointer' ,height:'200px',objectFit:'cover'}" alt="Card" class="w-full" [src]="images[ln.image!]" [routerLink]="['/dashboard/stepper',ln.newsId]" />
     </ng-template>
     <ng-template  #title >
         <div [style]="{cursor:'pointer'}" [routerLink]="['/dashboard/stepper',ln.newsId]"> {{ln.title}}  </div>
@@ -12,7 +12,7 @@
         
     <ng-template #subtitle> 3 days ago </ng-template>
     <p>
-       {{ln.articleCategory}}
+        {{ getFormattedCategories(ln.articleCategory? ln.articleCategory:'') }}
     </p>
     <ng-template #footer>
         <div class="flex gap-4 mt-1">

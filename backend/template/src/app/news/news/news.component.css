@@ -83,13 +83,15 @@
   display: flex;
   
   justify-content: flex-end;
-  left: 388px;
+  /*left: 388px;*/
   align-items: center;
   position: relative;
   cursor: pointer;
   font-size: var(--size);
   user-select: none;
   fill: var(--color);
+  margin-top: -65px;
+    margin-left: 98px;
 }
 
 .container .save-regular {

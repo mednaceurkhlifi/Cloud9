@@ -25,11 +25,12 @@ import ListItem from '@tiptap/extension-list-item';
 import { TokenService } from '../../token-service/token.service';
 import { FooterWidget } from '../../pages/landing/components/footerwidget';
 import { TopbarWidget } from '../../pages/landing/components/topbarwidget.component';
+import { ExploreTopicComponent } from "../explore-topic/explore-topic.component";
 
 @Component({
   selector: 'app-news-details',
     standalone: true,
-  imports: [CommonModule,FooterWidget,TopbarWidget],
+  imports: [CommonModule, FooterWidget, TopbarWidget, ExploreTopicComponent],
   templateUrl: './news-details.component.html',
   styleUrl: './news-details.component.css'
 })

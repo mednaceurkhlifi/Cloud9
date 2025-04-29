@@ -7,10 +7,12 @@ import { TrendingNewsComponent } from "../trending-news/trending-news.component"
 import { NewsComponent } from '../news/news.component';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { NewsService } from '../../services/news.service';
+import { ExploreTopicComponent } from "../explore-topic/explore-topic.component";
 
 @Component({
   selector: 'app-all-news',
-  imports: [TopbarWidget, FooterWidget, CommonModule, FormsModule,RouterModule],
+  imports: [TopbarWidget, CommonModule, FooterWidget, CommonModule, FormsModule, RouterModule, ExploreTopicComponent],
   templateUrl: './all-news.component.html',
   styleUrls: ['./all-news.component.scss'],
   
@@ -18,5 +20,5 @@ import { filter } from 'rxjs';
 export class AllNewsComponent {
   constructor(private router:Router,private route: ActivatedRoute){}
   selectedTab: 'all' | 'trending' = 'all';
-
+  
 }

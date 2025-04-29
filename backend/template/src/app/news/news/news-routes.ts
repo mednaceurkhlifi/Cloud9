@@ -4,6 +4,6 @@ import { NewsComponent } from "./news.component";
 export default[
     {
         path:'',
-        component:NewsComponent
+        component:NewsComponent,
     }
 ]satisfies Routes

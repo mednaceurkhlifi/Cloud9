@@ -11,6 +11,8 @@ export default[
         { path: '', redirectTo: 'all', pathMatch: 'full' },
         { path: 'all', component: NewsComponent },
         { path: 'trending', component: TrendingNewsComponent},
+        { path: ':category', component: NewsComponent },
+
         ]
     }
 ]satisfies Routes

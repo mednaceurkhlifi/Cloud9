@@ -8,7 +8,7 @@ import { NewsService } from '../../services/news.service';
 import { ReactionService } from '../../services/reaction.service';
 import { elementAt, forkJoin } from 'rxjs';
 import { ReadLater } from '../../models/ReadLater';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ReactionsListComponent } from '../reactions-list/reactions-list.component';
 import { ReactComponent } from '../react/react.component';
 import { ButtonModule } from 'primeng/button';
@@ -24,6 +24,7 @@ import { TokenService } from '../../token-service/token.service';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
+import { ExploreTopicComponent } from '../explore-topic/explore-topic.component';
 
 @Component({
   selector: 'app-news',
@@ -34,7 +35,7 @@ import { InputTextModule } from 'primeng/inputtext';
   styleUrl: './news.component.css'
 })
 export class NewsComponent {
-  constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService,private tokenService:TokenService){}
+  constructor(private newsService:NewsService,private reactionService:ReactionService,private trendingService:TrendingService,private tokenService:TokenService,private route:ActivatedRoute){}
   categories: any[] | undefined;
 
   selectedCategory: { name: string, code: string } | undefined;
@@ -55,13 +56,8 @@ export class NewsComponent {
  
   ngOnInit()
   {
-    this.newsService.getArticleCategories().subscribe(res => {
-      this.categories = (res as any)?.map((cat: string) => ({
-        name: cat,
-        code: cat.toUpperCase().slice(0, 2)
-      }));
-    });
-    this.user={userId:Number(this.tokenService.getUserId())}
+    this.route.paramMap.subscribe(
+      param=>{
         this.newsService.getAllNews().subscribe(res=>{this.listNews=res as News[]
           this.originalList=this.listNews;
       this.listNews.forEach(element => {
@@ -75,7 +71,13 @@ export class NewsComponent {
         if(element.content!=null)
         element.content=JSON.parse(element.content).content?.map((item:any)=>item.content?.map((contentItem:any)=> contentItem.text).join('')).filter((text:any)=>text).slice(0)
      } )
+     const category=param.get('category')
+        
+     if(category)
+     {
+       this.listNews=this.originalList.filter(n=>n.articleCategory?.toLowerCase().includes(category.toLowerCase()))
 
+     }
      const check=this.listNews.map(news=>this.newsService.getChecked(this.user.userId!,news.newsId!))
      forkJoin(check).subscribe(results=>{  //el fork join testanna el api calls yekmlou mba3d tlanci el subscribe bech mayjiwnich les elements mta3 tableau listNews kol marra kfifech khater el subscribe matestanech li 9balha
       this.listchecked=results.map(res=> res ==1)
@@ -84,6 +86,19 @@ export class NewsComponent {
 
       this.test()
       });
+
+       
+          
+      }
+    )
+    this.newsService.getArticleCategories().subscribe(res => {
+      this.categories = (res as any)?.map((cat: string) => ({
+        name: cat,
+        code: cat.toUpperCase().slice(0, 2)
+      }));
+    });
+    this.user={userId:Number(this.tokenService.getUserId())}
+        
 
 
       //console.log(this.listNews[2].content)
@@ -260,6 +275,15 @@ export class NewsComponent {
     }
     else
     this.listNews=this.originalList
+  }
+
+  getFormattedCategories(jsonString: string): string {
+    try {
+      const arr = JSON.parse(jsonString);
+      return Array.isArray(arr) ? arr.join(', ') : jsonString;
+    } catch {
+      return jsonString;
+    }
   }
 
 }
