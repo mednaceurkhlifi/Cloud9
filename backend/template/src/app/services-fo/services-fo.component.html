@@ -25,6 +25,13 @@
                                         <i class="pi pi-tag mr-2"></i>
                                         <span>{{service.type || 'Type non disponible'}}</span>
                                     </div>
+                                    <div class="mt-4">
+                                        <button pButton 
+                                                label="Book Now" 
+                                                icon="pi pi-calendar" 
+                                                (click)="bookService(service)">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -37,6 +44,7 @@
                                      [rowsPerPageOptions]="[6,12,24]"
                                      class="mt-4"></p-paginator>
                     </div>
+
                 </div>
             </div>
         </div>
