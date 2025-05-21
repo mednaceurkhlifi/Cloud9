@@ -23,14 +23,14 @@ This repository contains the full-stack implementation of the 4th year Cloud eng
 
 ## 🧩 Technologies Used
 
-- **IaaS**: OpenStack  
+- **IaaS**: [OpenStack](https://www.openstack.org/)  
 - **Frontend**: Angular  
 - **Backend**: Spring Boot (Java)  
 - **Containerization**: Docker  
 - **Automation**: Ansible
 - **Orchestration**: Openstack heat, Kubernetes  
 - **AI Automation**: [n8n](https://n8n.io/), Chatgpt, Gemini, HuggingFace..
-- **Blockchain**: Hardhat for smart contract deployment & testing  
+- **Blockchain**: [Hardhat](https://hardhat.org/) for smart contract deployment & testing  
 
 ---
 
@@ -81,6 +81,3 @@ Project presentations are located in the `presentations/` directory.
 
 ---
 
-## 📜 License
-
-[MIT](LICENSE)
