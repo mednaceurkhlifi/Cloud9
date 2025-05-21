@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("project-module")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ModuleController {
 
     private final IModuleService service;

@@ -14,6 +14,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comment")
+@CrossOrigin(origins = "*")
+
 public class CommentController {
     private final CommentService commentService;
     private final IFlaskService flaskService;

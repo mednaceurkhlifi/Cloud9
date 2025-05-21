@@ -24,7 +24,7 @@ import java.util.Map;
 
 import tn.cloudnine.queute.utils.IFileUploader;
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/organisations")
 public class OrganisationController {
     @Autowired

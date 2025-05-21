@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/trending")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class TrendingController {
 
     @Autowired

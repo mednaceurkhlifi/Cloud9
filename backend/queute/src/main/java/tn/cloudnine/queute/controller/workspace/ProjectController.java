@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:5678"})
+@CrossOrigin(origins = {"*"})
 public class ProjectController {
 
     private final IProjectService service;

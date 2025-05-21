@@ -15,7 +15,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("meeting")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class MeetingController {
 
     private final IMeetingService service;

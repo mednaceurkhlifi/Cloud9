@@ -17,7 +17,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("task")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     private final ITaskService service;

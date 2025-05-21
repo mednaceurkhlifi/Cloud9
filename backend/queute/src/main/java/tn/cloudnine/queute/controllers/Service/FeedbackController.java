@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/feedbacks")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class FeedbackController {
 
     @Autowired

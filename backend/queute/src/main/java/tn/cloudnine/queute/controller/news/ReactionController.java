@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/react")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 
 public class ReactionController {
 

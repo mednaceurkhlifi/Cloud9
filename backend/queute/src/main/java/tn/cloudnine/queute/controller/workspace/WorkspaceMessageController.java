@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("ws-msg")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class WorkspaceMessageController {
 
     private final IWorkspaceMessageService service;

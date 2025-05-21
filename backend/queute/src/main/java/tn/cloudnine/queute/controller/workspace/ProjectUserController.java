@@ -15,7 +15,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("project-user")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ProjectUserController {
 
     private final IProjectUserService service;
