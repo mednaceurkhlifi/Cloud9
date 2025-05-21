@@ -1,0 +1,63 @@
+.edit-profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .profile-header {
+        .profile-image-container {
+            position: relative;
+            
+            .p-avatar {
+                width: 120px;
+                height: 120px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    .p-field {
+        margin-bottom: 1.5rem;
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .p-input-icon {
+            color: var(--primary-color);
+        }
+        
+        .p-float-label {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+    }
+    
+    .p-fileupload {
+        .p-button {
+            width: 100%;
+        }
+    }
+    
+    .p-card {
+        border-radius: 12px;
+        overflow: hidden;
+        
+        .p-card-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--surface-d);
+        }
+        
+        .p-card-body {
+            padding: 2rem;
+        }
+    }
+}

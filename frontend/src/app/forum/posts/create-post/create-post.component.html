@@ -1,0 +1,47 @@
+<p-dialog [header]="header" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }"
+    [closable]="true"
+    [dismissableMask]="true"
+    [baseZIndex]="10000"
+    (onHide)="onHide()"
+    >
+    <form [formGroup]="postForm" class="flex flex-col gap-5" style="padding-top:20px" (ngSubmit)="onSave()">
+        <div class="flex flex-col w-full">
+            <p-floatLabel>
+                <input pInputText id="title" formControlName="title" class="p-inputtext-lg w-full" />
+                <label for="title">Title</label>
+            </p-floatLabel>
+            <small *ngIf="postForm.get('title')?.invalid && postForm.get('title')?.touched" class="text-red-500">
+                Title is required.
+            </small>
+        </div>
+        <div class="flex flex-col w-full gap-4">
+            <p-floatLabel >
+                <textarea
+                    id="content"
+                    rows="6"
+                    pTextarea
+                    formControlName="content"
+                    class="p-inputtext-lg resize-none w-full"
+                    markdown
+                    ></textarea>
+                <label for="content">Content</label>
+            </p-floatLabel>
+
+            <small *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched" class="text-red-500">
+                Content is required.
+            </small>
+            <div class="border p-4 rounded bg-gray-100">
+                <markdown emoji [data]="postForm.get('content')?.value || ''"></markdown>
+            </div>
+        </div>
+        <div class="flex flex-col w-full">
+            <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" customUpload="true"  maxFileSize="1000000" (uploadHandler)="onFileSelect($event)" [auto]="true" chooseLabel="Browse" />
+        </div>
+        <div class="flex justify-end gap-3 pt-4">
+            <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-text" (click)="onClose()"></button>
+            <button pButton type="submit" label="Save" icon="pi pi-check" class="p-button-success" [disabled]="postForm.invalid"></button>
+        </div>
+
+    </form>
+</p-dialog>
+<p-toast />

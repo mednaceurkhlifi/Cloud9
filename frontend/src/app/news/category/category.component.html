@@ -1,0 +1,9 @@
+<div class="buttonContainer">
+
+<ng-container *ngFor=" let ls of listCategory ;index as i">
+    <p-button (onClick)="sendSelectedType(ls)" label="{{ls}}" severity="info" />
+</ng-container>
+<input pInputText [(ngModel)]="type " type="text" pSize="large" placeholder="Large" (keydown.enter)="onEnter()" />
+
+</div>
+

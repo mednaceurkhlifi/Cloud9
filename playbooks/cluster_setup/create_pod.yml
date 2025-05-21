@@ -1,0 +1,39 @@
+- name: Create a Pod in Kubernetes
+  hosts: masters
+  become: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.config/kube/admin.conf  # Explicitly set KUBECONFIG here (replace with the actual path if different)
+  tasks:
+    - name: Ensure Kubernetes is accessible
+      command: kubectl get nodes
+      register: kubectl_status
+      changed_when: false
+
+    - name: Display cluster status
+      debug:
+        msg: "{{ kubectl_status.stdout_lines }}"
+
+    - name: Create a pod
+      kubernetes.core.k8s:  # Updated from community.kubernetes.k8s
+        kubeconfig: "{{ lookup('env', 'KUBECONFIG') }}"  # Ensure it reads from the environment variable
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: mynginx-pod
+            namespace: default  # Add namespace
+            labels:
+              app: nginx
+          spec:
+            containers:
+              - name: nginx-container
+                image: nginx
+                ports:
+                  - containerPort: 80
+      register: pod_creation
+
+    - name: Display pod creation result
+      debug:
+        msg: "Pod creation result: {{ pod_creation }}"
+

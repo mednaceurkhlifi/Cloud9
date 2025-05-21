@@ -1,0 +1,61 @@
+<div class="edit-profile-container p-p-4">
+    <p-card header="Edit Profile" [style]="{ 'box-shadow': '0 4px 10px rgba(0, 0, 0, 0.03)' }">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-fluid p-mt-4">
+        <div class="p-grid p-formgrid">
+          <!-- First Name -->
+          <div class="p-field p-col-12 p-md-6">
+            <label for="firstName">First Name</label>
+            <span class="p-input-icon-left p-float-label">
+              <i class="pi pi-user"></i>
+              <input id="firstName" type="text" pInputText formControlName="firstName" />
+              <label for="firstName">Enter first name</label>
+            </span>
+             
+          </div>
+  
+          <!-- Last Name -->
+          <div class="p-field p-col-12 p-md-6">
+            <label for="lastName">Last Name</label>
+            <span class="p-input-icon-left p-float-label">
+              <i class="pi pi-user-edit"></i>
+              <input id="lastName" type="text" pInputText formControlName="lastName" />
+              <label for="lastName">Enter last name</label>
+            </span>
+            
+          </div>
+  
+          <!-- Email -->
+          <div class="p-field p-col-12">
+            <label for="email">Email</label>
+            <span class="p-input-icon-left p-float-label">
+              <i class="pi pi-envelope"></i>
+              <input id="email" type="email" pInputText formControlName="email" />
+              <label for="email">Enter email address</label>
+            </span>
+       
+          </div>
+
+          <div class="field">
+            <label for="birth_date" class="block text-surface-700 dark:text-surface-300 font-medium mb-1">Date of Birth</label>
+            <p-calendar id="birthDate" formControlName="birthDate" 
+                       [showIcon]="true" inputId="icon" 
+                       dateFormat="dd/mm/yy" [showButtonBar]="true"
+                       placeholder="Select your birth date"
+                       class="w-full"></p-calendar>
+           
+        </div>
+  
+          <!-- Profile Picture Upload -->
+          
+  
+          <!-- Action Buttons -->
+          <div class="p-col-12 p-d-flex p-jc-end p-mt-4 p-gap-2">
+            <button pButton type="button" label="Cancel" icon="pi pi-times" 
+                    class="p-button-outlined p-button-secondary" (click)="onCancel()"></button>
+            <button pButton type="submit" label="Save Changes" icon="pi pi-check" 
+                    class="p-button-primary" [disabled]="!editForm.valid"></button>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>

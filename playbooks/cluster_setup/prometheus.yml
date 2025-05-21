@@ -1,0 +1,117 @@
+- name: Install Helm and Deploy Prometheus & Grafana
+  hosts: masters
+  become: yes
+  tasks:
+
+    - name: Ensure KUBECONFIG is set in bash profile
+      lineinfile:
+        path: /root/.bashrc
+        line: 'export KUBECONFIG=/etc/kubernetes/admin.conf'
+        create: yes
+
+    - name: Load KUBECONFIG
+      shell: source /root/.bashrc
+      args:
+        executable: /bin/bash
+
+    - name: Verify Kubernetes cluster connection
+      command: kubectl get nodes
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: kubectl_status
+      changed_when: false
+
+    - name: Display cluster status
+      debug:
+        msg: "{{ kubectl_status.stdout_lines }}"
+
+    - name: Download Helm install script
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get_helm.sh
+        mode: '0755'
+
+    - name: Install Helm
+      command: bash /tmp/get_helm.sh
+
+    - name: Verify Helm installation
+      command: helm version
+      register: helm_version
+      changed_when: false
+
+    - name: Display Helm version
+      debug:
+        msg: "{{ helm_version.stdout }}"
+
+    - name: Add Helm repositories
+      command: "{{ item }}"
+      loop:
+        - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        - helm repo add grafana https://grafana.github.io/helm-charts
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Update Helm repositories
+      command: helm repo update
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Create monitoring namespace
+      shell: kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Deploy Prometheus using Helm
+      command: >
+        helm install prometheus prometheus-community/prometheus
+        --namespace monitoring
+        --set alertmanager.persistentVolume.enabled=false
+        --set server.persistentVolume.enabled=false
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Deploy Grafana using Helm
+      command: >
+        helm install grafana grafana/grafana
+        --namespace monitoring
+        --set persistence.enabled=false
+        --set adminPassword=admin
+        --set service.type=NodePort
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Get Grafana admin password
+      command: kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}"
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: grafana_password
+      changed_when: false
+
+    - name: Decode Grafana admin password
+      set_fact:
+        grafana_decoded_password: "{{ grafana_password.stdout | b64decode }}"
+
+    - name: Display Grafana admin password
+      debug:
+        msg: "Grafana admin password: {{ grafana_decoded_password }}"
+
+    - name: Get Grafana NodePort
+      command: kubectl get svc -n monitoring grafana -o jsonpath="{.spec.ports[0].nodePort}"
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: grafana_port
+      changed_when: false
+
+    - name: Get Master Node IP
+      shell: hostname -I | awk '{print $1}'
+      register: master_ip
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+    - name: Set Master Node IP fact
+      set_fact:
+        master_node_ip: "{{ master_ip.stdout }}"
+
+    - name: Display Grafana URL
+      debug:
+        msg: "Grafana is accessible at http://{{ master_node_ip }}:{{ grafana_port.stdout }}"

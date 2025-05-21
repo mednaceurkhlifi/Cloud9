@@ -1,0 +1,24 @@
+.pointer-cursor {
+    cursor: pointer;
+  }
+
+
+  .custom-button {
+    background: linear-gradient(118deg, rgba(181, 252, 205, 1) 0%, rgba(122, 198, 210, 1) 28%, rgba(61, 144, 215, 1) 63%, rgba(58, 89, 209, 1) 100%);
+    color: white; /* Set text color */
+    border: none; /* Remove border */
+  }
+  
+  .custom-button .p-button-text {
+    color: white !important; /* Ensure the text color is white */
+  }
+  
+  .custom-button:hover {
+    opacity: 0.9; /* Add hover effect */
+    background: linear-gradient(118deg, rgba(181, 252, 205, 1) 0%, rgba(122, 198, 210, 1) 28%, rgba(61, 144, 215, 1) 63%, rgba(58, 89, 209, 1) 100%) !important; /* Make hover background same */
+  }
+  
+  .custom-button:focus {
+    outline: none; /* Remove focus outline */
+  }
+

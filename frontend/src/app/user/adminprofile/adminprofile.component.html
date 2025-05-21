@@ -1,0 +1,40 @@
+<app-admin-top-bar></app-admin-top-bar>
+<app-admin-sidebar></app-admin-sidebar>
+
+<div class="admin-profile-container">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="avatar-container">
+            @if (connectedUser.image) {
+              <img [src]="connectedUser.image" alt="User Avatar" class="avatar-image">
+            } @else {
+              <i class="pi pi-user" style="font-size: 3rem; color: white;"></i>
+            }
+          </div>
+        <h2>{{connectedUser.firstName}} {{connectedUser.lastName}}</h2>
+        <p class="role">{{connectedUser.role}}</p>
+      </div>
+  
+      <div class="profile-details">
+        <div class="detail-row">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value">{{connectedUser.email}}</span>
+        </div>
+    
+        <div class="detail-row">
+          <span class="detail-label">Account Created:</span>
+          <span class="detail-value">{{connectedUser.created_at | date}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">BirthDate:</span>
+          <span class="detail-value">{{connectedUser.birthDate | date}}</span>
+        </div>
+      </div>
+      
+  
+      <div class="profile-actions">
+        <button pButton type="button" label="Edit Profile" icon="pi pi-pencil" class="p-button-rounded" (click)="toggleProfile()"></button>
+        <button pButton type="button" label="Change Password" icon="pi pi-lock" class="p-button-rounded p-button-outlined"(click)="updatePassword()"></button>
+      </div>
+    </div>
+  </div>

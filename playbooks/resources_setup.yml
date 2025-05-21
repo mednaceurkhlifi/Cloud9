@@ -1,0 +1,79 @@
+- name: Deploy OpenStack Network and Kubernetes Cluster
+  hosts: localhost
+  gather_facts: no
+  environment:
+    OS_CLOUD: "cloudnine"
+    OS_AUTH_URL: "http://controller:5000/v3"
+    OS_USERNAME: "admin"
+    OS_PASSWORD: "cloudnine"
+    OS_PROJECT_NAME: "admin"
+    OS_USER_DOMAIN_NAME: "Default"
+    OS_PROJECT_DOMAIN_NAME: "Default"
+    OS_IDENTITY_API_VERSION: "3"
+  
+  tasks:
+    # Create Network and Subnet
+    - name: Create cluster network
+      openstack.cloud.network:
+        cloud: cloudnine
+        state: present
+        name: cluster_network_auto
+
+    - name: Create cluster subnet
+      openstack.cloud.subnet:
+        cloud: cloudnine
+        state: present
+        network_name: cluster_network_auto
+        name: cluster_subnet_auto
+        cidr: 192.168.125.0/24
+        enable_dhcp: yes
+        allocation_pool_start: 192.168.125.10
+        allocation_pool_end: 192.168.125.100
+        gateway_ip: 192.168.125.1
+        dns_nameservers:
+          - 8.8.8.8
+          - 8.8.4.4
+
+    # Create Router and Connect to Provider Network
+    - name: Create router
+      openstack.cloud.router:
+        cloud: cloudnine
+        state: present
+        name: cluster_router_auto
+        network: provider
+
+    - name: Attach subnet to router
+      openstack.cloud.router:
+        cloud: cloudnine
+        state: present
+        name: cluster_router_auto
+        interfaces:
+          - cluster_subnet_auto
+
+    # Create Kubernetes Instances
+    - name: Create Kubernetes master node
+      openstack.cloud.server:
+        cloud: cloudnine
+        state: present
+        name: k8s-master
+        image: "ubuntu2204"
+        flavor: "m1.medium"
+        key_name: "for_dela3a"
+        network: cluster_network_auto
+        security_groups: "default"
+        auto_ip: no
+
+    - name: Create Kubernetes worker nodes
+      openstack.cloud.server:
+        cloud: cloudnine
+        state: present
+        name: "k8s-worker-{{ item }}"
+        image: "ubuntu2204"
+        flavor: "m1.medium"
+        key_name: "for_dela3a"
+        network: cluster_network_auto
+        security_groups: "default"
+        auto_ip: no
+      loop: [1, 2]
+      
+

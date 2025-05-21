@@ -1,0 +1,96 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+}
+
+// PrimeNG Table customizations
+::ng-deep {
+    .p-table {
+        .p-table-wrapper {
+            .p-table-tbody {
+                tr {
+                    td {
+                        padding: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .p-paginator {
+        .p-paginator-pages {
+            .p-paginator-page {
+                &.p-highlight {
+                    background: #3b82f6;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .p-button {
+        &.p-button-text {
+            &:hover {
+                background: rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.mat-table {
+  width: 100%;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  &.confirmed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  &.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.error-message {
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  background-color: #f8d7da;
+  color: #721c24;
+} 

@@ -1,0 +1,114 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Booking List</h1>
+  </div>
+
+  <div class="card">
+    <p-table
+      #dt1
+      [value]="bookings"
+      dataKey="id"
+      [rows]="10"
+      [loading]="loading"
+      [rowHover]="true"
+      [showGridlines]="true"
+      [paginator]="true"
+      [globalFilterFields]="['reference', 'userName', 'serviceName', 'status']"
+      responsiveLayout="scroll"
+    >
+      <ng-template #caption>
+        <div class="flex justify-between items-center flex-column sm:flex-row">
+          <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+          <p-iconfield iconPosition="left" class="ml-auto">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Search keyword" />
+          </p-iconfield>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Reference
+              <p-columnFilter type="text" field="reference" display="menu" placeholder="Search by reference"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              User
+              <p-columnFilter type="text" field="userName" display="menu" placeholder="Search by user"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Service
+              <p-columnFilter type="text" field="serviceName" display="menu" placeholder="Search by service"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-between items-center">
+              Status
+              <p-columnFilter type="text" field="status" display="menu" placeholder="Search by status"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 12rem">
+            <div class="flex justify-between items-center">
+              Created At
+              <p-columnFilter type="date" field="createdAt" display="menu" placeholder="mm/dd/yyyy"></p-columnFilter>
+            </div>
+          </th>
+          <th style="min-width: 8rem">
+            <div class="flex justify-between items-center">
+              Actions
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-booking>
+        <tr>
+          <td>{{ booking.reference }}</td>
+          <td>{{ booking.userName }}</td>
+          <td>{{ booking.serviceName }}</td>
+          <td>
+            <p-tag [value]="booking.status.toLowerCase()" [severity]="getSeverity(booking.status)" />
+          </td>
+          <td>{{ booking.createdAt | date:'medium' }}</td>
+          <td>
+            <div class="flex gap-2">
+              <button pButton 
+                      icon="pi pi-pencil" 
+                      class="p-button-info p-button-rounded p-button-text" 
+                      (click)="updateBooking(booking.id)"
+                      pTooltip="Update Booking"
+                      tooltipPosition="top">
+              </button>
+              <button pButton 
+                      icon="pi pi-trash" 
+                      class="p-button-danger p-button-rounded p-button-text" 
+                      (click)="deleteBooking(booking.id)"
+                      pTooltip="Delete Booking"
+                      tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">No bookings found.</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #loadingbody>
+        <tr>
+          <td colspan="6">Loading bookings data. Please wait.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div> 
