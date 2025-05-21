@@ -1,4 +1,4 @@
-# Smart Reservation System
+# Cloud9
 
 This repository contains the full-stack implementation of the 4th year Cloud engineering project that lasted from Nov 2024 to May 2025 @Esprit.
 **Cloud9** is the name of the team that worked on this project. **Queute**, is the web application and it's a **Smart Reservation System** with AI and blockchain integration. The system is designed to handle user reservations for services with optimal recommendations, roadmaps, news, forum and secure, verifiable transactions.
@@ -19,7 +19,6 @@ This repository contains the full-stack implementation of the 4th year Cloud eng
 └── n8n/                     # n8n AI workflows
 ```
 
----
 
 ## 🧩 Technologies Used
 
@@ -32,7 +31,6 @@ This repository contains the full-stack implementation of the 4th year Cloud eng
 - **AI Automation**: [n8n](https://n8n.io/), Chatgpt, Gemini, HuggingFace..
 - **Blockchain**: [Hardhat](https://hardhat.org/) for smart contract deployment & testing  
 
----
 
 ## 🚀 Deployment Instructions
 
@@ -73,11 +71,10 @@ This repository contains the full-stack implementation of the 4th year Cloud eng
    docker-compose up -d
    ```
 
----
 
 ## 📊 Presentations
 
 Project presentations are located in the `presentations/` directory.
 
----
+
 
