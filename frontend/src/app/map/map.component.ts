@@ -143,8 +143,8 @@ export class MapComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        const ai = new GoogleGenAI({ apiKey: "AIzaSyDVEMpClTJWr36QgeBZjx1fNRw2H9S2Mjg" }); 
-        
+        const ai = new GoogleGenAI({ apiKey: "${{ secrets.GEMINI_SECOND }}" });
+
         const response = await ai.models.generateContent({
             model: "gemini-1.5-flash",
             contents: "Given the current location: \

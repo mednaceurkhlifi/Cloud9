@@ -7,7 +7,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 })
 export class ProfanityService {
   private openRouterUrl = 'https://openrouter.ai/api/v1/chat/completions';
-  private apiKey = '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'; // À sécuriser dans un environnement
+  private apiKey = '${{ secrets.OPENROUTER_API_KEY }}'; 
 
   constructor(private http: HttpClient) {}
 
